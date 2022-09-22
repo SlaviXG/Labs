@@ -100,7 +100,7 @@ short UI::choice(const char *criteria, short choice_amount, const char *variants
     std::cout << criteria << " : \n";
     for (short i = 1; i<=choice_amount; i++)
     {
-        std::cout << i << " - " << *(ptr++) << '\n';
+        std::cout << i << "\t-\t" << *(ptr++) << '\n';
     }
     std::cout << "or type anything else to exit." << std::endl;
     // Entering choice :
