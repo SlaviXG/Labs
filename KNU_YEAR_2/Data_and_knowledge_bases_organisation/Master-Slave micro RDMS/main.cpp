@@ -16,6 +16,8 @@
 
 int main()
 {
+    UI ui;
+    ui.interact();
 
     return 0;
 }
