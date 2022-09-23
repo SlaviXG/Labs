@@ -7,6 +7,9 @@
 
 #include <iostream>
 #include <numeric>
+#include <fstream>
+
+#include "Entities.h"
 
 class UI {
 protected:
@@ -34,4 +37,4 @@ private:
 };
 
 
-#endif //MASTER_SLAVE_MICRO_RDMS_UI_H
+#endif
