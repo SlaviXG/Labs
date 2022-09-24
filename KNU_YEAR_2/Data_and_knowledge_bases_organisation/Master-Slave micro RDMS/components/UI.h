@@ -11,6 +11,7 @@
 #include <filesystem>
 
 #include "Entities.h"
+#include "NodeList.h"
 
 class UI {
 protected:
