@@ -18,6 +18,7 @@ struct Band {
 
 struct Composition {
     bool exists;
+    int ID;
     char name [21];
     short year;
     char genre [26];

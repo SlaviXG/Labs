@@ -6,22 +6,19 @@
 
 //Constructors / Destructors
 UI::UI() {
-//    this->bands = std::fstream("../data/bands.dat", std::ios::in|std::ios::out|std::ios::binary|std::fstream::app);
-//    this->bandsIDX = std::fstream("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary|std::fstream::app);
-//    this->compositions = std::fstream("../data/compositions.dat", std::ios::in | std::ios::out | std::ios::binary|std::fstream::app);
-//    //this->compositionsIDX = std::fstream("../data/compositions.idx", std::ios::in | std::ios::out | std::ios::binary|std::fstream::app);
-//
-//    if(!bands.is_open() || !bandsIDX.is_open() || !compositions.is_open() || !compositionsIDX.is_open())
-//        std::cerr << "File can not be opened." << std::endl;
 
-    //TODO: Loading from file, delete streams from the constructor
+    //Creating files
+    std::ofstream bands("../data/bands.dat", std::ios::out|std::ios::binary|std::fstream::app);
+    std::ofstream bandsIDX("../data/bands.idx", std::ios::out | std::ios::binary|std::fstream::app);
+    std::ofstream compositions("../data/compositions.dat", std::ios::out|std::ios::binary|std::fstream::app);
+
+    bands.close();
+    bandsIDX.close();
+    compositions.close();
 }
 
 UI::~UI() {
-//    bands.close();
-//    bandsIDX.close();
-//    compositions.close();
-//    //compositionsIDX.close();
+
 }
 
 //Interface functions
@@ -29,8 +26,8 @@ UI::~UI() {
 void UI::addBand() {
 
     //Creating streams
-    std::fstream bands("../data/bands.dat", std::ios::in|std::ios::out|std::ios::binary|std::fstream::app);
-    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary|std::fstream::app);
+    std::fstream bands("../data/bands.dat", std::ios::in|std::ios::out|std::ios::binary);
+    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
     if(!bands.is_open() || !bandsIDX.is_open())
     {
         std::cerr << std::endl << "Bands data files cannot be opened." << std::endl;
@@ -40,7 +37,7 @@ void UI::addBand() {
     //Creating the Band object
     Band band{};
 
-    std::cout << "Enter band name (20 symbols max.) :" << std::endl;
+    std::cout << "Enter the band name (20 symbols max.) :" << std::endl;
     input(band.name);
     std::cout << "Enter a year of creation :" << std::endl;
     input(band.year);
@@ -126,9 +123,8 @@ void UI::updateBand() {
                 std::cout << "Enter new band name :" << std::endl;
                 input(band.name);
                 bands.seekp(bandIdx.bandAddress, std::ios::beg);
-                bands.seekg(bandIdx.bandAddress, std::ios::beg);
                 bands.write((char*)&(band), sizeof(Band));
-                std::cout << "Changed successfully" << std::endl << std::endl;
+                std::cout << "Changed successfully." << std::endl << std::endl;
                 break;
             }
             case 2:
@@ -153,13 +149,14 @@ void UI::updateBand() {
 
 }
 
-void UI::findBandByID() {
-
-    std::fstream bands("../data/bands.dat", std::ios::in|std::ios::out|std::ios::binary|std::fstream::app);
-    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary|std::fstream::app);
-    if(!bands.is_open() || !bandsIDX.is_open())
+void::UI::deleteBand()
+{
+    std::fstream bands("../data/bands.dat", std::ios::in|std::ios::out|std::ios::binary);
+    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
+    std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
+    if(!bands.is_open() || !bandsIDX.is_open() || !compositions.is_open())
     {
-        std::cerr << std::endl << "Bands data files cannot be opened." << std::endl;
+        std::cerr << std::endl << "Data files cannot be opened." << std::endl;
         return;
     }
 
@@ -186,6 +183,79 @@ void UI::findBandByID() {
         bands.seekg(bandIdx.bandAddress, std::ios::beg);
         bands.read(reinterpret_cast<char *>(&band), sizeof(Band));
 
+        //Deleting
+        band.exists = false;
+        bandIdx.exists = false;
+
+        bands.seekp(bandIdx.bandAddress, std::ios::beg);
+        bands.write((char*)&(band), sizeof(Band));
+
+        bandsIDX.seekp(address, std::ios::beg);
+        bandsIDX.write((char*)&(bandIdx), sizeof(BandIDX));
+
+        if(bandIdx.numberOfCompositions)
+        {
+            //Creating the Composition object
+            Composition composition{};
+
+            long long curAddress;
+            composition.nextCompAddress = bandIdx.compositionAddress;
+            while(composition.nextCompAddress != -1)
+            {
+                curAddress = composition.nextCompAddress;
+                compositions.seekg(curAddress, std::ios::beg);
+                compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
+                composition.exists = false;
+                compositions.seekp(curAddress, std::ios::beg);
+                compositions.write(reinterpret_cast<char *>(&composition), sizeof(Composition));
+            }
+        }
+
+        std::cout << "Successfully deleted." << std::endl << std::endl;
+    }
+    else
+    {
+        std::cerr << "There's no such band in the database." << std::endl;
+    }
+
+    bands.close();
+    bandsIDX.close();
+    compositions.close();
+}
+
+void UI::findBandByID() {
+
+    std::fstream bands("../data/bands.dat", std::ios::in|std::ios::out|std::ios::binary);
+    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
+    if(!bands.is_open() || !bandsIDX.is_open())
+    {
+        std::cerr << std::endl << "Bands data files cannot be opened." << std::endl;
+        return;
+    }
+
+    int ID;
+    std::cout << "Enter the band ID :" << std::endl;
+    input(ID);
+
+    //Creating the BandIDX object to read in
+    BandIDX bandIdx{};
+
+    //Address to read from
+    long long address = ID * sizeof(BandIDX);
+
+    //Reading
+    bandsIDX.seekg(address, std::ios::beg);
+    bandsIDX.read(reinterpret_cast<char *>(&bandIdx), sizeof(BandIDX));
+
+    if(bandIdx.exists)
+    {
+        //Creating the Band object to read in
+        Band band{};
+
+        //Reading
+        bands.seekg(bandIdx.bandAddress, std::ios::beg);
+        bands.read(reinterpret_cast<char *>(&band), sizeof(Band));
+
         std::cout << "Band name : " << band.name << std::endl;
         std::cout << "Year of creation : " << band.year << std::endl;
         std::cout << "Number of compositions : " << bandIdx.numberOfCompositions << std::endl;
@@ -202,8 +272,8 @@ void UI::findBandByID() {
 }
 
 void UI::printBands() {
-    std::fstream bands("../data/bands.dat", std::ios::in|std::ios::out|std::ios::binary|std::fstream::app);
-    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary|std::fstream::app);
+    std::fstream bands("../data/bands.dat", std::ios::in|std::ios::out|std::ios::binary);
+    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
     if(!bands.is_open() || !bandsIDX.is_open())
     {
         std::cerr << std::endl << "Bands data files cannot be opened." << std::endl;
@@ -218,10 +288,14 @@ void UI::printBands() {
     bandsIDX.seekg(0, std::ios::beg);
     bands.seekg(0, std::ios::beg);
 
+    int counter = 0;
+
     while (bandsIDX.read(reinterpret_cast<char *>(&bandIdx), sizeof(BandIDX)))
     {
         if(bandIdx.exists)
         {
+            counter++;
+
             bands.read(reinterpret_cast<char *>(&band), sizeof(Band));
 
             std::cout << "Band ID : " << bandIdx.ID << std::endl;
@@ -233,12 +307,421 @@ void UI::printBands() {
         }
     }
 
+    std::cout << counter << " band" << ((counter-1)?"s":"") << " in total." << std::endl << std::endl;
+
     //Checking the end of the file
     bandsIDX.seekg(0, std::ios::end);
     long long END = bandsIDX.tellg(); // End of the file
 
     bands.close();
     bandsIDX.close();
+}
+
+void UI::addComposition() {
+    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
+    std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
+    if(!bandsIDX.is_open() || !compositions.is_open())
+    {
+        std::cerr << std::endl << "Data files cannot be opened." << std::endl;
+        return;
+    }
+
+    //Creating the Composition object
+    Composition composition{};
+
+    std::cout << "Enter the composition name (20 symbols max.) :" << std::endl;
+    input(composition.name);
+    std::cout << "Enter a year of creation :" << std::endl;
+    input(composition.year);
+    std::cout << "Enter the composition genre (25 symbols max.) :" << std::endl;
+    input(composition.genre);
+
+    composition.exists = true;
+    composition.nextCompAddress = -1;
+
+    //Entering band ID
+    int bandID;
+    std::cout << "Enter author band's ID :" << std::endl;
+    input(bandID);
+
+    //Creating the BandIDX object to read in
+    BandIDX bandIdx{};
+
+    //Address to read from
+    long long address = bandID * sizeof(BandIDX);
+
+    //Reading
+    bandsIDX.seekg(address, std::ios::beg);
+    bandsIDX.read(reinterpret_cast<char *>(&bandIdx), sizeof(BandIDX));
+
+    //Inserting
+    if(bandIdx.exists)
+    {
+        if(!bandIdx.numberOfCompositions)
+        {
+            bandIdx.numberOfCompositions++;
+
+            //Moving to the end of the data file
+            compositions.seekp(0, std::ios::end);
+
+            //Counting the composition ID
+            composition.ID = compositions.tellp()/sizeof(Composition);
+
+            //Get composition address
+            bandIdx.compositionAddress = compositions.tellp();
+
+            //Writing the composition
+            compositions.write((char*)&(composition), sizeof(Composition));
+
+        }
+        else
+        {
+            bandIdx.numberOfCompositions++;
+
+            long long curAddress;
+            Composition tempComposition {};
+            tempComposition.nextCompAddress = bandIdx.compositionAddress;
+            while(tempComposition.nextCompAddress != -1)
+            {
+                curAddress = tempComposition.nextCompAddress;
+                compositions.seekg(curAddress, std::ios::beg);
+                compositions.read(reinterpret_cast<char *>(&tempComposition), sizeof(Composition));
+            }
+
+            //Moving to the end of the data file
+            compositions.seekp(0, std::ios::end);
+
+            //Counting the composition ID
+            composition.ID = compositions.tellp()/sizeof(Composition);
+
+            //Saving the address of the new composition to the previous
+            tempComposition.nextCompAddress = compositions.tellp();
+
+            //Writing new composition
+            compositions.write((char*)&(composition), sizeof(Composition));
+
+            compositions.close();
+            std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
+            //Moving to the address of previous composition
+            compositions.seekp(curAddress, std::ios::beg);
+
+            //Updating the previous composition
+            compositions.write((char*)&(tempComposition), sizeof(Composition));
+        }
+
+        //Rewrite the bandIdx data
+        bandsIDX.seekp(address, std::ios::beg);
+        bandsIDX.write(reinterpret_cast<char *>(&bandIdx), sizeof(BandIDX));
+    }
+    else
+    {
+        std::cout << "There's no such band in the database." << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    bandsIDX.close();
+    compositions.close();
+
+    //TODO: write on free space
+}
+
+void UI::updateComposition() {
+    std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
+    if(!compositions.is_open())
+    {
+        std::cerr << std::endl << "Compositions data file cannot be opened." << std::endl;
+        return;
+    }
+
+    Composition composition = {};
+    std::cout << "Enter the ID of composition :" << std::endl;
+    input(composition.ID);
+
+    long long address = composition.ID * sizeof(Composition);
+
+    compositions.seekg(address, std::ios::beg);
+    compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
+
+    if(composition.exists)
+    {
+        switch (choice("Which attribute would you like to change?", 3,
+                       "Name", "Year", "Genre")){
+            case 1:
+            {
+                std::cout << "Enter new composition name :" << std::endl;
+                input(composition.name);
+                compositions.seekp(address, std::ios::beg);
+                compositions.write((char*)&(composition), sizeof(Composition));
+                std::cout << "Changed successfully." << std::endl << std::endl;
+                break;
+            }
+            case 2:
+            {
+                std::cout << "Enter a new year :" << std::endl;
+                input(composition.year);
+                compositions.seekp(address, std::ios::beg);
+                compositions.write((char*)&(composition), sizeof(Composition));
+                std::cout << "Changed successfully." << std::endl << std::endl;
+                break;
+            }
+            case 3:
+            {
+                std::cout << "Enter new genre :" << std::endl;
+                input(composition.genre);
+                compositions.seekp(address, std::ios::beg);
+                compositions.write((char*)&(composition), sizeof(Composition));
+                std::cout << "Changed successfully." << std::endl << std::endl;
+                break;
+            }
+        }
+    }
+    else
+    {
+        std::cerr << "There's no such composition in the database." << std::endl;
+    }
+
+    compositions.close();
+}
+
+void UI::deleteComposition() {
+    std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
+    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
+    if(!compositions.is_open() || !bandsIDX.is_open())
+    {
+        std::cerr << std::endl << "Data files cannot be opened." << std::endl;
+        return;
+    }
+
+    int bandID;
+    std::cout << "Enter the ID of author Band :" << std::endl;
+    input(bandID);
+
+    //Creating the BandIDX object to read in
+    BandIDX bandIdx{};
+
+    //Address to read from
+    long long bandAddress = bandID * sizeof(BandIDX);
+
+    //Reading
+    bandsIDX.seekg(bandAddress, std::ios::beg);
+    bandsIDX.read(reinterpret_cast<char *>(&bandIdx), sizeof(BandIDX));
+
+    if(bandIdx.exists)
+    {
+        if(bandIdx.numberOfCompositions)
+        {
+            Composition composition = {};
+            int compositionID;
+            std::cout << "Enter the ID of composition of this author to delete :" << std::endl;
+            input(compositionID);
+            long long compositionAddress = compositionID * sizeof(Composition);
+
+            long long curAddress;
+            composition.nextCompAddress = bandIdx.compositionAddress;
+            bool found = false;
+
+            if(bandIdx.compositionAddress == compositionAddress)
+            {
+                found = true;
+
+                compositions.seekg(compositionAddress, std::ios::beg);
+                compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
+
+                composition.exists = false;
+                compositions.seekp(compositionAddress, std::ios::beg);
+                compositions.write(reinterpret_cast<char *>(&composition), sizeof(Composition));
+
+                bandIdx.numberOfCompositions--;
+                bandIdx.compositionAddress = -1;
+                bandsIDX.seekp(bandAddress, std::ios::beg);
+                bandsIDX.write((char*)&(bandIdx), sizeof(BandIDX));
+
+                std::cout << "Successfully deleted." << std::endl << std::endl;
+            }
+            else
+            while(composition.nextCompAddress != -1)
+            {
+                curAddress = composition.nextCompAddress;
+                compositions.seekg(curAddress, std::ios::beg);
+
+                compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
+
+                if(composition.nextCompAddress == compositionAddress) //If current.next == searched
+                {
+                    found = true;
+
+                    Composition nextComp = {};
+
+                    long long prevAdr = composition.nextCompAddress;
+
+                    compositions.seekg(composition.nextCompAddress, std::ios::beg);
+                    compositions.read(reinterpret_cast<char *>(&nextComp), sizeof(Composition));
+
+                    composition.nextCompAddress = nextComp.nextCompAddress;
+
+                    nextComp.exists = false;
+                    compositions.seekp(prevAdr, std::ios::beg);
+                    compositions.write(reinterpret_cast<char *>(&nextComp), sizeof(Composition));
+
+                    bandIdx.numberOfCompositions--;
+                    bandsIDX.seekp(bandAddress, std::ios::beg);
+                    bandsIDX.write((char*)&(bandIdx), sizeof(BandIDX));
+
+                    std::cout << "Successfully deleted." << std::endl << std::endl;
+
+                    break;
+                }
+            }
+            if (!found)
+            {
+                std::cerr << "There's no such composition of this author." << std::endl;
+            }
+        }
+        else
+        {
+            std::cout << "The band has 0 compositions added." << std::endl << std::endl;
+        }
+    }
+    else
+    {
+        std::cerr << "There's no such band in the database." << std::endl;
+    }
+
+    compositions.close();
+    bandsIDX.close();
+}
+
+void UI::printCompositionsOfTheBand() {
+    std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
+    std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
+    if(!bandsIDX.is_open() || !compositions.is_open())
+    {
+        std::cerr << std::endl << "Data files cannot be opened." << std::endl;
+        return;
+    }
+
+    //Creating the Composition object
+    Composition composition{};
+
+    int bandID;
+    std::cout << "Enter the band ID :" << std::endl;
+    input(bandID);
+
+    //Creating the BandIDX object to read in
+    BandIDX bandIdx{};
+
+    //Address to read from
+    long long address = bandID * sizeof(BandIDX);
+
+    //Reading
+    bandsIDX.seekg(address, std::ios::beg);
+    bandsIDX.read(reinterpret_cast<char *>(&bandIdx), sizeof(BandIDX));
+
+    if(bandIdx.exists)
+    {
+        int counter = 0;
+        if(bandIdx.numberOfCompositions)
+        {
+            long long curAddress;
+            composition.nextCompAddress = bandIdx.compositionAddress;
+            while(composition.nextCompAddress != -1)
+            {
+                counter++;
+                curAddress = composition.nextCompAddress;
+                compositions.seekg(curAddress, std::ios::beg);
+                compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
+                std::cout << "Composition ID : " << composition.ID << std::endl;
+                std::cout << "Composition name : " << composition.name << std::endl;
+                std::cout << "Year of creation : " << composition.year << std::endl;
+                std::cout << "Genre : " << composition.genre << std::endl;
+
+                std::cout << std::endl;
+            }
+        }
+        std::cout << counter << " composition" << ((counter-1)?"s":"") << " in total." << std::endl << std::endl;
+    }
+    else
+    {
+        std::cout << "There's no such band in the database." << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    bandsIDX.close();
+    compositions.close();
+}
+
+void UI::printCompositions() {
+    std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
+    if(!compositions.is_open())
+    {
+        std::cerr << std::endl << "Compositions data files cannot be opened." << std::endl;
+        return;
+    }
+
+    //Creating the Composition object
+    Composition composition{};
+
+    //Reading
+    compositions.seekg(0, std::ios::beg);
+
+    int counter = 0;
+
+    while (compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition)))
+    {
+        if(composition.exists)
+        {
+            counter++;
+
+
+            std::cout << "Composition ID : " << composition.ID << std::endl;
+            std::cout << "Composition name : " << composition.name << std::endl;
+            std::cout << "Year of creation : " << composition.year << std::endl;
+            std::cout << "Genre : " << composition.genre << std::endl;
+
+            std::cout << std::endl;
+        }
+    }
+
+    std::cout << counter << " composition" << ((counter-1)?"s":"") << " in total." << std::endl << std::endl;
+
+    compositions.close();
+}
+
+void UI::findCompositionByID() {
+    std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
+    if(!compositions.is_open())
+    {
+        std::cerr << std::endl << "Compositions data files cannot be opened." << std::endl;
+        return;
+    }
+
+    int ID;
+    std::cout << "Enter the ID of composition :" << std::endl;
+    input(ID);
+
+    //Creating the Composition object
+    Composition composition{};
+
+    //Reading
+    compositions.seekg(ID * sizeof(Composition), std::ios::beg);
+    compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
+
+    if(composition.exists)
+    {
+        std::cout << "Composition name : " << composition.name << std::endl;
+        std::cout << "Year of creation : " << composition.year << std::endl;
+        std::cout << "Genre : " << composition.genre << std::endl;
+    }
+    else
+    {
+        std::cout << "There's no such composition in the database." << std::endl;
+    }
+
+    std::cout << std::endl;
+
+    compositions.close();
 }
 
 //Starting and maintaining the menu
@@ -270,11 +753,11 @@ void UI::interact() {
                 updateBand();
                 break;
             }
-//            case 3:
-//            {
-//                deleteBand();
-//                break;
-//            }
+            case 3:
+            {
+                deleteBand();
+                break;
+            }
             case 4:
             {
                 findBandByID();
@@ -285,36 +768,36 @@ void UI::interact() {
                 printBands();
                 break;
             }
-//            case 6:
-//            {
-//                addComposition();
-//                break;
-//            }
-//            case 7:
-//            {
-//                updateComposition();
-//                break;
-//            }
-//            case 8:
-//            {
-//                deleteComposition();
-//                break;
-//            }
-//            case 9:
-//            {
-//                printCompositionsOfTheBand();
-//                break;
-//            }
-//            case 10:
-//            {
-//                printCompositions();
-//                break;
-//            }
-//            case 11:
-//            {
-//                findCompositionByID();
-//                break;
-//            }
+            case 6:
+            {
+                addComposition();
+                break;
+            }
+            case 7:
+            {
+                updateComposition();
+                break;
+            }
+            case 8:
+            {
+                deleteComposition();
+                break;
+            }
+            case 9:
+            {
+                printCompositionsOfTheBand();
+                break;
+            }
+            case 10:
+            {
+                printCompositions();
+                break;
+            }
+            case 11:
+            {
+                findCompositionByID();
+                break;
+            }
             default:
             {
                 maintainingMenu = false;

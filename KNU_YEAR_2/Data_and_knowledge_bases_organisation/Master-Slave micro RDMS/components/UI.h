@@ -28,12 +28,6 @@ protected:
     void printCompositions();
     void findCompositionByID();
 
-//    //Input-output streams
-//    std::fstream bands;
-//    std::fstream bandsIDX;
-//    std::fstream compositions;
-//    std::fstream compositionsIDX;
-
 public:
     //Constructors / Destructors
     UI();
