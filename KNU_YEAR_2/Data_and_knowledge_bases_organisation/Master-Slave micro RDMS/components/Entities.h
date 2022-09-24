@@ -11,19 +11,26 @@
 */
 
 struct Band {
-    char name [20];
+    bool exists;
+    char name [21];
     short year;
-    int ID;
-    long long address;
 };
 
 struct Composition {
-    char name [20];
+    bool exists;
+    char name [21];
     short year;
-    char genre [25];
+    char genre [26];
+    long long nextCompAddress;
+};
+
+struct BandIDX
+{
+    bool exists;
     int ID;
-    long long address;
-    long long authorAddress;
+    long long bandAddress; // address = numberOfRecord * sizeOfRecord
+    long long compositionAddress;
+    int numberOfCompositions;
 };
 
 #endif
