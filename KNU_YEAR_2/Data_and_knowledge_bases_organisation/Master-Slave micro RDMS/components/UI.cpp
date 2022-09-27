@@ -408,6 +408,8 @@ void UI::addComposition() {
         //Rewrite the bandIdx data
         bandsIDX.seekp(address, std::ios::beg);
         bandsIDX.write(reinterpret_cast<char *>(&bandIdx), sizeof(BandIDX));
+
+        std::cout << "Added successfully." << std::endl << std::endl;
     }
     else
     {
@@ -571,7 +573,7 @@ void UI::deleteComposition() {
 
                         //current.next address = searched.next address, excluding the searched
                         composition.nextCompAddress = nextComp.nextCompAddress;
-                        
+
                         compositions.seekp(curAddress, std::ios::beg);
                         compositions.write(reinterpret_cast<char *>(&composition), sizeof(Composition));
 
