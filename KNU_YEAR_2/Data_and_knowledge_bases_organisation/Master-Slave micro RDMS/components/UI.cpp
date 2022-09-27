@@ -30,7 +30,7 @@ void UI::addBand() {
     std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
     if(!bands.is_open() || !bandsIDX.is_open())
     {
-        std::cerr << std::endl << "Bands data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Bands data files cannot be opened." << std::endl;
         return;
     }
 
@@ -85,7 +85,7 @@ void UI::updateBand() {
     std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
     if(!bands.is_open() || !bandsIDX.is_open())
     {
-        std::cerr << std::endl << "Bands data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Bands data files cannot be opened." << std::endl;
         return;
     }
 
@@ -141,7 +141,7 @@ void UI::updateBand() {
     }
     else
     {
-        std::cerr << "There's no such band in the database." << std::endl;
+        std::cout << "There's no such band in the database." << std::endl;
     }
 
     bands.close();
@@ -156,7 +156,7 @@ void::UI::deleteBand()
     std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
     if(!bands.is_open() || !bandsIDX.is_open() || !compositions.is_open())
     {
-        std::cerr << std::endl << "Data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Data files cannot be opened." << std::endl;
         return;
     }
 
@@ -215,7 +215,7 @@ void::UI::deleteBand()
     }
     else
     {
-        std::cerr << "There's no such band in the database." << std::endl;
+        std::cout << "There's no such band in the database." << std::endl;
     }
 
     bands.close();
@@ -229,7 +229,7 @@ void UI::findBandByID() {
     std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
     if(!bands.is_open() || !bandsIDX.is_open())
     {
-        std::cerr << std::endl << "Bands data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Bands data files cannot be opened." << std::endl;
         return;
     }
 
@@ -276,7 +276,7 @@ void UI::printBands() {
     std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
     if(!bands.is_open() || !bandsIDX.is_open())
     {
-        std::cerr << std::endl << "Bands data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Bands data files cannot be opened." << std::endl;
         return;
     }
 
@@ -292,11 +292,10 @@ void UI::printBands() {
 
     while (bandsIDX.read(reinterpret_cast<char *>(&bandIdx), sizeof(BandIDX)))
     {
+        bands.read(reinterpret_cast<char *>(&band), sizeof(Band));
         if(bandIdx.exists)
         {
             counter++;
-
-            bands.read(reinterpret_cast<char *>(&band), sizeof(Band));
 
             std::cout << "Band ID : " << bandIdx.ID << std::endl;
             std::cout << "Band name : " << band.name << std::endl;
@@ -309,9 +308,6 @@ void UI::printBands() {
 
     std::cout << counter << " band" << ((counter-1)?"s":"") << " in total." << std::endl << std::endl;
 
-    //Checking the end of the file
-    bandsIDX.seekg(0, std::ios::end);
-    long long END = bandsIDX.tellg(); // End of the file
 
     bands.close();
     bandsIDX.close();
@@ -322,7 +318,7 @@ void UI::addComposition() {
     std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
     if(!bandsIDX.is_open() || !compositions.is_open())
     {
-        std::cerr << std::endl << "Data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Data files cannot be opened." << std::endl;
         return;
     }
 
@@ -430,7 +426,7 @@ void UI::updateComposition() {
     std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
     if(!compositions.is_open())
     {
-        std::cerr << std::endl << "Compositions data file cannot be opened." << std::endl;
+        std::cout << std::endl << "Compositions data file cannot be opened." << std::endl;
         return;
     }
 
@@ -478,7 +474,7 @@ void UI::updateComposition() {
     }
     else
     {
-        std::cerr << "There's no such composition in the database." << std::endl;
+        std::cout << "There's no such composition in the database." << std::endl;
     }
 
     compositions.close();
@@ -489,7 +485,7 @@ void UI::deleteComposition() {
     std::fstream bandsIDX("../data/bands.idx", std::ios::in | std::ios::out | std::ios::binary);
     if(!compositions.is_open() || !bandsIDX.is_open())
     {
-        std::cerr << std::endl << "Data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Data files cannot be opened." << std::endl;
         return;
     }
 
@@ -575,7 +571,7 @@ void UI::deleteComposition() {
             }
             if (!found)
             {
-                std::cerr << "There's no such composition of this author." << std::endl;
+                std::cout << "There's no such composition of this author." << std::endl;
             }
         }
         else
@@ -585,7 +581,7 @@ void UI::deleteComposition() {
     }
     else
     {
-        std::cerr << "There's no such band in the database." << std::endl;
+        std::cout << "There's no such band in the database." << std::endl;
     }
 
     compositions.close();
@@ -597,7 +593,7 @@ void UI::printCompositionsOfTheBand() {
     std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
     if(!bandsIDX.is_open() || !compositions.is_open())
     {
-        std::cerr << std::endl << "Data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Data files cannot be opened." << std::endl;
         return;
     }
 
@@ -656,7 +652,7 @@ void UI::printCompositions() {
     std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
     if(!compositions.is_open())
     {
-        std::cerr << std::endl << "Compositions data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Compositions data files cannot be opened." << std::endl;
         return;
     }
 
@@ -693,7 +689,7 @@ void UI::findCompositionByID() {
     std::fstream compositions("../data/compositions.dat", std::ios::in|std::ios::out|std::ios::binary);
     if(!compositions.is_open())
     {
-        std::cerr << std::endl << "Compositions data files cannot be opened." << std::endl;
+        std::cout << std::endl << "Compositions data files cannot be opened." << std::endl;
         return;
     }
 
@@ -844,7 +840,7 @@ void UI::input(T &value) {
         {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cerr << "Incorrect input. Try again." << std::endl;
+            std::cout << "Incorrect input. Try again." << std::endl;
         }
         else
         {
