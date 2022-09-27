@@ -513,7 +513,7 @@ void UI::deleteComposition() {
             input(compositionID);
             long long compositionAddress = compositionID * sizeof(Composition);
 
-            long long curAddress;
+            long long curAddress = -1;
             composition.nextCompAddress = bandIdx.compositionAddress;
             bool found = false;
 
@@ -521,57 +521,80 @@ void UI::deleteComposition() {
             {
                 found = true;
 
+                //Reading the composition by address
                 compositions.seekg(compositionAddress, std::ios::beg);
                 compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
 
                 composition.exists = false;
+
                 compositions.seekp(compositionAddress, std::ios::beg);
                 compositions.write(reinterpret_cast<char *>(&composition), sizeof(Composition));
 
                 bandIdx.numberOfCompositions--;
-                bandIdx.compositionAddress = -1;
-                bandsIDX.seekp(bandAddress, std::ios::beg);
-                bandsIDX.write((char*)&(bandIdx), sizeof(BandIDX));
+
+                if(bandIdx.numberOfCompositions == 0) // The first comp. == the only one comp.
+                {
+                    bandIdx.compositionAddress = -1;
+                    bandsIDX.seekp(bandAddress, std::ios::beg);
+                    bandsIDX.write((char*)&(bandIdx), sizeof(BandIDX));
+
+                }
+                else // The first comp. contains further comps.
+                {
+                    bandIdx.compositionAddress = composition.nextCompAddress;
+                    bandsIDX.seekp(bandAddress, std::ios::beg);
+                    bandsIDX.write((char*)&(bandIdx), sizeof(BandIDX));
+                }
 
                 std::cout << "Successfully deleted." << std::endl << std::endl;
             }
             else
-            while(composition.nextCompAddress != -1)
             {
-                curAddress = composition.nextCompAddress;
-                compositions.seekg(curAddress, std::ios::beg);
-
-                compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
-
-                if(composition.nextCompAddress == compositionAddress) //If current.next == searched
+                while(composition.nextCompAddress != -1)
                 {
-                    found = true;
+                    curAddress = composition.nextCompAddress;
+                    compositions.seekg(curAddress, std::ios::beg);
 
-                    Composition nextComp = {};
+                    compositions.read(reinterpret_cast<char *>(&composition), sizeof(Composition));
 
-                    long long prevAdr = composition.nextCompAddress;
+                    if(composition.nextCompAddress == compositionAddress) //If current.next == searched
+                    {
+                        found = true;
 
-                    compositions.seekg(composition.nextCompAddress, std::ios::beg);
-                    compositions.read(reinterpret_cast<char *>(&nextComp), sizeof(Composition));
+                        Composition nextComp = {};
 
-                    composition.nextCompAddress = nextComp.nextCompAddress;
+                        long long targetAdr = composition.nextCompAddress; // searched address
 
-                    nextComp.exists = false;
-                    compositions.seekp(prevAdr, std::ios::beg);
-                    compositions.write(reinterpret_cast<char *>(&nextComp), sizeof(Composition));
+                        //reading the searched composition to nextComp
+                        compositions.seekg(targetAdr, std::ios::beg);
+                        compositions.read(reinterpret_cast<char *>(&nextComp), sizeof(Composition));
 
-                    bandIdx.numberOfCompositions--;
-                    bandsIDX.seekp(bandAddress, std::ios::beg);
-                    bandsIDX.write((char*)&(bandIdx), sizeof(BandIDX));
+                        //current.next address = searched.next address, excluding the searched
+                        composition.nextCompAddress = nextComp.nextCompAddress;
+                        
+                        compositions.seekp(curAddress, std::ios::beg);
+                        compositions.write(reinterpret_cast<char *>(&composition), sizeof(Composition));
 
-                    std::cout << "Successfully deleted." << std::endl << std::endl;
+                        //rewriting the searched composition
+                        nextComp.exists = false;
+                        compositions.seekp(targetAdr, std::ios::beg);
+                        compositions.write(reinterpret_cast<char *>(&nextComp), sizeof(Composition));
 
-                    break;
+                        //updating bandIDX
+                        bandIdx.numberOfCompositions--;
+
+                        bandsIDX.seekp(bandAddress, std::ios::beg);
+                        bandsIDX.write((char*)&(bandIdx), sizeof(BandIDX));
+
+                        std::cout << "Successfully deleted." << std::endl << std::endl;
+
+                        break;
+                    }
                 }
-            }
-            if (!found)
-            {
-                std::cout << "There's no such composition of this author." << std::endl;
+                if(!found)
+                {
+                    std::cout << "There's no such composition of this author." << std::endl;
+                }
             }
         }
         else
