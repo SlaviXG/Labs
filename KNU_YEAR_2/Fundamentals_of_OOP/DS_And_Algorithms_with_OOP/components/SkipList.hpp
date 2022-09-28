@@ -1,32 +1,11 @@
-int SkipList::generate_random_int(int max_value, int min_value)
-{
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(min_value, max_value);
-    return dist(gen);
-}
+#include <iostream>
 
-bool SkipList::flip_a_coin()
-{
-    return (bool) generate_random_int(1,0);
-}
-
-
-SkipList::Node::Node(int value)
+template <typename T> SkipList <T> :: Node :: Node (T value)
 {
     this->value = value;
 }
 
-SkipList::SkipList()
-{
-    Sentinel = new Node(INT_MIN);
-    Sentinel->next.push_back(nullptr); // layer 0
-    Sentinel->next.push_back(nullptr); // layer 1
-    layer_number = 1;
-    cur_size = 0;
-}
-
-void SkipList::build()
+template <typename T> void SkipList<T> :: build()
 {
     {
         Node* p = Sentinel;
@@ -60,25 +39,7 @@ void SkipList::build()
     }
 }
 
-SkipList::Node* SkipList::findNode(int key)
-{
-
-    Node* ptr = Sentinel;
-
-    for(int li = layer_number; li>=0; li--)
-    {
-        while(ptr->next[li]) // and li < ptr->next.size()
-        {
-            if(ptr->next[li]->value == key) return ptr->next[li];
-            else if(ptr->next[li]->value > key) break;
-            ptr = ptr->next[li];
-        }
-    }
-
-    return nullptr;
-}
-
-std::vector<SkipList::Node*> SkipList::findPath(int key) // finds predecessors
+template <typename T> std::vector <typename SkipList<T>::Node*> SkipList<T>::findPath(T key) // finds predecessors
 {
     std::vector<SkipList::Node*> path(layer_number+1, nullptr);
     Node* ptr = Sentinel;
@@ -97,7 +58,47 @@ std::vector<SkipList::Node*> SkipList::findPath(int key) // finds predecessors
     return path;
 }
 
-void SkipList::insert(int value)
+template <typename T> int SkipList <T> :: generate_random_int(int max_value, int min_value)
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(min_value, max_value);
+    return dist(gen);
+}
+
+template <typename T> bool SkipList<T> :: flip_a_coin()
+{
+    return (bool) generate_random_int(1,0);
+}
+
+template <typename T> SkipList<T> :: SkipList(T minObject)
+{
+    Sentinel = new Node(minObject); //MIN VALUE
+    Sentinel->next.push_back(nullptr); // layer 0
+    Sentinel->next.push_back(nullptr); // layer 1
+    layer_number = 1;
+    cur_size = 0;
+}
+
+template <typename T> typename SkipList<T>::Node* SkipList<T>::findNode(T key)
+{
+
+    Node* ptr = Sentinel;
+
+    for(int li = layer_number; li>=0; li--)
+    {
+        while(ptr->next[li]) // and li < ptr->next.size()
+        {
+            if(ptr->next[li]->value == key) return ptr->next[li];
+            else if(ptr->next[li]->value > key) break;
+            ptr = ptr->next[li];
+        }
+    }
+
+    return nullptr;
+}
+
+template <typename T> void SkipList<T> ::insert(T value)
 {
     cur_size++;
     if(cur_size > 2)
@@ -113,13 +114,6 @@ void SkipList::insert(int value)
     while (new_height < layer_number and flip_a_coin()) new_height++;
     new_node->next = std::vector<Node*> (new_height+1, Sentinel);
 
-    /*
-    std::cout << "Sentinel :" << Sentinel << "; \t";
-    for(auto x : path)
-        std::cout << x << ' ';
-    std::cout << std::endl;
-    */
-
     for(short li = 0; li <= new_height; li++)
     {
         new_node->next[li] = path[li]->next[li];
@@ -128,7 +122,7 @@ void SkipList::insert(int value)
 
 }
 
-void SkipList::print()
+template <typename T> void SkipList<T> :: print()
 {
     Node* ptr = Sentinel->next[0];
     std::cout << "List :" << std::endl;
@@ -140,7 +134,7 @@ void SkipList::print()
     std::cout << std::endl;
 }
 
-SkipList::~SkipList()
+template <typename T> SkipList<T> :: ~SkipList()
 {
     Node* node = Sentinel;
     while(node->next[0]!=nullptr)

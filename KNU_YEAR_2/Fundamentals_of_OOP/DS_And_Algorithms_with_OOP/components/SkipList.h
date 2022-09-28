@@ -2,30 +2,32 @@
 #include <vector>
 #include <random>
 
-class SkipList
-{
-    private :
-    static int generate_random_int(int max_value, int min_value = 1);
-    static bool flip_a_coin();
-    int cur_size;
-    int layer_number;
-    struct Node
-    {
+template <typename T> class SkipList{
+private:
+    struct Node{
         // array of pointers :
         std::vector <Node*> next;
         // value :
-        int value;
-        Node(int value);
+        T value;
+        // Node constructor
+        explicit Node(T value);
     };
+
     Node* Sentinel = nullptr;
+    int cur_size;
+    int layer_number;
+
     void build();
-    std::vector <Node*> findPath (int key);
-    public:
-    SkipList(); // LEGO!!!
-    Node* findNode (int key);
-    void insert (int value);
-    void print();
+    std::vector <Node*> findPath (T key);
+    static int generate_random_int(int max_value, int min_value = 1);
+    static bool flip_a_coin();
+
+public:
+    explicit SkipList(T minObject);
     ~SkipList();
+    Node* findNode (T key);
+    void insert (T value);
+    void print();
 };
 
 #include "SkipList.hpp"
