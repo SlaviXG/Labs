@@ -1,4 +1,21 @@
 #include "UI.h"
+#include "Time.h"
+
+//Constructors / Destructors
+UI::UI()
+{
+
+}
+
+UI::~UI()
+{
+
+}
+
+//Starting and maintaining the menu
+void UI::interact() {
+
+}
 
 //Generates the choice and returns the number of appropriate variant
 short UI::choice(const char *criteria, short choice_amount, const char *variants, ...) {

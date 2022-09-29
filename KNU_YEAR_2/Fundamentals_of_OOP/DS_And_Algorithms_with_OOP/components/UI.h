@@ -6,6 +6,13 @@
 #include "SkipList.h"
 
 class UI {
+public:
+    //Constructors / Destructors
+    UI();
+    virtual ~UI();
+
+    //Starting and maintaining the menu
+    void interact();
 
 private:
     //Generates the choice and returns the number of appropriate variant
