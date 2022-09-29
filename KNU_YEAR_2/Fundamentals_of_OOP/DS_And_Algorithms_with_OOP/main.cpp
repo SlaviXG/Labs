@@ -1,8 +1,11 @@
 #include <iostream>
 
-#include "components/SkipList.h"
+#include "components/UI.h"
 
-int main() {
-    std::cout << "Hello, World!" << std::endl;
+int main()
+{
+    UI ui;
+    ui.interact();
+
     return 0;
 }
