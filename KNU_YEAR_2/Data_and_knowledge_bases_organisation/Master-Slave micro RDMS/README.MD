@@ -9,5 +9,5 @@ Band =- [writes] -- Composition
 
   
 - Attributes:
-  - Band(ID, name, year)
-  - Composition(name, band, year, genre)
+  - Band (ID, name, year)
+  - Composition (name, band, year, genre)
