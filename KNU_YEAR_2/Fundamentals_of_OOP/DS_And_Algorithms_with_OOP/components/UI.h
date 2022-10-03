@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "SkipList.h"
+#include "Time.h"
 
 class UI {
 public:

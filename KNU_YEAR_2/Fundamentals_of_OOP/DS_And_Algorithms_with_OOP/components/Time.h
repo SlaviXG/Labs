@@ -4,32 +4,49 @@
 #include <iostream>
 #include <string>
 #include <numeric>
+#include <exception>
 
-struct Time
+namespace datetime
 {
-public:
-    //Constructor
-    Time();
+    struct Time
+    {
+    public:
+        //Constructor
+        Time();
 
-    unsigned long year = 0;
-    unsigned long month = 0;
-    unsigned long day = 0;
-    unsigned long hour = 0;
-    unsigned long minute = 0;
-    unsigned long second = 0;
+        //Measurements
+        long long year;
+        short month;
+        short day;
+        short hour;
+        short minute;
+        short second;
 
-    bool isMoreOrEqualsTo(Time);
-};
+        //Negative flag
+        bool isNegative;
+    };
 
-Time setTime();
-void printTime(Time);
-bool isTimeValid(Time);
+    bool isTimeValid(Time);
+    Time inputTime();
+    void printTime(Time);
+    void normalizeTime(Time&);
 
-bool operator >= (Time, Time);
-bool operator > (Time, Time);
-bool operator == (Time, Time);
-bool operator < (Time, Time);
-bool operator <= (Time, Time);
-bool operator != (Time, Time);
+    bool isYearLeap(long long year);
+    short getDayAmountInMonth(short monthNum, long long year);
+
+//Comparison operators
+    bool operator >= (Time, Time);
+    bool operator > (Time, Time);
+    bool operator == (Time, Time);
+    bool operator < (Time, Time);
+    bool operator <= (Time, Time);
+    bool operator != (Time, Time);
+
+//Arithmetical operators
+    Time operator + (Time, Time);
+    Time operator - (Time, Time);
+
+}
+
 
 #endif //DS_AND_ALGORITHMS_WITH_OOP_TIME_H
