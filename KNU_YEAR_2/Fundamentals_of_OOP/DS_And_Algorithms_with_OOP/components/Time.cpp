@@ -17,7 +17,7 @@ namespace datetime
     }
 
 
-    bool isTimeValid(Time time)
+    bool isDateValid(Time time)
     {
 
         //std::cout << std::endl << "Checking out!" << std::endl;
@@ -125,23 +125,27 @@ namespace datetime
                 validness = false;
             }
 
-            if(validness) validness = isTimeValid(time);
+            if(validness) validness = isDateValid(time);
         }
         while(!validness);
 
         std::cout << std::endl;
 
+        time.day--;
+        time.month--;
+        time.year--;
+
         return time;
 
     }
 
-//"Date (dd.mm.yyyy) :"
-//"Time (hh:mm:ss) :"
-    void printTime(Time time)
+    //"Date (dd.mm.yyyy) :"
+    //"Time (hh:mm:ss) :"
+    void printDate(Time time)
     {
         std::cout.flush();
         std::cout << "Exact time : " << ((time.isNegative) ? "- " : "");
-        std::cout << time.day << '.' << time.month << '.' << time.year << ' ';
+        std::cout << time.day+1 << '.' << time.month+1 << '.' << time.year+1 << ' ';
         std::cout << time.hour << '.' << time.minute << '.' << time.second << ' ';
         std::cout << std::endl;
     }
@@ -158,25 +162,89 @@ namespace datetime
         time.day += time.hour/24;
         time.hour %= 24;
 
-        short dayCnt = getDayAmountInMonth(time.month, time.year);
+        short dayCnt = getDayAmountInMonth((time.month + 1)  % 12, time.year);
 
         while(time.day > dayCnt)
         {
             time.month++;
             time.day -= dayCnt;
-            dayCnt = getDayAmountInMonth(time.month, time.year);
+            dayCnt = getDayAmountInMonth((time.month + 1)  % 12, time.year);
+            if(time.month > 11)
+            {
+                time.year++;
+                time.month -= 11;
+            }
         }
 
-        time.year += (time.month - 1) / 12;
-        time.month = (time.month - 1) % 12 + 1;
+        time.year += time.month / 12;
+        time.month %= 12;
     }
 
-    bool isYearLeap(long long year)
+    short getWeekDay(short day, short month, long long year)//Normal
     {
-        return ((!year%100 and !year%400) or (year%100 and !year%4));
+        //Structure needed increasing
+        int d = (int) day;
+        int m = (int) month;
+        int y = (int) year;
+
+        //Kim Larson calculation formula
+        if (m == 1 or m == 2)
+        {
+            m += 12;
+            y--;
+        }
+        int weekDayIDx = (d + 2 * m + 3 * (m + 1) / 5 + y + y / 4 - y / 100 + y / 400) % 7;
+
+        return (short) weekDayIDx;
     }
 
-    short getDayAmountInMonth(short monthNum, long long year)
+    const char* nameWeekDay (short weekDayIDx)
+    {
+        switch(weekDayIDx)
+        {
+            case 0: return "Mon";
+            case 1: return "Tue";
+            case 2: return "Wed";
+            case 3: return "Thu";
+            case 4: return "Fri";
+            case 5: return "Sat";
+            case 6: return "Sun";
+            default: return "Incorrect Week Index.";
+        }
+    }
+
+    short getWeekNumInYear(short day, short month, long long year)//Decreased
+    {
+        int julian = getDayNumInYear(day + 1, month + 1, year + 1);  // Jan 1 = 1, Jan 2 = 2, etc...
+        int dow = (getWeekDay(day + 1, month + 1, year + 1) + 1) % 7;     // Sun = 0, Mon = 1, etc...
+        int dowJan1 = getWeekDay(1, 1, year + 1);   // find out first of year day
+        int weekNum = ((julian + 6) / 7);
+        if (dow < dowJan1)                 // adjust for being after Saturday of week #1
+            ++weekNum;
+        return (weekNum);
+    }
+
+    int getDayNumInYear(short day, short month, long long year)//Normal
+    {
+        int dayNum = (int) day;
+
+        if (month > 2 and isYearLeap(year)) dayNum++;
+
+        while (month > 1)
+        {
+            dayNum += getDayAmountInMonth(month, year);
+            month--;
+        }
+
+        return dayNum;
+    }
+
+    bool isYearLeap(long long year) //Normal
+    {
+        return ((year%100==0 and year%400==0) or (year%100!=0 and year%4==0));
+    }
+
+    short getDayAmountInMonth(short monthNum, long long year) //Normal
     {
         switch (monthNum) {
             case 1: return 31;
@@ -195,7 +263,7 @@ namespace datetime
         }
     }
 
-//Comparison operators
+    //Comparison operators
     bool operator >= (Time A, Time B)
     {
         if(!A.isNegative and B.isNegative) return true;
@@ -289,7 +357,7 @@ namespace datetime
         return (!(A==B));
     }
 
-//Arithmetical operators
+    //Arithmetical operators
     Time operator + (Time A, Time B)
     {
         if(!A.isNegative and !B.isNegative)
@@ -305,7 +373,7 @@ namespace datetime
             res.second = A.second + B.second;
 
             //Normalizing
-            if(!isTimeValid(res)) normalizeTime(res);
+            if(!isDateValid(res)) normalizeTime(res);
 
             return res;
         }
@@ -410,19 +478,19 @@ namespace datetime
             }
             C.hour = A.hour - B.hour;
 
-            if(A.day < 1)
+            if(A.day < 0)
             {
-                A.day += getDayAmountInMonth(A.month, A.year);
+                A.day += getDayAmountInMonth(A.month + 1, A.year);
                 A.month--;
             }
             if(B.day > A.day)
             {
-                A.day += getDayAmountInMonth(A.month, A.year);
+                A.day += getDayAmountInMonth(A.month + 1, A.year);
                 A.month--;
             }
             C.day = A.day - B.day;
 
-            if(A.month < 1)
+            if(A.month < 0)
             {
                 A.month += 12;
                 A.year--;

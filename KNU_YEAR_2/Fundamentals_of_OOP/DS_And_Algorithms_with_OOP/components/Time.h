@@ -26,15 +26,18 @@ namespace datetime
         bool isNegative;
     };
 
-    bool isTimeValid(Time);
+    bool isDateValid(Time);
     Time inputTime();
-    void printTime(Time);
+    void printDate(Time);
     void normalizeTime(Time&);
-
+    short getWeekDay(short day, short month, long long year);
+    const char* nameWeekDay(short weekDayIDx);
+    short getWeekNumInYear(short day, short month, long long year);
+    int getDayNumInYear(short day, short month, long long year);
     bool isYearLeap(long long year);
     short getDayAmountInMonth(short monthNum, long long year);
 
-//Comparison operators
+    //Comparison operators
     bool operator >= (Time, Time);
     bool operator > (Time, Time);
     bool operator == (Time, Time);
@@ -42,7 +45,7 @@ namespace datetime
     bool operator <= (Time, Time);
     bool operator != (Time, Time);
 
-//Arithmetical operators
+    //Arithmetical operators
     Time operator + (Time, Time);
     Time operator - (Time, Time);
 
