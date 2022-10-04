@@ -1,5 +1,4 @@
 #include "UI.h"
-#include "Time.h"
 
 //Constructors / Destructors
 UI::UI()
@@ -13,8 +12,19 @@ UI::~UI()
 }
 
 //Starting and maintaining the menu
-void UI::interact() {
+void UI::interact()
+{
+    SkipList <datetime::Time> timeList ((datetime::Time()));
 
+    datetime::Time a;
+
+    timeList.insert(a);
+
+    a.year = 1993;
+
+    timeList.insert(a);
+
+    timeList.print();
 }
 
 //Generates the choice and returns the number of appropriate variant

@@ -4,7 +4,7 @@
 
 template <typename T> class SkipList{
 private:
-    struct Node{
+    struct Node {
         // array of pointers :
         std::vector <Node*> next;
         // value :

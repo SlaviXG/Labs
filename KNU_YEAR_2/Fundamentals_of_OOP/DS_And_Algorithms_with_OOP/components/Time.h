@@ -49,6 +49,7 @@ namespace datetime
     Time operator + (Time, Time);
     Time operator - (Time, Time);
 
+    std::ofstream& operator << (std::ofstream &cout, Time time);
 }
 
 
