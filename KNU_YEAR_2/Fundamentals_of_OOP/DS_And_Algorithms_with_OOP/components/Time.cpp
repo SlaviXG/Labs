@@ -537,7 +537,6 @@ namespace datetime
         std::cout << ((time.isNegative) ? "- " : "");
         std::cout << time.day << '.' << time.month << '.' << time.year << ' ';
         std::cout << time.hour << '.' << time.minute << '.' << time.second << ' ';
-        std::cout << std::endl;
 
         return cout;
     }

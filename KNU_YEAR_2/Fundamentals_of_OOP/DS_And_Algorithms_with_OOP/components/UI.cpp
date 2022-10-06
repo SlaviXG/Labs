@@ -14,20 +14,50 @@ UI::~UI()
 //Starting and maintaining the menu
 void UI::interact()
 {
+    // Simple demonstration of the methods
+
+    std::cout << "Primitive type -- double :" << std::endl;
+    SkipList <double> doubleList (-std::numeric_limits<double>::max());
+    std::cout << "Insert 132.086 :" << std::endl;
+    doubleList.insert(132.086);
+    doubleList.print();
+    std::cout << "Insert 175.052 :" << std::endl;
+    doubleList.insert(175.052);
+    doubleList.print();
+    std::cout << "Insert 175.052 :" << std::endl;
+    doubleList.insert(175.052);
+    doubleList.print();
+
+
+    std::cout << "Primitive type -- string :" << std::endl;
+
+    std::cout << "Primitive type -- double :" << std::endl;
+    SkipList <std::string> strList ("");
+    std::cout << "Insert abc :" << std::endl;
+    strList.insert("abc");
+    strList.print();
+    std::cout << "Insert lol :" << std::endl;
+    strList.insert("lol");
+    strList.print();
+    std::cout << "Insert aaa :" << std::endl;
+    strList.insert("aaa");
+    strList.print();
+
+    std::cout << "Advanced type -- Time :" << std::endl;
     SkipList <datetime::Time> timeList ((datetime::Time()));
 
     datetime::Time a;
-
+    std::cout << "Insert " << a << " :" <<  std::endl;
     timeList.insert(a);
 
     a.year = 1993;
-
+    std::cout << "Insert " << a << " :" <<  std::endl;
     timeList.insert(a);
+    timeList.print();
 
     a.year = 1967;
-
+    std::cout << "Insert " << a << " :" <<  std::endl;
     timeList.insert(a);
-
     timeList.print();
 }
 

@@ -128,7 +128,7 @@ template <typename T> void SkipList<T> :: print()
     std::cout << "List :" << std::endl;
     while (ptr!= nullptr)
     {
-        std::cout << ptr->value;
+        std::cout << ptr->value << std::endl;
         ptr=ptr->next[0];
     }
     std::cout << std::endl;
