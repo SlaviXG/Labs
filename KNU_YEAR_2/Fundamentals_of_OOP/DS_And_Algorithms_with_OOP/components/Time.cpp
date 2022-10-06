@@ -531,7 +531,7 @@ namespace datetime
         }
     }
 
-    std::ofstream& operator << (std::ofstream &cout, Time time)
+    std::ostream& operator << (std::ostream &cout, Time time)
     {
         std::cout.flush();
         std::cout << ((time.isNegative) ? "- " : "");

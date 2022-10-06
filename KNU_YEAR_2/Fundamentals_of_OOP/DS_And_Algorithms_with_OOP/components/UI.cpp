@@ -24,6 +24,10 @@ void UI::interact()
 
     timeList.insert(a);
 
+    a.year = 1967;
+
+    timeList.insert(a);
+
     timeList.print();
 }
 

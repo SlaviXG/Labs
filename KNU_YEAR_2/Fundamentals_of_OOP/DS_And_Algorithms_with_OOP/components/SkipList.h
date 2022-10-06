@@ -10,7 +10,7 @@ private:
         // value :
         T value;
         // Node constructor
-        explicit Node(T value);
+        Node(T value);
     };
 
     Node* Sentinel = nullptr;
