@@ -1,3 +1,4 @@
+#include <map>
 #include "Time.h"
 
 namespace datetime
@@ -539,5 +540,220 @@ namespace datetime
         std::cout << time.hour << '.' << time.minute << '.' << time.second << ' ';
 
         return cout;
+    }
+
+    //Seasonal calendar
+    void printSeasonalRepresentation(Time time)
+    {
+        std::cout << "Enter the hemisphere : " << std::endl;
+        std::cout << "1 - Northern\n" << "2 - Southern" << std::endl;
+
+        short choice;
+        std::cin >> choice;
+
+        if(std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            choice = 0;
+
+            std::cout << "Incorrect hemisphere." << std::endl;
+            return;
+        }
+        if(choice > 2 or choice < 1)
+        {
+            std::cout << "Incorrect hemisphere." << std::endl;
+            return;
+        }
+
+
+        std::cout << "The day of ";
+
+        if(choice == 1)
+        {
+            if(time.month == 11 or time.month == 0 or time.month == 1) //Winter
+            {
+                std::cout << "winter n. ";
+
+                if(time.month == 11)
+                {
+                    std::cout << time.day+1;
+                }
+                else if (time.month == 0)
+                {
+                    std::cout << 31 + time.day + 1;
+                }
+                else
+                {
+                    std::cout << 62 + time.day + 1;
+                }
+            }
+            if(time.month >= 2 and time.month <= 4) //Spring
+            {
+                std::cout << "spring n. ";
+
+                if(time.month == 2)
+                {
+                    std::cout << time.day + 1;
+                }
+                else if (time.month == 3)
+                {
+                    std::cout << 30 + time.day + 1;
+                }
+                else
+                {
+                    std::cout << 61 + time.day + 1;
+                }
+            }
+            if(time.month >= 5 and time.month <= 7) //Summer
+            {
+                std::cout << "summer n. ";
+
+                if(time.month == 5)
+                {
+                    std::cout << time.day + 1;
+                }
+                else if (time.month == 6)
+                {
+                    std::cout << 30 + time.day + 1;
+                }
+                else
+                {
+                    std::cout << 61 + time.day + 1;
+                }
+            }
+            if(time.month >= 8 and time.month <= 10) //Autumn
+            {
+                std::cout << "autumn n. ";
+
+                if(time.month == 8)
+                {
+                    std::cout << time.day + 1;
+                }
+                else if(time.month == 9)
+                {
+                    std::cout << 30 + time.day + 1;
+                }
+                else
+                {
+                    std::cout << 61 + time.day + 1;
+                }
+            }
+        }
+        else
+        {
+            if(time.month == 11 or time.month == 0 or time.month == 1) //Summer
+            {
+                std::cout << "summer n. ";
+
+                if(time.month == 11)
+                {
+                    std::cout << time.day+1;
+                }
+                else if (time.month == 0)
+                {
+                    std::cout << 31 + time.day + 1;
+                }
+                else
+                {
+                    std::cout << 62 + time.day + 1;
+                }
+            }
+            if(time.month >= 2 and time.month <= 4) //Autumn
+            {
+                std::cout << "autumn n. ";
+
+                if(time.month == 2)
+                {
+                    std::cout << time.day + 1;
+                }
+                else if (time.month == 3)
+                {
+                    std::cout << 30 + time.day + 1;
+                }
+                else
+                {
+                    std::cout << 61 + time.day + 1;
+                }
+            }
+            if(time.month >= 5 and time.month <= 7) //Winter
+            {
+                std::cout << "winter n. ";
+
+                if(time.month == 5)
+                {
+                    std::cout << time.day + 1;
+                }
+                else if (time.month == 6)
+                {
+                    std::cout << 30 + time.day + 1;
+                }
+                else
+                {
+                    std::cout << 61 + time.day + 1;
+                }
+            }
+            if(time.month >= 8 and time.month <= 10) //Spring
+            {
+                std::cout << "spring n. ";
+
+                if(time.month == 8)
+                {
+                    std::cout << time.day + 1;
+                }
+                else if(time.month == 9)
+                {
+                    std::cout << 30 + time.day + 1;
+                }
+                else
+                {
+                    std::cout << 61 + time.day + 1;
+                }
+            }
+        }
+
+        std::cout << std::endl;
+    }
+
+    //Alternative format
+    void printAlternativeFormat(Time time)
+    {
+        std::cout << "The " << nameWeekDay(getWeekDay(time.day+1,time.month+1, time.year+1))
+        << " n. " << getWeekNumInYear(time.day, time.month, time.year) << "in " << time.year + 1
+        << std::endl;
+    }
+
+    //Statistics
+    void printStatistics(Time time)
+    {
+        std::cout << "Enter a number of years back : " << std::endl;
+
+        long long yrs;
+        std::cin >> yrs;
+
+        if(std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            yrs = 0;
+
+            std::cout << "Incorrect input." << std::endl;
+            return;
+        }
+
+        std::map <int, int> dist;
+        for(long long i = 0; i < yrs; i++)
+        {
+            if(time.year + 1 - i <= 0) break;
+            dist[getWeekDay(1, 1, std::max(0ll, time.year + 1 - i))]++;
+        }
+
+        std::cout << "Over the " << yrs << " years, the days of week of the year start appeared :" << std::endl;
+        for(int i = 0; i < 7; i++)
+        {
+            std::cout << nameWeekDay(i) << " : " << dist[i] << " times." << std::endl;
+        }
+
+        std::cout << std::endl;
     }
 }

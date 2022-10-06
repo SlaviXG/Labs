@@ -30,12 +30,12 @@ namespace datetime
     Time inputTime();
     void printDate(Time);
     void normalizeTime(Time&);
-    short getWeekDay(short day, short month, long long year);
+    short getWeekDay(short day, short month, long long year); //Normal
     const char* nameWeekDay(short weekDayIDx);
-    short getWeekNumInYear(short day, short month, long long year);
-    int getDayNumInYear(short day, short month, long long year);
-    bool isYearLeap(long long year);
-    short getDayAmountInMonth(short monthNum, long long year);
+    short getWeekNumInYear(short day, short month, long long year); //Decreased
+    int getDayNumInYear(short day, short month, long long year); //Normal
+    bool isYearLeap(long long year); //Normal
+    short getDayAmountInMonth(short monthNum, long long year); //Normal
 
     //Comparison operators
     bool operator >= (Time, Time);
@@ -50,6 +50,15 @@ namespace datetime
     Time operator - (Time, Time);
 
     std::ostream& operator << (std::ostream &cout, Time time);
+
+    //Seasonal calendar
+    void printSeasonalRepresentation(Time time);
+
+    //Alternative format
+    void printAlternativeFormat(Time time);
+
+    //Statistics
+    void printStatistics(Time time);
 }
 
 
