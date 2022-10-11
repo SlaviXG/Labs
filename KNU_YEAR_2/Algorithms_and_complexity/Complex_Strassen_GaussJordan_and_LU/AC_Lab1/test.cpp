@@ -158,26 +158,43 @@ TEST_CASE("speedtesting the inverse matrix by LU decomposition")
 	std::cout << "\n";
 }
 
-TEST_CASE("testing the equality of GaussJordan and LU inversions")
+
+TEST_CASE("Speedtesting GaussJordan inversion method")
 {
 	srand(time(0));
-	std::cout << "\nTesting the equality of GaussJordan and LU inversions: ";
-	for (int i = 0; i < 50; i++)
-    {
-		ComplexMatrix A(10, 10);
+	std::cout << "\nSpeedtesting GaussJordan inversion method: ";
 
+    constexpr int ITER_NUM = 50;
+    constexpr int MATRIX_RANK = 15;
+
+    std::clock_t start, end;
+
+	for (int i = 1; i <= ITER_NUM; i++)
+    {
+		ComplexMatrix A(MATRIX_RANK, MATRIX_RANK);
         do
         {
-            A.auto_gen(5, 10, 5, 10);
+            A.auto_gen(1, 10, 1, 10);
         }
-        while(A.getRank()!=10);
+        while(A.getRank()!=MATRIX_RANK);
 
-		//A.print();
+        start = clock();
+		ComplexMatrix invA = GaussJordanInverse(A);
+        end = clock();
 
-		ComplexMatrix m1 = GaussJordanInverse(A);
-		ComplexMatrix m2 = LU_inverse(A);
+        ComplexMatrix E(MATRIX_RANK, MATRIX_RANK);
+        for(int i = 0; i < MATRIX_RANK; i++)
+            E.set(i,i,ComplexNum(1));
 
-		CHECK(m1 == m2);
+        bool res = (A * GaussJordanInverse(A) == E);
+
+        CHECK(res);
+
+        std::cout << "\nN = " << i;
+        std::cout << "\nMatrix rank = " << MATRIX_RANK;
+        std::cout << "\nStart: " << start << " ticks";
+        std::cout << "\nEnd: " << end << " ticks";
+        std::cout << "\nDuration: " << end - start << " ticks" << std::endl;
 	}
-	std::cout << "\t Success\n";
+	std::cout << "\t Success" << std::endl;
 }

@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <iomanip>
+
 class ComplexNum
 {
 private:
@@ -86,13 +88,13 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const ComplexNum& c) {
 		if (c.real) {
-			os << c.real;
+			os << std::setprecision(3) << c.real;
 		}
 		if (c.imag >= 0) {
-			os << "+" << c.imag << "i";
+			os << "+" << std::setprecision(3) << c.imag << "i";
 		}
 		else {
-			os << c.imag << "i";
+			os << std::setprecision(3) << c.imag  << "i";
 		}
 		return os;
 	}
