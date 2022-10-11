@@ -68,25 +68,21 @@ ComplexMatrix* Strassen_rec(ComplexMatrix* a, ComplexMatrix* b) {
     ComplexMatrix D8 = b11 + b12;
     ComplexMatrix D9 = a12 - a22;
     ComplexMatrix D10 = b21 + b22;
-    ComplexMatrix* M1;// = new ComplexMatrix(new_M, new_Q);
+    ComplexMatrix* M1;
     M1 = Strassen_rec(&D1/*(a11 + a22)*/, &D2/*(b11 + b22)*/);
-    ComplexMatrix* M2;// = new ComplexMatrix(new_N, new_N);
+    ComplexMatrix* M2;
     M2 = Strassen_rec(&D3/*(a21 + a22)*/, &b11);
-    ComplexMatrix* M3;// = new ComplexMatrix(new_N, new_N);
+    ComplexMatrix* M3;
     M3 = Strassen_rec(&a11, &D4/*(b12 - b22)*/);
-    ComplexMatrix* M4;// = new ComplexMatrix(new_N, new_N);
+    ComplexMatrix* M4;
     M4 = Strassen_rec(&a22, &D5/*(b21 - b11)*/);
-    ComplexMatrix* M5;// = new ComplexMatrix(new_N, new_N);
+    ComplexMatrix* M5;
     M5 = Strassen_rec(&D6/*(a11 + a12)*/, &(b22));
-    ComplexMatrix* M6;// = new ComplexMatrix(new_N, new_N);
+    ComplexMatrix* M6;
     M6 = Strassen_rec(&D7/*(a21 - a11)*/, &D8/*(b11 + b12)*/);
-    ComplexMatrix* M7;// = new ComplexMatrix(new_N, new_N);
+    ComplexMatrix* M7;
     M7 = Strassen_rec(&D9/*(a12 - a22)*/, &D10/*(b21 + b22)*/);
 
-    /*ComplexMatrix* R1;
-    ComplexMatrix *R2;
-    ComplexMatrix *R3;
-    ComplexMatrix *R4;*/
     ComplexMatrix R1 = *M1 + *M4 - *M5 + *M7;
     ComplexMatrix R2 = *M3 + *M5;
     ComplexMatrix R3 = *M2 + *M4;
@@ -107,7 +103,6 @@ ComplexMatrix* Strassen_rec(ComplexMatrix* a, ComplexMatrix* b) {
         }
     }
     delete M1; delete M2; delete M3; delete M4; delete M5; delete M6; delete M7; 
-   // delete R1; delete R2; delete R3; delete R4;
     return Res;
 }
 

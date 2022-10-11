@@ -25,7 +25,6 @@ public:
 		return this->imag;
 	}
 
-	//~ComplexNum(){}
 
 	bool isNull()
 	{
@@ -35,8 +34,7 @@ public:
 	}
 
 	void operator=(const ComplexNum& c1) {
-		/*ComplexNum res(c1.real, c1.imag);
-		return res;*/
+
 		this->real = c1.real;
 		this->imag = c1.imag;
 	}

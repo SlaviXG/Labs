@@ -241,17 +241,7 @@ public:
 		return true;
 	}
 
-	/*ComplexMatrix* add(ComplexMatrix* m1, ComplexMatrix* m2) {
-		ComplexMatrix* res = new ComplexMatrix(m1->columns, m1->rows);
-		for (int i = 0; i < m1->columns; i++) {
-			for (int j = 0; j < m1->rows; j++) {
-				ComplexNum temp = *(m1->matrix[i][j]) + *(m2->matrix[i][j]);
-				res->matrix[i][j] = &temp;
-			}
-		}
-		return res;
-	}*/
-	
+
 	ComplexMatrix operator -(const ComplexMatrix& other)const  //subtract 2 matrix
 	{
 		ComplexMatrix temp(this->rows, this->columns);

@@ -10,6 +10,7 @@
 
 TEST_CASE("Validity test: Strassen algorithm is equal to regular matrix multiplication") {
 	srand(time(0));
+	std::cout << "\nValidity test: Strassen algorithm is equal to regular matrix multiplication: ";
 	ComplexMatrix square_m1(10, 10);
 	ComplexMatrix square_m2(10, 10);
 	square_m1.auto_gen(1, 5, 1, 5);
@@ -24,6 +25,7 @@ TEST_CASE("Validity test: Strassen algorithm is equal to regular matrix multipli
 	reg_res = rand_m1 * rand_m2;
 	strassen_res = Strassen(&rand_m1, &rand_m2);
 	CHECK(reg_res == *strassen_res);
+	std::cout << "\tSuccess\n\n";
 }
 
 TEST_CASE("speedtesting for the strassen algorithm") {
@@ -159,6 +161,7 @@ TEST_CASE("speedtesting the inverse matrix by LU decomposition")
 TEST_CASE("testing the equality of GaussJordan and LU inversions")
 {
 	srand(time(0));
+	std::cout << "\nTesting the equality of GaussJordan and LU inversions: ";
 	for (int i = 0; i < 50; i++)
     {
 		ComplexMatrix A(10, 10);
@@ -176,4 +179,5 @@ TEST_CASE("testing the equality of GaussJordan and LU inversions")
 
 		CHECK(m1 == m2);
 	}
+	std::cout << "\t Success\n";
 }
