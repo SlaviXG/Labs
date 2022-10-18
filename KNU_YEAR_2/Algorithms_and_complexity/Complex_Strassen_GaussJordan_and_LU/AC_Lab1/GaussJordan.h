@@ -42,8 +42,10 @@ ComplexMatrix GaussJordanInverse(ComplexMatrix A)
     for(int i = 0; i < rank; i++)
     {
 
-        while(tempMatrix.get(i, i).isNull()) tempMatrix.swapRows(i, i+1);
-        assert(!tempMatrix.get(i, i).isNull()); // checking nulls on a principal diagonal
+        bool swapped = false;
+        while(tempMatrix.get(i, i)==ComplexNum(0,0)) {tempMatrix.swapRows(i, i+1); swapped = true;}
+        if(swapped) {i = std::max(0, i-1); continue;}
+        if(tempMatrix.get(i,i)==ComplexNum(0,0)) throw std::exception(); // checking nulls on a principal diagonal
 
         for(int j = 0; j < rank; j++)
         {

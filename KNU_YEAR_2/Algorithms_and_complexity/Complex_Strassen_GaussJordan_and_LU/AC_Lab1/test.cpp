@@ -164,8 +164,8 @@ TEST_CASE("Speedtesting GaussJordan inversion method")
 	srand(time(0));
 	std::cout << "\nSpeedtesting GaussJordan inversion method: ";
 
-    constexpr int ITER_NUM = 50;
-    constexpr int MATRIX_RANK = 15;
+    constexpr int ITER_NUM = 1000;
+    constexpr int MATRIX_RANK = 10;
 
     std::clock_t start, end;
 
@@ -184,10 +184,10 @@ TEST_CASE("Speedtesting GaussJordan inversion method")
 
         ComplexMatrix E(MATRIX_RANK, MATRIX_RANK);
         for(int i = 0; i < MATRIX_RANK; i++)
-            E.set(i,i,ComplexNum(1));
+            E.set(i,i,ComplexNum(1,0));
 
-        bool res = (A * GaussJordanInverse(A) == E);
-
+        ComplexMatrix mult = A * invA;
+        bool res = (mult == E);
         CHECK(res);
 
         std::cout << "\nN = " << i;

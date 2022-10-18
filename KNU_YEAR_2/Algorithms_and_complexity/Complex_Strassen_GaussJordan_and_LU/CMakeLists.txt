@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.23)
-project(AC_Lab1)
+project(Complex_Strassen_GaussJordan_and_LU)
 
 set(CMAKE_CXX_STANDARD 14)
 
