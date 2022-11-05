@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/ics">
+        <file>ics/copy.png</file>
+        <file>ics/cut.png</file>
+        <file>ics/exit.png</file>
+        <file>ics/export.png</file>
+        <file>ics/new.png</file>
+        <file>ics/open.png</file>
+        <file>ics/paste.png</file>
+        <file>ics/redo.png</file>
+        <file>ics/save.png</file>
+        <file>ics/undo.png</file>
+    </qresource>
+</RCC>
