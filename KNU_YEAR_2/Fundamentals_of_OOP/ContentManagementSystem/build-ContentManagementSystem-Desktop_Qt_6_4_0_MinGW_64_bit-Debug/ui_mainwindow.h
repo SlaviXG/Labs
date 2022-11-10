@@ -14,9 +14,11 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QTreeWidget>
@@ -39,12 +41,19 @@ public:
     QAction *actionUndo;
     QAction *actionRedo;
     QWidget *centralwidget;
-    QWidget *horizontalLayoutWidget;
-    QHBoxLayout *horizontalLayout_2;
+    QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *buttonSave;
+    QPushButton *buttonDiscard;
+    QLineEdit *searchLine;
+    QPushButton *buttonAddFile;
+    QPushButton *buttonDeleteFile;
+    QHBoxLayout *horizontalLayout_3;
+    QVBoxLayout *verticalLayout_2;
     QTextEdit *textEdit;
+    QVBoxLayout *verticalLayout_4;
     QTreeWidget *treeWidget;
-    QVBoxLayout *verticalLayout_3;
     QMenuBar *menubar;
     QMenu *menuFile;
     QMenu *menuEdit;
@@ -107,34 +116,71 @@ public:
         actionRedo->setIcon(icon9);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
-        horizontalLayoutWidget = new QWidget(centralwidget);
-        horizontalLayoutWidget->setObjectName("horizontalLayoutWidget");
-        horizontalLayoutWidget->setGeometry(QRect(9, 9, 781, 411));
-        horizontalLayout_2 = new QHBoxLayout(horizontalLayoutWidget);
-        horizontalLayout_2->setObjectName("horizontalLayout_2");
-        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        verticalLayout = new QVBoxLayout();
+        verticalLayoutWidget = new QWidget(centralwidget);
+        verticalLayoutWidget->setObjectName("verticalLayoutWidget");
+        verticalLayoutWidget->setGeometry(QRect(9, 9, 781, 401));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName("verticalLayout");
-        textEdit = new QTextEdit(horizontalLayoutWidget);
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName("horizontalLayout");
+        buttonSave = new QPushButton(verticalLayoutWidget);
+        buttonSave->setObjectName("buttonSave");
+        buttonSave->setEnabled(true);
+
+        horizontalLayout->addWidget(buttonSave);
+
+        buttonDiscard = new QPushButton(verticalLayoutWidget);
+        buttonDiscard->setObjectName("buttonDiscard");
+
+        horizontalLayout->addWidget(buttonDiscard);
+
+        searchLine = new QLineEdit(verticalLayoutWidget);
+        searchLine->setObjectName("searchLine");
+        searchLine->setAutoFillBackground(false);
+
+        horizontalLayout->addWidget(searchLine);
+
+        buttonAddFile = new QPushButton(verticalLayoutWidget);
+        buttonAddFile->setObjectName("buttonAddFile");
+
+        horizontalLayout->addWidget(buttonAddFile);
+
+        buttonDeleteFile = new QPushButton(verticalLayoutWidget);
+        buttonDeleteFile->setObjectName("buttonDeleteFile");
+
+        horizontalLayout->addWidget(buttonDeleteFile);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        horizontalLayout_3 = new QHBoxLayout();
+        horizontalLayout_3->setObjectName("horizontalLayout_3");
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setObjectName("verticalLayout_2");
+        textEdit = new QTextEdit(verticalLayoutWidget);
         textEdit->setObjectName("textEdit");
 
-        verticalLayout->addWidget(textEdit);
+        verticalLayout_2->addWidget(textEdit);
 
 
-        horizontalLayout_2->addLayout(verticalLayout);
+        horizontalLayout_3->addLayout(verticalLayout_2);
 
-        treeWidget = new QTreeWidget(horizontalLayoutWidget);
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName("verticalLayout_4");
+        treeWidget = new QTreeWidget(verticalLayoutWidget);
         QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
         __qtreewidgetitem->setText(0, QString::fromUtf8("1"));
         treeWidget->setHeaderItem(__qtreewidgetitem);
         treeWidget->setObjectName("treeWidget");
 
-        horizontalLayout_2->addWidget(treeWidget);
+        verticalLayout_4->addWidget(treeWidget);
 
-        verticalLayout_3 = new QVBoxLayout();
-        verticalLayout_3->setObjectName("verticalLayout_3");
 
-        horizontalLayout_2->addLayout(verticalLayout_3);
+        horizontalLayout_3->addLayout(verticalLayout_4);
+
+
+        verticalLayout->addLayout(horizontalLayout_3);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -180,7 +226,13 @@ public:
         actionCut->setText(QCoreApplication::translate("MainWindow", "Cut", nullptr));
         actionUndo->setText(QCoreApplication::translate("MainWindow", "Undo", nullptr));
         actionRedo->setText(QCoreApplication::translate("MainWindow", "Redo", nullptr));
-        menuFile->setTitle(QCoreApplication::translate("MainWindow", "File", nullptr));
+        buttonSave->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
+        buttonDiscard->setText(QCoreApplication::translate("MainWindow", "Discard", nullptr));
+        searchLine->setText(QString());
+        searchLine->setPlaceholderText(QCoreApplication::translate("MainWindow", "Search", nullptr));
+        buttonAddFile->setText(QCoreApplication::translate("MainWindow", "Add File", nullptr));
+        buttonDeleteFile->setText(QCoreApplication::translate("MainWindow", "Delete File", nullptr));
+        menuFile->setTitle(QCoreApplication::translate("MainWindow", "Content", nullptr));
         menuEdit->setTitle(QCoreApplication::translate("MainWindow", "Edit", nullptr));
     } // retranslateUi
 
