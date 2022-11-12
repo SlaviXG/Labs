@@ -4,10 +4,15 @@
 #include <QMainWindow>
 
 #include <QFile>
+#include <QDialog>
 #include <QFileDialog>
 #include <QTextStream>
 #include <QMessageBox>
 #include <QPrintDialog>
+#include <QTreeWidget>
+#include <QInputDialog>
+
+#include "additemdialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -46,8 +51,22 @@ private slots:
 
     void on_buttonDeleteItem_clicked();
 
+    void on_buttonSave_clicked();
+
+    void on_buttonDiscard_clicked();
+
 private:
     Ui::MainWindow *ui;
-    QString currentFile = "";
+    AddItemDialog *addItemDialog;
+    QString contextName = "";
+    QString currentTextFile = "";
+    QTreeWidgetItem* treeRoot;
+
+    bool isCorrectName(QString name);
+
+public slots:
+    void addDirItem();
+    void addFileItem();
+    void addTextItem();
 };
 #endif // MAINWINDOW_H
