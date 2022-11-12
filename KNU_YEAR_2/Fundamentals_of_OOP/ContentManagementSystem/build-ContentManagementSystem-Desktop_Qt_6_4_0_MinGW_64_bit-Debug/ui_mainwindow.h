@@ -47,8 +47,8 @@ public:
     QPushButton *buttonSave;
     QPushButton *buttonDiscard;
     QLineEdit *searchLine;
-    QPushButton *buttonAddFile;
-    QPushButton *buttonDeleteFile;
+    QPushButton *buttonAddItem;
+    QPushButton *buttonDeleteItem;
     QHBoxLayout *horizontalLayout_3;
     QVBoxLayout *verticalLayout_2;
     QTextEdit *textEdit;
@@ -141,15 +141,15 @@ public:
 
         horizontalLayout->addWidget(searchLine);
 
-        buttonAddFile = new QPushButton(verticalLayoutWidget);
-        buttonAddFile->setObjectName("buttonAddFile");
+        buttonAddItem = new QPushButton(verticalLayoutWidget);
+        buttonAddItem->setObjectName("buttonAddItem");
 
-        horizontalLayout->addWidget(buttonAddFile);
+        horizontalLayout->addWidget(buttonAddItem);
 
-        buttonDeleteFile = new QPushButton(verticalLayoutWidget);
-        buttonDeleteFile->setObjectName("buttonDeleteFile");
+        buttonDeleteItem = new QPushButton(verticalLayoutWidget);
+        buttonDeleteItem->setObjectName("buttonDeleteItem");
 
-        horizontalLayout->addWidget(buttonDeleteFile);
+        horizontalLayout->addWidget(buttonDeleteItem);
 
 
         verticalLayout->addLayout(horizontalLayout);
@@ -169,9 +169,6 @@ public:
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setObjectName("verticalLayout_4");
         treeWidget = new QTreeWidget(verticalLayoutWidget);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem();
-        __qtreewidgetitem->setText(0, QString::fromUtf8("1"));
-        treeWidget->setHeaderItem(__qtreewidgetitem);
         treeWidget->setObjectName("treeWidget");
 
         verticalLayout_4->addWidget(treeWidget);
@@ -230,10 +227,12 @@ public:
         buttonDiscard->setText(QCoreApplication::translate("MainWindow", "Discard", nullptr));
         searchLine->setText(QString());
         searchLine->setPlaceholderText(QCoreApplication::translate("MainWindow", "Search", nullptr));
-        buttonAddFile->setText(QCoreApplication::translate("MainWindow", "Add File", nullptr));
-        buttonDeleteFile->setText(QCoreApplication::translate("MainWindow", "Delete File", nullptr));
+        buttonAddItem->setText(QCoreApplication::translate("MainWindow", "Add Item", nullptr));
+        buttonDeleteItem->setText(QCoreApplication::translate("MainWindow", "Delete Item", nullptr));
+        QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
+        ___qtreewidgetitem->setText(0, QCoreApplication::translate("MainWindow", "Context", nullptr));
         menuFile->setTitle(QCoreApplication::translate("MainWindow", "Content", nullptr));
-        menuEdit->setTitle(QCoreApplication::translate("MainWindow", "Edit", nullptr));
+        menuEdit->setTitle(QCoreApplication::translate("MainWindow", "Text", nullptr));
     } // retranslateUi
 
 };

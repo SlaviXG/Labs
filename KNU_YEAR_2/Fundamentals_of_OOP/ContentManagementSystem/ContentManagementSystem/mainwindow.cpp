@@ -7,6 +7,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setCentralWidget(ui->verticalLayoutWidget);
+    ui->treeWidget->clear();
+
+    QTreeWidgetItem* treeRoot = new QTreeWidgetItem();
+    treeRoot->setText(0, "Root");
+    ui->treeWidget->addTopLevelItem(treeRoot);
 }
 
 MainWindow::~MainWindow()
@@ -14,7 +19,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
+//Content menubar:
 void MainWindow::on_actionNew_triggered()
 {
     currentFile.clear();
@@ -72,6 +77,7 @@ void MainWindow::on_actionExit_triggered()
 }
 
 
+//Text menubar:
 void MainWindow::on_actionCopy_triggered()
 {
     ui->textEdit->copy();
@@ -99,5 +105,36 @@ void MainWindow::on_actionUndo_triggered()
 void MainWindow::on_actionRedo_triggered()
 {
     ui->textEdit->redo();
+}
+
+//Buttons:
+void MainWindow::on_buttonAddItem_clicked()
+{
+
+}
+
+
+void MainWindow::on_buttonDeleteItem_clicked()
+{
+
+    QList<QTreeWidgetItem *>  items = ui->treeWidget->selectedItems();
+    QTreeWidgetItem          *pp    = nullptr;
+
+    if ( !items.isEmpty() )
+    {
+      foreach (QTreeWidgetItem *item, items)
+      {
+        if(item == ui->treeWidget->topLevelItem(0))
+        {
+            QMessageBox::critical(this,"Error", "Unable to delete the root item");
+            break;
+        }
+        pp = item->parent();
+        pp->removeChild(item);
+        delete item;
+      }
+    }
+
+
 }
 

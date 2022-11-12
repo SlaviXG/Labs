@@ -57,16 +57,16 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="buttonAddFile">
+        <widget class="QPushButton" name="buttonAddItem">
          <property name="text">
-          <string>Add File</string>
+          <string>Add Item</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="buttonDeleteFile">
+        <widget class="QPushButton" name="buttonDeleteItem">
          <property name="text">
-          <string>Delete File</string>
+          <string>Delete Item</string>
          </property>
         </widget>
        </item>
@@ -87,7 +87,7 @@
           <widget class="QTreeWidget" name="treeWidget">
            <column>
             <property name="text">
-             <string notr="true">1</string>
+             <string>Context</string>
             </property>
            </column>
           </widget>
@@ -120,7 +120,7 @@
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Edit</string>
+     <string>Text</string>
     </property>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>

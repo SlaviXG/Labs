@@ -42,6 +42,10 @@ private slots:
 
     void on_actionRedo_triggered();
 
+    void on_buttonAddItem_clicked();
+
+    void on_buttonDeleteItem_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString currentFile = "";
