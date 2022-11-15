@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include <QFile>
+#include <QDir>
 #include <QDialog>
 #include <QFileDialog>
 #include <QTextStream>
@@ -62,7 +63,7 @@ private:
     QString currentTextFile = "";
     QTreeWidgetItem* treeRoot;
 
-    bool isCorrectName(QString name);
+    QString getTreeItemPath(QTreeWidgetItem *item);
 
 public slots:
     void addDirItem();

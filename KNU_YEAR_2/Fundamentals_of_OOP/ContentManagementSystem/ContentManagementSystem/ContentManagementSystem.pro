@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     additemdialog.cpp \
+    auxiliary.cpp \
     main.cpp \
     mainwindow.cpp
 

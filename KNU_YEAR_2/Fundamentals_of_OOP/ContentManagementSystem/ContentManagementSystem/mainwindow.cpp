@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "auxiliary.cpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -9,11 +10,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setCentralWidget(ui->verticalLayoutWidget);
 
+    //Context name setup
+    this->contextName = "New context";
+
     //Tree Widget setup
     ui->treeWidget->clear();
     treeRoot = new QTreeWidgetItem();
-    treeRoot->setText(0, "New context");
+    treeRoot->setText(0, contextName);
+    treeRoot->setWhatsThis(0, "Dir");
     ui->treeWidget->addTopLevelItem(treeRoot);
+
+    //Setting a new directory
+    QString path = "contexts/" + contextName;
+    QDir dir;
+    dir.mkpath(path);
 
     //Item Dialog setup
     this->addItemDialog = new AddItemDialog(this);
@@ -30,14 +40,30 @@ MainWindow::~MainWindow()
 //Content menubar:
 void MainWindow::on_actionNew_triggered()
 {
+    //clearing the name of current text file
     currentTextFile.clear();
+
+    //clearing tree widget
     ui->treeWidget->clear();
+
+    //clearing text edit wodget
     ui->textEdit->setText(QString());
-    setWindowTitle(QString("New context"));
+
+    //Changing context name holder
     contextName = "New context";
+
+    //Changing mainwindow title
+    setWindowTitle(contextName);
+
+    //Setting-up a new tree root with context name
     treeRoot = new QTreeWidgetItem();
     treeRoot->setText(0, contextName);
     ui->treeWidget->addTopLevelItem(treeRoot);
+
+    //Setting the real directory
+    QString path = "contexts/" + contextName;
+    QDir dir;
+    dir.mkpath(path);
 }
 
 
@@ -48,7 +74,7 @@ void MainWindow::on_actionOpen_triggered()
     currentTextFile = fileName;
     if(!file.open(QIODevice::ReadOnly | QFile::Text))
     {
-        QMessageBox::warning(this, "Warning", "Cannot open the file : " + file.errorString());
+        QMessageBox::warning(this, "Warning", "Cannot open the file: " + file.errorString());
         return;
     }
     setWindowTitle(fileName);
@@ -65,7 +91,7 @@ void MainWindow::on_actionSave_as_triggered()
     QFile file(fileName);
     if(!file.open(QFile::WriteOnly | QFile::Text))
     {
-        QMessageBox::warning(this, "Warning", "Cannot save the file : " + file.errorString());
+        QMessageBox::warning(this, "Warning", "Cannot save the file: " + file.errorString());
         return;
     }
     currentTextFile = fileName;
@@ -123,7 +149,13 @@ void MainWindow::on_actionRedo_triggered()
 //Buttons:
 void MainWindow::on_buttonAddItem_clicked()
 {
-    addItemDialog->show();
+    QTreeWidgetItem *curTreeItem = this->ui->treeWidget->currentItem();
+    if(curTreeItem == nullptr)
+        addItemDialog->show();
+    else if(curTreeItem->whatsThis(0) == "Dir")
+        addItemDialog->show();
+    else
+        QMessageBox::warning(this, "Error", "Error: you can add subitem only to the directory");
 }
 
 
@@ -164,63 +196,141 @@ void MainWindow::on_buttonDiscard_clicked()
 //Public slots:
 void MainWindow::addDirItem()
 {
+    //Hiding the dialog wondow
     addItemDialog->hide();
+
+    //Entering item name
     QString dirName;
-    dirName = QInputDialog::getText(this, "Directory name", "Enter a directory name");
+    bool okClicked = false;
+    dirName = QInputDialog::getText(this, "Directory name", "Enter a directory name", QLineEdit::Normal, QDir::home().dirName(), &okClicked);
+    trimStr(dirName);
+    //Returning if not clicked ok
+    if(!okClicked) return;
+
+    //Re-entering input if incorrect
     while(!isCorrectName(dirName))
     {
-        QMessageBox::critical(this,"Error", "Error: directory name is incorrect. It mustn't contain either  \\ / < > : * ? \" |");
-        dirName = QInputDialog::getText(this, "Directory name", "Enter a directory name");
+        QMessageBox::warning(this,"Error", "Error: directory name is incorrect. It mustn't contain either  \\ / < > : * ? \" | "
+                                           "\n or be empty.");
+        dirName = QInputDialog::getText(this, "Directory name", "Enter a directory name", QLineEdit::Normal, QDir::home().dirName(), &okClicked);
+        trimStr(dirName);
+        //Returning if not clicked ok
+        if(!okClicked) return;
     }
 
+    //Setting-up an item
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(0, dirName);
     item->setWhatsThis(0, "Dir");
 
+    //Adding this item to the treeWidget
     if(this->ui->treeWidget->currentItem() != nullptr)
         this->ui->treeWidget->currentItem()->addChild(item);
     else
         this->ui->treeWidget->topLevelItem(0)->addChild(item);
 
+    //Setting the real directory
+    QString path = "contexts/" + getTreeItemPath(item);
+    QDir dir;
+    dir.mkpath(path);
 }
 
 void MainWindow::addFileItem()
 {
+    //Hiding the dialog wondow
     addItemDialog->hide();
 
-    QString fileName = QFileDialog::getOpenFileName(this, "Choose the file");
+    //Choosing a file
+    QString filePath = QFileDialog::getOpenFileName(this, "Choose the file");
+
+    //Returning if not ok
+    if(filePath == "") return;
+
+    QString fileName = getFileNameFromPath(filePath);
+    QString fileExtension = getFileExtension(fileName);
+
+    //Setting-up an item
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(0, fileName);
-    item->setWhatsThis(0, "File");
+    item->setWhatsThis(0, ((fileExtension == "txt") ? "Txt" : "File"));
+
+    //Adding this item to the treeWidget
+    if(this->ui->treeWidget->currentItem() != nullptr)
+        this->ui->treeWidget->currentItem()->addChild(item);
+    else
+        this->ui->treeWidget->topLevelItem(0)->addChild(item);
+
+    //Setting the real file
+    QString path = "contexts" + getTreeItemPath(item);
+    bool coppied = QFile::copy(filePath, path);
+    if(!coppied)
+    {
+        QMessageBox::warning(this, "Warning", "Error. Cannot copy the file.");
+        this->ui->treeWidget->removeItemWidget(item, 0);
+        return;
+    }
 }
 
 void MainWindow::addTextItem()
 {
+    //Hiding the dialog wondow
     addItemDialog->hide();
+
+    //Entering item name
     QString txtName;
-    txtName = QInputDialog::getText(this, "Description name", "Enter a name of the text file");
+    bool okClicked = false;
+    txtName = QInputDialog::getText(this, "Description name", "Enter a name of the text file", QLineEdit::Normal, QDir::home().dirName(), &okClicked);
+    trimStr(txtName);
+    //Returning if not clicked ok
+    if(!okClicked) return;
+
+    //Re-entering input if incorrect
     while(!isCorrectName(txtName))
     {
-        QMessageBox::critical(this,"Error", "Error: file name is incorrect. It mustn't contain either  \\ / < > : * ? \" |");
-        txtName = QInputDialog::getText(this, "Description name", "Enter a name of the text file");
+        QMessageBox::warning(this,"Error", "Error: item name is incorrect. It mustn't contain either  \\ / < > : * ? \" | "
+                                           "\n or be empty.");
+        txtName = QInputDialog::getText(this, "Description name", "Enter a name of the text file", QLineEdit::Normal, QDir::home().dirName(), &okClicked);
+        trimStr(txtName);
+        //Returning if not clicked ok
+        if(!okClicked) return;
     }
+
+    //Setting-up an item
     QTreeWidgetItem *item = new QTreeWidgetItem();
-    item->setText(0, txtName);
+    item->setText(0, txtName + ".txt");
     item->setWhatsThis(0, "Txt");
 
-    //TODO:Double left click, directory work!
+    //Adding this item to the treeWidget
+    if(this->ui->treeWidget->currentItem() != nullptr)
+        this->ui->treeWidget->currentItem()->addChild(item);
+    else
+        this->ui->treeWidget->topLevelItem(0)->addChild(item);
+
+    //Setting the real file
+    QString path = "contexts" + getTreeItemPath(item);
+    QFile txtFile(path);
+
+    if(!txtFile.open(QFile::WriteOnly | QFile::Text))
+    {
+        QMessageBox::warning(this, "Warning", "Cannot create the file: " + txtFile.errorString());
+        return;
+    }
+    QTextStream out(&txtFile);
+    out << "";
+    txtFile.close();
 }
 
+
 //Additional
-bool MainWindow::isCorrectName(QString name)
+QString MainWindow::getTreeItemPath(QTreeWidgetItem *item)
 {
-    QString prohibited = "\\/<>:*?\"|";
-    for(int i = 0; i < name.size(); i++)
+    QString path = "";
+
+    while(item != nullptr)
     {
-        for(int j = 0; j < prohibited.size(); j++)
-        {
-            if(name[i]==prohibited[j]) return false;
-        }
+        path = '/' + item->text(0) + path;
+        item = item->parent();
     }
-    return true;
+
+    return path;
 }
