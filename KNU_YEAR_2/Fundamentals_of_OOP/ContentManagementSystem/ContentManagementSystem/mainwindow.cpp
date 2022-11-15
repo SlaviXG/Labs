@@ -164,8 +164,9 @@ void MainWindow::on_buttonDeleteItem_clicked()
 
     QList<QTreeWidgetItem *>  items = ui->treeWidget->selectedItems();
     QTreeWidgetItem          *pp    = nullptr;
+    QString path;
 
-    if ( !items.isEmpty() )
+    if (!items.isEmpty())
     {
       foreach (QTreeWidgetItem *item, items)
       {
@@ -175,6 +176,30 @@ void MainWindow::on_buttonDeleteItem_clicked()
             break;
         }
         pp = item->parent();
+
+        //Removing from real directory
+        path = "contexts" + getTreeItemPath(item);
+        QMessageBox::information(this, "DEBUG", path);
+        if(item->whatsThis(0) != "Dir")
+        {
+            bool deleted = QFile::remove(path);
+            if(!deleted) QMessageBox::critical(this, "Error", "Error, unable to delete the file.");
+        }
+        else
+        {
+            QDir dir(path);
+            if(dir.exists())
+            {
+                bool deleted = dir.removeRecursively();
+                if(!deleted) QMessageBox::critical(this, "Error", "Error, unable to delete the directory.");
+            }
+            else
+            {
+                QMessageBox::critical(this, "Error", "Error, unable to delete the directory. It doesn't exist.");
+            }
+        }
+
+        //Removing from tree widget
         pp->removeChild(item);
         delete item;
       }
