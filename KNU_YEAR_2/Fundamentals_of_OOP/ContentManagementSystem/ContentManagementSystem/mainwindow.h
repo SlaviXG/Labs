@@ -12,6 +12,7 @@
 #include <QPrintDialog>
 #include <QTreeWidget>
 #include <QInputDialog>
+#include <QDesktopServices>
 
 #include "additemdialog.h"
 
@@ -28,6 +29,8 @@ public:
     ~MainWindow();
 
 private slots:
+
+    //action bar
     void on_actionNew_triggered();
 
     void on_actionOpen_triggered();
@@ -48,6 +51,7 @@ private slots:
 
     void on_actionRedo_triggered();
 
+    //buttons
     void on_buttonAddItem_clicked();
 
     void on_buttonDeleteItem_clicked();
@@ -55,6 +59,9 @@ private slots:
     void on_buttonSave_clicked();
 
     void on_buttonDiscard_clicked();
+
+    //tree widget
+    void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
     Ui::MainWindow *ui;
@@ -64,6 +71,7 @@ private:
     QTreeWidgetItem* treeRoot;
 
     QString getTreeItemPath(QTreeWidgetItem *item);
+    void saveCurWidgetText();
 
 public slots:
     void addDirItem();

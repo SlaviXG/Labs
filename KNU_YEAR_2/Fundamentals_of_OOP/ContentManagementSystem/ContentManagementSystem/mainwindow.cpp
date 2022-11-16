@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    //UI setup
+    //General UI setup
     ui->setupUi(this);
     this->setCentralWidget(ui->verticalLayoutWidget);
 
@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->contextName = "New context";
 
     //Tree Widget setup
+    this->currentTextFile.clear();
     ui->treeWidget->clear();
     treeRoot = new QTreeWidgetItem();
     treeRoot->setText(0, contextName);
@@ -40,13 +41,13 @@ MainWindow::~MainWindow()
 //Content menubar:
 void MainWindow::on_actionNew_triggered()
 {
-    //clearing the name of current text file
+    //Clearing the name of current text file
     currentTextFile.clear();
 
-    //clearing tree widget
+    //Clearing tree widget
     ui->treeWidget->clear();
 
-    //clearing text edit wodget
+    //Clearing text edit wodget
     ui->textEdit->setText(QString());
 
     //Changing context name holder
@@ -69,15 +70,15 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, "Open the file");
-    QFile file(fileName);
-    currentTextFile = fileName;
+    QString filePath = QFileDialog::getOpenFileName(this, "Open the file");
+    QFile file(filePath);
+    currentTextFile = filePath;
     if(!file.open(QIODevice::ReadOnly | QFile::Text))
     {
         QMessageBox::warning(this, "Warning", "Cannot open the file: " + file.errorString());
         return;
     }
-    setWindowTitle(fileName);
+    setWindowTitle(filePath);
     QTextStream in(&file);
     QString text = in.readAll();
     ui->textEdit->setText(text);
@@ -179,7 +180,6 @@ void MainWindow::on_buttonDeleteItem_clicked()
 
         //Removing from real directory
         path = "contexts" + getTreeItemPath(item);
-        QMessageBox::information(this, "DEBUG", path);
         if(item->whatsThis(0) != "Dir")
         {
             bool deleted = QFile::remove(path);
@@ -209,7 +209,19 @@ void MainWindow::on_buttonDeleteItem_clicked()
 
 void MainWindow::on_buttonSave_clicked()
 {
-
+    if(currentTextFile == "")
+    {
+        //TODO: creating a new file
+        //setting the dir
+        //setting curTextFile
+        //saving the file
+    }
+    else
+    {
+        //setting the dir
+        //setting curTextFile
+        //saving the file
+    }
 }
 
 
@@ -345,6 +357,66 @@ void MainWindow::addTextItem()
     txtFile.close();
 }
 
+void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+    QString itemType = item->whatsThis(column);
+    QString itemPath = "contexts" + getTreeItemPath(item);
+
+    if(!QFileInfo::exists(itemPath))
+    {
+        QMessageBox::critical(this, "Error", "Error: The item doesn't exist.");
+
+        QTreeWidgetItem *pp = item->parent();
+        pp->removeChild(item);
+        delete item;
+
+        return;
+    }
+
+    if(itemType == "File")
+    {
+       bool executed = QDesktopServices::openUrl(QUrl::fromLocalFile(itemPath));
+       if(!executed)
+       {
+           QMessageBox::critical(this, "Error", "Error: failed to execute the file.");
+       }
+    }
+    else
+    if(itemType == "Txt")
+    {
+        //Intending to save the current file
+        if(this->ui->textEdit->toPlainText() != QString())
+        {
+            QMessageBox::StandardButton saveCurTxt;
+            saveCurTxt = QMessageBox::question(this, "Save current text", "Do you want to save current text",
+                                           QMessageBox::Yes|QMessageBox::No);
+
+            if (saveCurTxt == QMessageBox::Yes)
+            {
+                saveCurWidgetText();
+            }
+            else
+            {
+                this->on_buttonDiscard_clicked();
+            }
+        }
+
+        //Checking the path
+        QFile file(itemPath);
+        if(!file.open(QIODevice::ReadOnly | QFile::Text))
+        {
+            QMessageBox::warning(this, "Warning", "Cannot open the file: " + file.errorString());
+            return;
+        }
+
+        //Setting-up a text widget
+        currentTextFile = itemPath;
+        QTextStream in(&file);
+        QString text = in.readAll();
+        ui->textEdit->setText(text);
+        file.close();
+    }
+}
 
 //Additional
 QString MainWindow::getTreeItemPath(QTreeWidgetItem *item)
@@ -358,4 +430,18 @@ QString MainWindow::getTreeItemPath(QTreeWidgetItem *item)
     }
 
     return path;
+}
+
+void MainWindow::saveCurWidgetText()
+{
+    QFile file(this->currentTextFile);
+    if(!file.open(QFile::WriteOnly | QFile::Text))
+    {
+        QMessageBox::warning(this, "Warning", "Cannot save the file: " + file.errorString());
+        return;
+    }
+    QTextStream out(&file);
+    QString text = ui->textEdit->toPlainText();
+    out << text;
+    file.close();
 }
