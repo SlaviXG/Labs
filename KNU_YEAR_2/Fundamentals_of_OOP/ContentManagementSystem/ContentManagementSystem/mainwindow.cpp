@@ -209,19 +209,71 @@ void MainWindow::on_buttonDeleteItem_clicked()
 
 void MainWindow::on_buttonSave_clicked()
 {
-    if(currentTextFile == "")
+    //If the file not exists
+    if(!QFile::exists(currentTextFile))
     {
-        //TODO: creating a new file
-        //setting the dir
-        //setting curTextFile
-        //saving the file
+        if(this->ui->treeWidget->currentItem() == nullptr)
+        {
+            QMessageBox::warning(this, "Warning", "Firstly, please, select the directory to save the file.");
+            return;
+        }
+
+        if(this->ui->treeWidget->currentItem()->whatsThis(0)!="Dir")
+        {
+            QMessageBox::warning(this, "Warning", "Firstly, please, select the directory to save the file.");
+            return;
+        }
+
+        //Entering item name
+        QString txtName;
+        bool okClicked = false;
+        txtName = QInputDialog::getText(this, "Description name", "Enter a name of the text file", QLineEdit::Normal, QDir::home().dirName(), &okClicked);
+        trimStr(txtName);
+        //Returning if not clicked ok
+        if(!okClicked) return;
+
+        //Re-entering input if incorrect
+        while(!isCorrectName(txtName))
+        {
+            QMessageBox::warning(this,"Error", "Error: item name is incorrect. It mustn't contain either  \\ / < > : * ? \" | "
+                                               "\n or be empty.");
+            txtName = QInputDialog::getText(this, "Description name", "Enter a name of the text file", QLineEdit::Normal, QDir::home().dirName(), &okClicked);
+            trimStr(txtName);
+            //Returning if not clicked ok
+            if(!okClicked) return;
+        }
+
+        //Setting-up an item
+        QTreeWidgetItem *item = new QTreeWidgetItem();
+        item->setText(0, txtName + ".txt");
+        item->setWhatsThis(0, "Txt");
+
+        //Adding this item to the treeWidget
+        if(this->ui->treeWidget->currentItem() != nullptr)
+            this->ui->treeWidget->currentItem()->addChild(item);
+        else
+            this->ui->treeWidget->topLevelItem(0)->addChild(item);
+
+        //Setting the real file
+        QString path = "contexts" + getTreeItemPath(item);
+        QFile txtFile(path);
+
+        if(!txtFile.open(QFile::WriteOnly | QFile::Text))
+        {
+            QMessageBox::warning(this, "Warning", "Cannot create the file: " + txtFile.errorString());
+            return;
+        }
+        QTextStream out(&txtFile);
+        out << "";
+        txtFile.close();
+
+        currentTextFile = path;
+        QMessageBox::warning(this, "DEBUG", path);
+        this->ui->treeWidget->setCurrentItem(item);
+
     }
-    else
-    {
-        //setting the dir
-        //setting curTextFile
-        //saving the file
-    }
+
+    saveCurWidgetText();
 }
 
 
@@ -303,7 +355,9 @@ void MainWindow::addFileItem()
     if(!coppied)
     {
         QMessageBox::warning(this, "Warning", "Error. Cannot copy the file.");
-        this->ui->treeWidget->removeItemWidget(item, 0);
+        QTreeWidgetItem *pp = item->parent();
+        pp->removeChild(item);
+        delete item;
         return;
     }
 }
@@ -384,11 +438,26 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
     else
     if(itemType == "Txt")
     {
+        //Returning if intent to go to the current item
+        if(itemPath == currentTextFile) return;
+
+        //Getting the text from curTextFile
+        QString curFileText = QString();
+        QFile curTFile(currentTextFile);
+        /// /\
+        ///  |
+        QTextStream inCTF(&curTFile);
+        curFileText = inCTF.readAll();
+
+        QMessageBox::information(this, "DEBUG", currentTextFile + "\n" + curFileText);
+        ///OUTPUT : CURRENT FILE TEXT == "", but needed -- the text of the current file
+        /// if to click on one text< havin another in the tree widget
+
         //Intending to save the current file
-        if(this->ui->textEdit->toPlainText() != QString())
+        if(this->ui->textEdit->toPlainText() != QString() and this->ui->textEdit->toPlainText() != curFileText)
         {
             QMessageBox::StandardButton saveCurTxt;
-            saveCurTxt = QMessageBox::question(this, "Save current text", "Do you want to save current text",
+            saveCurTxt = QMessageBox::question(this, "Save current text", "Do you want to save the current text?",
                                            QMessageBox::Yes|QMessageBox::No);
 
             if (saveCurTxt == QMessageBox::Yes)

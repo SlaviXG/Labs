@@ -30,7 +30,7 @@ public:
 
 private slots:
 
-    //action bar
+    //Action bar
     void on_actionNew_triggered();
 
     void on_actionOpen_triggered();
@@ -51,7 +51,7 @@ private slots:
 
     void on_actionRedo_triggered();
 
-    //buttons
+    //Buttons
     void on_buttonAddItem_clicked();
 
     void on_buttonDeleteItem_clicked();
@@ -60,7 +60,7 @@ private slots:
 
     void on_buttonDiscard_clicked();
 
-    //tree widget
+    //Tree widget
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 private:
