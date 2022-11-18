@@ -258,9 +258,23 @@ void MainWindow::on_buttonSave_clicked()
         QString path = "contexts" + getTreeItemPath(item);
         QFile txtFile(path);
 
+        //Returning if the path exists
+        if(txtFile.exists())
+        {
+            QMessageBox::warning(this, "Warning", "This filename already exists in the directory.");
+            QTreeWidgetItem *pp = item->parent();
+            pp->removeChild(item);
+            delete item;
+            return;
+        }
+
+        //Retirning if the text file exists
         if(!txtFile.open(QFile::WriteOnly | QFile::Text))
         {
             QMessageBox::warning(this, "Warning", "Cannot create the file: " + txtFile.errorString());
+            QTreeWidgetItem *pp = item->parent();
+            pp->removeChild(item);
+            delete item;
             return;
         }
         QTextStream out(&txtFile);
@@ -279,7 +293,16 @@ void MainWindow::on_buttonSave_clicked()
 
 void MainWindow::on_buttonDiscard_clicked()
 {
-
+    QFile file(currentTextFile);
+    if(!file.open(QIODevice::ReadOnly | QFile::Text))
+    {
+        QMessageBox::warning(this, "Warning", "Cannot open the file: " + file.errorString());
+        return;
+    }
+    QTextStream in(&file);
+    QString text = in.readAll();
+    ui->textEdit->setText(text);
+    file.close();
 }
 
 //Public slots:
@@ -318,8 +341,20 @@ void MainWindow::addDirItem()
     else
         this->ui->treeWidget->topLevelItem(0)->addChild(item);
 
-    //Setting the real directory
+    //Getting a new directory path
     QString path = "contexts/" + getTreeItemPath(item);
+
+    //Returning if the path exists
+    if(QDir(path).exists())
+    {
+        QMessageBox::warning(this, "Warning", "Error. This directory already exists.");
+        QTreeWidgetItem *pp = item->parent();
+        pp->removeChild(item);
+        delete item;
+        return;
+    }
+
+    //Setting the real directory
     QDir dir;
     dir.mkpath(path);
 }
@@ -397,8 +432,20 @@ void MainWindow::addTextItem()
     else
         this->ui->treeWidget->topLevelItem(0)->addChild(item);
 
-    //Setting the real file
+    //Getting new item path
     QString path = "contexts" + getTreeItemPath(item);
+
+    //Returning if the path exists
+    if(QFile(path).exists())
+    {
+        QMessageBox::warning(this, "Warning", "Error. This file already exists.");
+        QTreeWidgetItem *pp = item->parent();
+        pp->removeChild(item);
+        delete item;
+        return;
+    }
+
+    //Setting the real file
     QFile txtFile(path);
 
     if(!txtFile.open(QFile::WriteOnly | QFile::Text))
@@ -444,14 +491,11 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
         //Getting the text from curTextFile
         QString curFileText = QString();
         QFile curTFile(currentTextFile);
-        /// /\
-        ///  |
-        QTextStream inCTF(&curTFile);
-        curFileText = inCTF.readAll();
-
-        QMessageBox::information(this, "DEBUG", currentTextFile + "\n" + curFileText);
-        ///OUTPUT : CURRENT FILE TEXT == "", but needed -- the text of the current file
-        /// if to click on one text< havin another in the tree widget
+        if(curTFile.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QTextStream inCTF(&curTFile);
+            curFileText = inCTF.readAll();
+        }
 
         //Intending to save the current file
         if(this->ui->textEdit->toPlainText() != QString() and this->ui->textEdit->toPlainText() != curFileText)
