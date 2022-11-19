@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "auxiliary.cpp"
+#include <filesystem>
+#include <bits/fs_path.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -93,19 +95,64 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_as_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this, "Save as");
-    QFile file(fileName);
-    if(!file.open(QFile::WriteOnly | QFile::Text))
+    //Saving text widget
+    this->saveCurWidgetText();
+
+    //Getting the path to copy into
+    QString savePath = QFileDialog::getExistingDirectory(this, "Save as");
+
+    //Returning if not chosen
+    if(savePath == QString()) return;
+
+    //Creating directory objects
+    QDir saveDir (savePath);
+    QDir contextPath("contexts/");
+
+    //if to copy to the same directory
+    if(saveDir.absolutePath() == contextPath.absolutePath())
     {
-        QMessageBox::warning(this, "Warning", "Cannot save the file: " + file.errorString());
+        QMessageBox::information(this, "Info", contextName + " is saved!");
         return;
     }
-    currentTextFile = fileName;
-    setWindowTitle(fileName);
-    QTextStream out(&file);
-    QString text = ui->textEdit->toPlainText();
-    out << text;
-    file.close();
+
+    //If the folder with context name already exist in the chosen path
+    if(saveDir.cd(contextName))
+    {
+        //Deleting the outdated content folder
+        saveDir.removeRecursively();
+        saveDir.cdUp();
+    }
+
+    //Creating a new content folder
+    bool dirIsMade = saveDir.mkdir(contextName);
+
+    //Returning if created unsuccessfully
+    if(!dirIsMade)
+    {
+        QMessageBox::warning(this, "Error", "Cannot save the file.");
+        return;
+    }
+
+    //Entering the context name folders
+    contextPath.cd(contextName);
+    saveDir.cd(contextName);
+//
+//    //Making a copy of the folder
+//    std::filesystem::path cntPath = contextPath.absolutePath().toUtf8().constData();
+//    std::filesystem::path svdPath = saveDir.absolutePath().toUtf8().constData();
+//
+//    QMessageBox::information(this, "Info", contextPath.absolutePath() + "\n\n"
+//                             + saveDir.absolutePath());
+//
+//
+//    std::filesystem::copy(cntPath, svdPath,
+//                          std::filesystem::copy_options::recursive |
+//                          std::filesystem::copy_options::overwrite_existing);
+
+    copyAndReplaceFolderContents(contextPath.absolutePath(), saveDir.absolutePath());
+
+    //Ok-saved message
+    QMessageBox::information(this, "Info", contextName + " is saved!");
 }
 
 
@@ -298,6 +345,8 @@ void MainWindow::on_buttonSave_clicked()
 
 void MainWindow::on_buttonDiscard_clicked()
 {
+    if(currentTextFile == "") return;
+
     QFile file(currentTextFile);
     if(!file.open(QIODevice::ReadOnly | QFile::Text))
     {
@@ -514,7 +563,7 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
         if(this->ui->textEdit->toPlainText() != QString() and this->ui->textEdit->toPlainText() != curFileText)
         {
             QMessageBox::StandardButton saveCurTxt;
-            saveCurTxt = QMessageBox::question(this, "Save current text", "Do you want to save the current text?",
+            saveCurTxt = QMessageBox::question(this, "Save current text", "Would you like to save the current text?",
                                            QMessageBox::Yes|QMessageBox::No);
 
             if (saveCurTxt == QMessageBox::Yes)
@@ -546,6 +595,21 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 
 void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
 {
+    //Getting an item path
+    QString itemPath = currentItemPath;
+
+    //If set name is incorrect
+    if(!isCorrectName(item->text(column)))
+    {
+        QMessageBox::warning(this,"Error", "Error: item name is incorrect. It mustn't contain either  \\ / < > : * ? \" | "
+                                           "\n or be empty.");
+
+        QString prevName = getFileNameFromPath(itemPath);
+        item->setText(column, prevName);
+        return;
+    }
+
+    //Checking if text file format changed and setting back to .txt
     if(item->whatsThis(column) == "Txt")
     {
         QString curItemText = item->text(column);
@@ -559,10 +623,9 @@ void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
         {
             item->setText(column, item->text(column) + ".txt");
         }
-    }
+    } 
 
-    QString itemPath = currentItemPath;
-
+    //Renaming the directory
     QDir dir(getParentPath(itemPath));
     dir.rename(getFileNameFromPath(itemPath),item->text(column));
 
@@ -573,6 +636,7 @@ void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
 
     currentItemPath = getParentPath(itemPath) + '/' + item->text(column);
 
+    //If the root was renamed
     if(item == this->ui->treeWidget->topLevelItem(0)) setNewContextName(item->text(0));
 }
 
@@ -592,6 +656,8 @@ QString MainWindow::getTreeItemPath(QTreeWidgetItem *item)
 
 void MainWindow::saveCurWidgetText()
 {
+    if(currentTextFile == QString()) return;
+
     QFile file(this->currentTextFile);
     if(!file.open(QFile::WriteOnly | QFile::Text))
     {

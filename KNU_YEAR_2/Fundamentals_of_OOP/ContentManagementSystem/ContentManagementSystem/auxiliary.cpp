@@ -1,7 +1,9 @@
 #include <QString>
+#include <QDir>
+#include <QDirIterator>
 
 
-bool isCorrectName(QString name)
+bool isCorrectName(const QString name)
 {
     if(name.size() == 0) return false;
 
@@ -53,7 +55,7 @@ void trimStr(QString &str)
 }
 
 
-QString getFileNameFromPath(QString path)
+QString getFileNameFromPath(const QString path)
 {
     QString fileName = "";
 
@@ -68,7 +70,7 @@ QString getFileNameFromPath(QString path)
 }
 
 
-QString getFileExtension(QString fileNameOrPath)
+QString getFileExtension(const QString fileNameOrPath)
 {
     QString fileName = getFileNameFromPath(fileNameOrPath);
     QString extension = "";
@@ -85,7 +87,7 @@ QString getFileExtension(QString fileNameOrPath)
     return (dot ? (extension) : QString());
 }
 
-QString getParentPath(QString path)
+QString getParentPath(const QString path)
 {
     QString parentPath = "";
 
@@ -102,4 +104,34 @@ QString getParentPath(QString path)
     }
 
     return parentPath;
+}
+
+
+void copyAndReplaceFolderContents(const QString &fromDir, const QString &toDir, bool copyAndRemove = false) {
+    QDirIterator it(fromDir, QDirIterator::Subdirectories);
+    QDir dir(fromDir);
+    const int absSourcePathLength = dir.absoluteFilePath(fromDir).length();
+
+    while (it.hasNext()){
+        it.next();
+        const auto fileInfo = it.fileInfo();
+        if(!fileInfo.isHidden()) { //filters dot and dotdot
+            const QString subPathStructure = fileInfo.absoluteFilePath().mid(absSourcePathLength);
+            const QString constructedAbsolutePath = toDir + subPathStructure;
+
+            if(fileInfo.isDir()){
+                //Create directory in target folder
+                dir.mkpath(constructedAbsolutePath);
+            } else if(fileInfo.isFile()) {
+                //Copy File to target directory
+
+                //Remove file at target location, if it exists, or QFile::copy will fail
+                QFile::remove(constructedAbsolutePath);
+                QFile::copy(fileInfo.absoluteFilePath(), constructedAbsolutePath);
+            }
+        }
+    }
+
+    if(copyAndRemove)
+        dir.removeRecursively();
 }

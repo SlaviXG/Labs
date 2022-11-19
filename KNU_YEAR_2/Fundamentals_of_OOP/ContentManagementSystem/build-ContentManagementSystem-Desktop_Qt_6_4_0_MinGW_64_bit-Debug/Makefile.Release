@@ -19,7 +19,7 @@ CXXFLAGS      = -fno-keep-inline-dllexport -O2 -std=gnu++1z -Wall -Wextra -Wextr
 INCPATH       = -I../ContentManagementSystem -I. -IS:/Programs/Qt/6.4.0/mingw_64/include -IS:/Programs/Qt/6.4.0/mingw_64/include/QtPrintSupport -IS:/Programs/Qt/6.4.0/mingw_64/include/QtWidgets -IS:/Programs/Qt/6.4.0/mingw_64/include/QtGui -IS:/Programs/Qt/6.4.0/mingw_64/include/QtCore -Irelease -I. -I/include -IS:/Programs/Qt/6.4.0/mingw_64/mkspecs/win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-s -Wl,-subsystem,windows -mthreads
-LIBS        =        S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6PrintSupport.a S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6Widgets.a S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6Gui.a S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6Core.a -lmingw32 S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6EntryPoint.a -lshell32  
+LIBS        =        -lstdc++fs S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6PrintSupport.a S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6Widgets.a S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6Gui.a S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6Core.a -lmingw32 S:\Programs\Qt\6.4.0\mingw_64\lib\libQt6EntryPoint.a -lshell32  
 QMAKE         = S:\Programs\Qt\6.4.0\mingw_64\bin\qmake.exe
 DEL_FILE      = del
 CHK_DIR_EXISTS= if not exist
@@ -459,6 +459,8 @@ release/moc_mainwindow.cpp: ../ContentManagementSystem/mainwindow.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextformat.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qpen.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextoption.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/QDesktopServices \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qdesktopservices.h \
 		../ContentManagementSystem/additemdialog.h \
 		release/moc_predefs.h \
 		S:/Programs/Qt/6.4.0/mingw_64/bin/moc.exe
@@ -851,6 +853,8 @@ release/main.o: ../ContentManagementSystem/main.cpp ../ContentManagementSystem/m
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextformat.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qpen.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextoption.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/QDesktopServices \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qdesktopservices.h \
 		../ContentManagementSystem/additemdialog.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtWidgets/QApplication \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtWidgets/qapplication.h \
@@ -1063,6 +1067,8 @@ release/mainwindow.o: ../ContentManagementSystem/mainwindow.cpp ../ContentManage
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextformat.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qpen.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextoption.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/QDesktopServices \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qdesktopservices.h \
 		../ContentManagementSystem/additemdialog.h \
 		ui_mainwindow.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QVariant \
@@ -1111,7 +1117,9 @@ release/mainwindow.o: ../ContentManagementSystem/mainwindow.cpp ../ContentManage
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtWidgets/QVBoxLayout \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtWidgets/QWidget \
 		../ContentManagementSystem/auxiliary.cpp \
-		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QString
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QString \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QDirIterator \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qdiriterator.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\mainwindow.o ..\ContentManagementSystem\mainwindow.cpp
 
 release/qrc_Resources.o: release/qrc_Resources.cpp 
