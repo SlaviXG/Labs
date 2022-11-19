@@ -135,3 +135,13 @@ void copyAndReplaceFolderContents(const QString &fromDir, const QString &toDir, 
     if(copyAndRemove)
         dir.removeRecursively();
 }
+
+bool folderNamesAreUniqueInPath(QString path)
+{
+    QStringList dirs = path.split('/');
+    int dirsSz = dirs.size();
+    QSet <QString> dirSet;
+    for(int i = 0; i < dirsSz; i++)
+        dirSet.insert(dirs[i]);
+    return (dirSet.size() == dirsSz);
+}

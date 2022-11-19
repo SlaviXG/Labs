@@ -131,11 +131,20 @@ void MainWindow::on_actionSave_as_triggered()
     {
         QMessageBox::warning(this, "Error", "Cannot save the file.");
         return;
-    }
+    }   
 
     //Entering the context name folders
     contextPath.cd(contextName);
     saveDir.cd(contextName);
+
+    #include <QDebug>
+    qDebug() << folderNamesAreUniqueInPath(savePath) << "\n";
+    if(!folderNamesAreUniqueInPath(savePath))
+    {
+        QMessageBox::warning(this, "Warning", "Folder names in the path are not unique. Choose another Folder.");
+        saveDir.removeRecursively();
+        return;
+    }
 //
 //    //Making a copy of the folder
 //    std::filesystem::path cntPath = contextPath.absolutePath().toUtf8().constData();
@@ -148,6 +157,13 @@ void MainWindow::on_actionSave_as_triggered()
 //    std::filesystem::copy(cntPath, svdPath,
 //                          std::filesystem::copy_options::recursive |
 //                          std::filesystem::copy_options::overwrite_existing);
+
+    if(saveDir.absolutePath().contains(contextPath.absolutePath()))
+    {
+        QMessageBox::warning(this, "Warning", "The result folder contains ancestor's folder. Choose another one.");
+        saveDir.removeRecursively();
+        return;
+    }
 
     copyAndReplaceFolderContents(contextPath.absolutePath(), saveDir.absolutePath());
 
