@@ -62,6 +62,8 @@ void MainWindow::on_actionNew_triggered()
     //Setting-up a new tree root with context name
     treeRoot = new QTreeWidgetItem();
     treeRoot->setText(0, contextName);
+    treeRoot->setWhatsThis(0, "Dir");
+    treeRoot->setFlags(treeRoot->flags() | Qt::ItemIsEditable | Qt::ItemIsEnabled| Qt::ItemIsSelectable);
     ui->treeWidget->addTopLevelItem(treeRoot);
 
     //Setting the real directory
