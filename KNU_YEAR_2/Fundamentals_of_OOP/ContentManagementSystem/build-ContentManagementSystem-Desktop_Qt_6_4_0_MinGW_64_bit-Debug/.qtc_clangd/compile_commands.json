@@ -435,10 +435,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "S:\\Projects\\Programming\\GitHub Rep\\Labs\\KNU_YEAR_2\\Fundamentals_of_OOP\\ContentManagementSystem\\build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug\\ui_additemdialog.h"
+        "S:\\Projects\\Programming\\GitHub Rep\\Labs\\KNU_YEAR_2\\Fundamentals_of_OOP\\ContentManagementSystem\\build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug\\ui_mainwindow.h"
     ],
     "directory": "S:/Projects/Programming/GitHub Rep/Labs/KNU_YEAR_2/Fundamentals_of_OOP/ContentManagementSystem/build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/.qtc_clangd",
-    "file": "S:/Projects/Programming/GitHub Rep/Labs/KNU_YEAR_2/Fundamentals_of_OOP/ContentManagementSystem/build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/ui_additemdialog.h"
+    "file": "S:/Projects/Programming/GitHub Rep/Labs/KNU_YEAR_2/Fundamentals_of_OOP/ContentManagementSystem/build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/ui_mainwindow.h"
 },
 {
     "arguments": [
@@ -498,9 +498,9 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "S:\\Projects\\Programming\\GitHub Rep\\Labs\\KNU_YEAR_2\\Fundamentals_of_OOP\\ContentManagementSystem\\build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug\\ui_mainwindow.h"
+        "S:\\Projects\\Programming\\GitHub Rep\\Labs\\KNU_YEAR_2\\Fundamentals_of_OOP\\ContentManagementSystem\\build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug\\ui_additemdialog.h"
     ],
     "directory": "S:/Projects/Programming/GitHub Rep/Labs/KNU_YEAR_2/Fundamentals_of_OOP/ContentManagementSystem/build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/.qtc_clangd",
-    "file": "S:/Projects/Programming/GitHub Rep/Labs/KNU_YEAR_2/Fundamentals_of_OOP/ContentManagementSystem/build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/ui_mainwindow.h"
+    "file": "S:/Projects/Programming/GitHub Rep/Labs/KNU_YEAR_2/Fundamentals_of_OOP/ContentManagementSystem/build-ContentManagementSystem-Desktop_Qt_6_4_0_MinGW_64_bit-Debug/ui_additemdialog.h"
 }
 ]

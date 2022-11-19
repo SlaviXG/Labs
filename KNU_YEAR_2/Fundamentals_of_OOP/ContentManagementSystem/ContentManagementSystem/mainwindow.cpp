@@ -546,6 +546,21 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 
 void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
 {
+    if(item->whatsThis(column) == "Txt")
+    {
+        QString curItemText = item->text(column);
+
+        if(curItemText.size() < 4 or
+                (curItemText.size() >= 4 and
+                   (curItemText[curItemText.size() - 4] != '.' or
+                    curItemText[curItemText.size() - 3] != 't' or
+                    curItemText[curItemText.size() - 2] != 'x' or
+                    curItemText[curItemText.size() - 1] != 't')))
+        {
+            item->setText(column, item->text(column) + ".txt");
+        }
+    }
+
     QString itemPath = currentItemPath;
 
     QDir dir(getParentPath(itemPath));
