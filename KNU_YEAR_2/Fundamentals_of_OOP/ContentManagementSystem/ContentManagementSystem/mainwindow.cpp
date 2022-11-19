@@ -17,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
     this->currentTextFile.clear();
     ui->treeWidget->clear();
     treeRoot = new QTreeWidgetItem();
+
+    treeRoot->setFlags(treeRoot->flags() | Qt::ItemIsEditable | Qt::ItemIsEnabled| Qt::ItemIsSelectable);
+
     treeRoot->setText(0, contextName);
     treeRoot->setWhatsThis(0, "Dir");
     ui->treeWidget->addTopLevelItem(treeRoot);
@@ -247,6 +250,7 @@ void MainWindow::on_buttonSave_clicked()
         QTreeWidgetItem *item = new QTreeWidgetItem();
         item->setText(0, txtName + ".txt");
         item->setWhatsThis(0, "Txt");
+        item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsEnabled| Qt::ItemIsSelectable);
 
         //Adding this item to the treeWidget
         if(this->ui->treeWidget->currentItem() != nullptr)
@@ -282,7 +286,6 @@ void MainWindow::on_buttonSave_clicked()
         txtFile.close();
 
         currentTextFile = path;
-        QMessageBox::warning(this, "DEBUG", path);
         this->ui->treeWidget->setCurrentItem(item);
 
     }
@@ -334,6 +337,7 @@ void MainWindow::addDirItem()
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(0, dirName);
     item->setWhatsThis(0, "Dir");
+    item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsEnabled| Qt::ItemIsSelectable);
 
     //Adding this item to the treeWidget
     if(this->ui->treeWidget->currentItem() != nullptr)
@@ -377,6 +381,7 @@ void MainWindow::addFileItem()
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(0, fileName);
     item->setWhatsThis(0, ((fileExtension == "txt") ? "Txt" : "File"));
+    item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsEnabled| Qt::ItemIsSelectable);
 
     //Adding this item to the treeWidget
     if(this->ui->treeWidget->currentItem() != nullptr)
@@ -425,6 +430,7 @@ void MainWindow::addTextItem()
     QTreeWidgetItem *item = new QTreeWidgetItem();
     item->setText(0, txtName + ".txt");
     item->setWhatsThis(0, "Txt");
+    item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsEnabled| Qt::ItemIsSelectable);
 
     //Adding this item to the treeWidget
     if(this->ui->treeWidget->currentItem() != nullptr)
@@ -456,6 +462,11 @@ void MainWindow::addTextItem()
     QTextStream out(&txtFile);
     out << "";
     txtFile.close();
+}
+
+void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+    currentItemPath = "contexts" + getTreeItemPath(item);
 }
 
 void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
@@ -531,6 +542,23 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
     }
 }
 
+void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
+{
+    QString itemPath = currentItemPath;
+
+    QDir dir(getParentPath(itemPath));
+    dir.rename(getFileNameFromPath(itemPath),item->text(column));
+
+    if(currentItemPath == currentTextFile)
+    {
+        currentTextFile = getParentPath(itemPath) + '/' + item->text(column);
+    }
+
+    currentItemPath = getParentPath(itemPath) + '/' + item->text(column);
+
+    if(item == this->ui->treeWidget->topLevelItem(0)) setNewContextName(item->text(0));
+}
+
 //Additional
 QString MainWindow::getTreeItemPath(QTreeWidgetItem *item)
 {
@@ -557,4 +585,13 @@ void MainWindow::saveCurWidgetText()
     QString text = ui->textEdit->toPlainText();
     out << text;
     file.close();
+}
+
+void MainWindow::setNewContextName(QString name)
+{
+    contextName = name;
+    treeRoot->setText(0, name);
+    setWindowTitle(name);
+    currentItemPath = "";
+    this->ui->treeWidget->setCurrentItem(nullptr);
 }

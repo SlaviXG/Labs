@@ -61,7 +61,11 @@ private slots:
     void on_buttonDiscard_clicked();
 
     //Tree widget
+    void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
+
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
+
+    void on_treeWidget_itemChanged(QTreeWidgetItem *item, int column);
 
 private:
     Ui::MainWindow *ui;
@@ -69,9 +73,11 @@ private:
     QString contextName = "";
     QString currentTextFile = "";
     QTreeWidgetItem* treeRoot;
+    QString currentItemPath = "";
 
     QString getTreeItemPath(QTreeWidgetItem *item);
     void saveCurWidgetText();
+    void setNewContextName(QString name);
 
 public slots:
     void addDirItem();

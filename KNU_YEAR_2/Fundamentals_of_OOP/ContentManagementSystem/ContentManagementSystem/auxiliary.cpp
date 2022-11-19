@@ -84,3 +84,22 @@ QString getFileExtension(QString fileNameOrPath)
 
     return (dot ? (extension) : QString());
 }
+
+QString getParentPath(QString path)
+{
+    QString parentPath = "";
+
+    bool slashMet = false;
+
+    for(int i = path.size() - 1; i >= 0; i--)
+    {
+        if(slashMet)
+        {
+            parentPath = path[i] + parentPath;
+        }
+
+        if(path[i] == '/') slashMet = true;
+    }
+
+    return parentPath;
+}
