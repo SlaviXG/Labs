@@ -27,7 +27,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 namespace {
 struct qt_meta_stringdata_MainWindow_t {
-    uint offsetsAndSizes[50];
+    uint offsetsAndSizes[56];
     char stringdata0[11];
     char stringdata1[23];
     char stringdata2[1];
@@ -50,9 +50,12 @@ struct qt_meta_stringdata_MainWindow_t {
     char stringdata19[7];
     char stringdata20[32];
     char stringdata21[26];
-    char stringdata22[11];
-    char stringdata23[12];
-    char stringdata24[12];
+    char stringdata22[26];
+    char stringdata23[5];
+    char stringdata24[24];
+    char stringdata25[11];
+    char stringdata26[12];
+    char stringdata27[12];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_MainWindow_t::offsetsAndSizes) + ofs), len 
@@ -80,9 +83,12 @@ Q_CONSTINIT static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_Main
         QT_MOC_LITERAL(404, 6),  // "column"
         QT_MOC_LITERAL(411, 31),  // "on_treeWidget_itemDoubleClicked"
         QT_MOC_LITERAL(443, 25),  // "on_treeWidget_itemChanged"
-        QT_MOC_LITERAL(469, 10),  // "addDirItem"
-        QT_MOC_LITERAL(480, 11),  // "addFileItem"
-        QT_MOC_LITERAL(492, 11)   // "addTextItem"
+        QT_MOC_LITERAL(469, 25),  // "on_searchLine_textChanged"
+        QT_MOC_LITERAL(495, 4),  // "arg1"
+        QT_MOC_LITERAL(500, 23),  // "on_textEdit_textChanged"
+        QT_MOC_LITERAL(524, 10),  // "addDirItem"
+        QT_MOC_LITERAL(535, 11),  // "addFileItem"
+        QT_MOC_LITERAL(547, 11)   // "addTextItem"
     },
     "MainWindow",
     "on_actionNew_triggered",
@@ -106,6 +112,9 @@ Q_CONSTINIT static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_Main
     "column",
     "on_treeWidget_itemDoubleClicked",
     "on_treeWidget_itemChanged",
+    "on_searchLine_textChanged",
+    "arg1",
+    "on_textEdit_textChanged",
     "addDirItem",
     "addFileItem",
     "addTextItem"
@@ -119,7 +128,7 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-      20,   14, // methods
+      22,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -127,26 +136,28 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  134,    2, 0x08,    1 /* Private */,
-       3,    0,  135,    2, 0x08,    2 /* Private */,
-       4,    0,  136,    2, 0x08,    3 /* Private */,
-       5,    0,  137,    2, 0x08,    4 /* Private */,
-       6,    0,  138,    2, 0x08,    5 /* Private */,
-       7,    0,  139,    2, 0x08,    6 /* Private */,
-       8,    0,  140,    2, 0x08,    7 /* Private */,
-       9,    0,  141,    2, 0x08,    8 /* Private */,
-      10,    0,  142,    2, 0x08,    9 /* Private */,
-      11,    0,  143,    2, 0x08,   10 /* Private */,
-      12,    0,  144,    2, 0x08,   11 /* Private */,
-      13,    0,  145,    2, 0x08,   12 /* Private */,
-      14,    0,  146,    2, 0x08,   13 /* Private */,
-      15,    0,  147,    2, 0x08,   14 /* Private */,
-      16,    2,  148,    2, 0x08,   15 /* Private */,
-      20,    2,  153,    2, 0x08,   18 /* Private */,
-      21,    2,  158,    2, 0x08,   21 /* Private */,
-      22,    0,  163,    2, 0x0a,   24 /* Public */,
-      23,    0,  164,    2, 0x0a,   25 /* Public */,
-      24,    0,  165,    2, 0x0a,   26 /* Public */,
+       1,    0,  146,    2, 0x08,    1 /* Private */,
+       3,    0,  147,    2, 0x08,    2 /* Private */,
+       4,    0,  148,    2, 0x08,    3 /* Private */,
+       5,    0,  149,    2, 0x08,    4 /* Private */,
+       6,    0,  150,    2, 0x08,    5 /* Private */,
+       7,    0,  151,    2, 0x08,    6 /* Private */,
+       8,    0,  152,    2, 0x08,    7 /* Private */,
+       9,    0,  153,    2, 0x08,    8 /* Private */,
+      10,    0,  154,    2, 0x08,    9 /* Private */,
+      11,    0,  155,    2, 0x08,   10 /* Private */,
+      12,    0,  156,    2, 0x08,   11 /* Private */,
+      13,    0,  157,    2, 0x08,   12 /* Private */,
+      14,    0,  158,    2, 0x08,   13 /* Private */,
+      15,    0,  159,    2, 0x08,   14 /* Private */,
+      16,    2,  160,    2, 0x08,   15 /* Private */,
+      20,    2,  165,    2, 0x08,   18 /* Private */,
+      21,    2,  170,    2, 0x08,   21 /* Private */,
+      22,    1,  175,    2, 0x08,   24 /* Private */,
+      24,    0,  178,    2, 0x08,   26 /* Private */,
+      25,    0,  179,    2, 0x0a,   27 /* Public */,
+      26,    0,  180,    2, 0x0a,   28 /* Public */,
+      27,    0,  181,    2, 0x0a,   29 /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -166,6 +177,8 @@ Q_CONSTINIT static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, 0x80000000 | 17, QMetaType::Int,   18,   19,
     QMetaType::Void, 0x80000000 | 17, QMetaType::Int,   18,   19,
     QMetaType::Void, 0x80000000 | 17, QMetaType::Int,   18,   19,
+    QMetaType::Void, QMetaType::QString,   23,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -222,6 +235,11 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         QtPrivate::TypeAndForceComplete<QTreeWidgetItem *, std::false_type>,
         QtPrivate::TypeAndForceComplete<int, std::false_type>,
+        // method 'on_searchLine_textChanged'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        QtPrivate::TypeAndForceComplete<const QString &, std::false_type>,
+        // method 'on_textEdit_textChanged'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'addDirItem'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'addFileItem'
@@ -255,9 +273,11 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 14: _t->on_treeWidget_itemClicked((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
         case 15: _t->on_treeWidget_itemDoubleClicked((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
         case 16: _t->on_treeWidget_itemChanged((*reinterpret_cast< std::add_pointer_t<QTreeWidgetItem*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<int>>(_a[2]))); break;
-        case 17: _t->addDirItem(); break;
-        case 18: _t->addFileItem(); break;
-        case 19: _t->addTextItem(); break;
+        case 17: _t->on_searchLine_textChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 18: _t->on_textEdit_textChanged(); break;
+        case 19: _t->addDirItem(); break;
+        case 20: _t->addFileItem(); break;
+        case 21: _t->addTextItem(); break;
         default: ;
         }
     }
@@ -282,13 +302,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 20)
+        if (_id < 22)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 22;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 20)
+        if (_id < 22)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 20;
+        _id -= 22;
     }
     return _id;
 }

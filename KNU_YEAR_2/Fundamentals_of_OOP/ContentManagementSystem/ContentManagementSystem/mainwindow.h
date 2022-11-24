@@ -3,15 +3,18 @@
 
 #include <QMainWindow>
 
-#include <QFile>
 #include <QDir>
+#include <QFile>
 #include <QDialog>
-#include <QFileDialog>
 #include <QTextStream>
+#include <QTextCursor>
 #include <QMessageBox>
-#include <QPrintDialog>
 #include <QTreeWidget>
+#include <QFileDialog>
 #include <QInputDialog>
+#include <QPrintDialog>
+#include <QSignalBlocker>
+#include <QTextCharFormat>
 #include <QDesktopServices>
 
 #include <filesystem>
@@ -57,6 +60,12 @@ private slots:
     void on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void on_treeWidget_itemChanged(QTreeWidgetItem *item, int column);
 
+    //Search Line
+    void on_searchLine_textChanged(const QString &arg1);
+
+    //Text edit
+    void on_textEdit_textChanged();
+
 private:
     Ui::MainWindow* ui;
     QTreeWidgetItem* treeRoot;
@@ -71,6 +80,9 @@ private:
     bool copyDir(QDir& source, QDir& destination);
     void loadTreeWidget(QString absFolderPath);
     void loadTreeSubdirectories(QTreeWidgetItem* root, QString path);
+    void highlightTxtWidgetSubstr(const QString& substr);
+    void highlightTreeWidgetSubstr(const QString& substr);
+    void clearTxtWidgetHighlightings();
 
 public slots:
     void addDirItem();

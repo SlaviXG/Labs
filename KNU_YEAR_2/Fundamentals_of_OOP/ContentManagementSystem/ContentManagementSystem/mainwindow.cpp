@@ -351,7 +351,7 @@ void MainWindow::on_buttonSave_clicked()
 void MainWindow::on_buttonDiscard_clicked()
 {
     if(currentTextFile == "") return;
-
+    //Loading previous version of the file
     QFile file(currentTextFile);
     if(!file.open(QIODevice::ReadOnly | QFile::Text))
     {
@@ -654,6 +654,42 @@ void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
     if(item == this->ui->treeWidget->topLevelItem(0)) setNewContextName(item->text(0));
 }
 
+//Search Line
+void MainWindow::on_searchLine_textChanged(const QString &arg1)
+{
+    clearTxtWidgetHighlightings();
+
+    QString lineText = arg1;
+
+    //Returning if empty
+    if(lineText == QString()) return;
+
+    //Returning if only spaces
+    if(lineText == QString(lineText.size(), ' ')) return;
+
+    //Highlighting the text
+    this->highlightTxtWidgetSubstr(lineText);
+    this->highlightTreeWidgetSubstr(lineText);
+}
+
+void MainWindow::on_textEdit_textChanged()
+{
+    //Clearing previous highlightings
+    clearTxtWidgetHighlightings();
+
+    //Getting line text
+    QString lineText = this->ui->searchLine->text();
+
+    //Returning if empty
+    if(lineText == QString()) return;
+
+    //Returning if only spaces
+    if(lineText == QString(lineText.size(), ' ')) return;
+
+    //Highlighting the text
+    this->highlightTxtWidgetSubstr(lineText);
+}
+
 //Additional
 QString MainWindow::getTreeItemPath(QTreeWidgetItem *item)
 {
@@ -721,28 +757,19 @@ bool MainWindow::copyDir(QDir &source, QDir &destination)
 
 void MainWindow::loadTreeWidget(QString absFolderPath)
 {
+    //Chacking if the directory exists and calling the recursive function
     QDir dir(absFolderPath);
 
     if (!dir.exists()) return;
 
     QDirIterator it(dir.absolutePath(), QDirIterator::Subdirectories);
 
-////    #include <QDebug>
-//    while(it.hasNext())
-//    {
-//        QString path = it.next();
-
-//        if(pathIsDot(path) or pathIsDotDot(path)) continue;
-
-////        qDebug() << path;
-
-
-//      }
     loadTreeSubdirectories(treeRoot, absFolderPath);
 }
 
 void MainWindow::loadTreeSubdirectories(QTreeWidgetItem *root, QString path)
 {
+    //Iterating and loading files
     QDirIterator fileIt(path, QDir::Files);
 
     while(fileIt.hasNext())
@@ -759,6 +786,7 @@ void MainWindow::loadTreeSubdirectories(QTreeWidgetItem *root, QString path)
         root->addChild(item);
     }
 
+    //Iterating and loading directories recursively
     QDirIterator dirIt(path, QDir::Dirs | QDir::NoSymLinks);
 
     while(dirIt.hasNext())
@@ -779,3 +807,55 @@ void MainWindow::loadTreeSubdirectories(QTreeWidgetItem *root, QString path)
         loadTreeSubdirectories(item, dirPath);
     }
 }
+
+void MainWindow::highlightTxtWidgetSubstr(const QString &substr)
+{
+    //Blocking a signal
+    QSignalBlocker blocker(this->ui->textEdit);
+
+    //Getting the text
+    QString curTxt = this->ui->textEdit->toPlainText();
+    int substrLen = substr.length();
+
+    //Setting text format
+    QTextCharFormat fmt;
+    fmt.setBackground(QColor::fromString("Light blue"));
+    QTextCursor cursor(this->ui->textEdit->document());
+
+    QVector <int> entries = getSubstrEntries(curTxt, substr);
+
+    for(int entry : entries)
+    {
+        cursor.setPosition(entry, QTextCursor::MoveAnchor);
+        cursor.setPosition(entry + substrLen, QTextCursor::KeepAnchor);
+        cursor.setCharFormat(fmt);
+    }
+
+    //Unblocking a signal
+    blocker.unblock();
+}
+
+void MainWindow::highlightTreeWidgetSubstr(const QString &substr)
+{
+
+}
+
+void MainWindow::clearTxtWidgetHighlightings()
+{
+    //Blocking a signal
+    QSignalBlocker blocker(this->ui->textEdit);
+
+    //Clearing highlightings
+    QTextCharFormat fmt;
+    fmt.setBackground(Qt::white);
+    QTextCursor crs(this->ui->textEdit->document());
+    crs.setPosition(0, QTextCursor::MoveAnchor);
+    crs.setPosition(this->ui->textEdit->toPlainText().size(), QTextCursor::KeepAnchor);
+    crs.setCharFormat(fmt);
+
+    //Unblocking a signal
+    blocker.unblock();
+}
+
+
+
