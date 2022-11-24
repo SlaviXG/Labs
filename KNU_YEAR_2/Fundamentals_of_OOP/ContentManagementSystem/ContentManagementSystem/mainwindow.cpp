@@ -606,6 +606,15 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 
 void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
 {
+    //Getting search line text
+    QString lineText = this->ui->searchLine->text();
+
+    //Highlighting the text
+    if(item->text(column).left(qMin(lineText.length(), item->text(column).length())) == lineText)
+        item->setBackground(0, QColor::fromString("Light blue"));
+    else
+        item->setBackground(0, Qt::white);
+
     //Getting an item path
     QString itemPath = currentItemPath;
 
@@ -661,6 +670,7 @@ void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
 void MainWindow::on_searchLine_textChanged(const QString &arg1)
 {
     clearTxtWidgetHighlightings();
+    clearTreeWidgetHighlightings();
 
     QString lineText = arg1;
 
@@ -672,7 +682,7 @@ void MainWindow::on_searchLine_textChanged(const QString &arg1)
 
     //Highlighting the text
     this->highlightTxtWidgetSubstr(lineText);
-    this->highlightTreeWidgetSubstr(lineText);
+    this->highlightTreeWidgetSubstr(this->treeRoot, lineText);
 }
 
 void MainWindow::on_textEdit_textChanged()
@@ -838,9 +848,19 @@ void MainWindow::highlightTxtWidgetSubstr(const QString &substr)
     blocker.unblock();
 }
 
-void MainWindow::highlightTreeWidgetSubstr(const QString &substr)
+void MainWindow::highlightTreeWidgetSubstr(QTreeWidgetItem* root, const QString &substr)
 {
+    QString itemText = root->text(0);
 
+    if(itemText.left(qMin(substr.length(), itemText.length())) == substr)
+        root->setBackground(0, QColor::fromString("Light blue"));
+
+    int childCount = root->childCount();
+
+    for(int i = 0; i < childCount; i++)
+    {
+          highlightTreeWidgetSubstr(root->child(i), substr);
+    }
 }
 
 void MainWindow::clearTxtWidgetHighlightings()
@@ -860,5 +880,28 @@ void MainWindow::clearTxtWidgetHighlightings()
     blocker.unblock();
 }
 
+void MainWindow::clearTreeWidgetHighlightings()
+{
+    //Blocking a signal
+    QSignalBlocker blocker(this->ui->treeWidget);
 
+    //Clearing highlightings
+    setWhiteTreeBackground(this->treeRoot);
+
+    //Unblocking a signal
+    blocker.unblock();
+}
+
+void MainWindow::setWhiteTreeBackground(QTreeWidgetItem *root)
+{
+    //Blanking the tree)
+    root->setBackground(0, Qt::white);
+
+    int childCount = root->childCount();
+
+    for(int i = 0; i < childCount; i++)
+    {
+          setWhiteTreeBackground(root->child(i));
+    }
+}
 

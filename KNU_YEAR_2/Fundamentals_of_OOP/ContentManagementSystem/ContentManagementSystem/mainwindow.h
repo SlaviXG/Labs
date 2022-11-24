@@ -81,8 +81,10 @@ private:
     void loadTreeWidget(QString absFolderPath);
     void loadTreeSubdirectories(QTreeWidgetItem* root, QString path);
     void highlightTxtWidgetSubstr(const QString& substr);
-    void highlightTreeWidgetSubstr(const QString& substr);
+    void highlightTreeWidgetSubstr(QTreeWidgetItem* root, const QString& substr);
     void clearTxtWidgetHighlightings();
+    void clearTreeWidgetHighlightings();
+    void setWhiteTreeBackground(QTreeWidgetItem* root);
 
 public slots:
     void addDirItem();
