@@ -461,6 +461,12 @@ release/moc_mainwindow.cpp: ../ContentManagementSystem/mainwindow.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextoption.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/QDesktopServices \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qdesktopservices.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QJniObject \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjniobject.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjnienvironment.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QScopedPointer \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjnitypes.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QJniEnvironment \
 		../ContentManagementSystem/additemdialog.h \
 		release/moc_predefs.h \
 		S:/Programs/Qt/6.4.0/mingw_64/bin/moc.exe
@@ -855,13 +861,18 @@ release/main.o: ../ContentManagementSystem/main.cpp ../ContentManagementSystem/m
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextoption.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/QDesktopServices \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qdesktopservices.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QJniObject \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjniobject.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjnienvironment.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QScopedPointer \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjnitypes.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QJniEnvironment \
 		../ContentManagementSystem/additemdialog.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtWidgets/QApplication \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtWidgets/qapplication.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qcoreapplication.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qeventloop.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qcoreapplication_platform.h \
-		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjnitypes.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qfuture.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qfutureinterface.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qmutex.h \
@@ -1069,6 +1080,12 @@ release/mainwindow.o: ../ContentManagementSystem/mainwindow.cpp ../ContentManage
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qtextoption.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/QDesktopServices \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtGui/qdesktopservices.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QJniObject \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjniobject.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjnienvironment.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QScopedPointer \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjnitypes.h \
+		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QJniEnvironment \
 		../ContentManagementSystem/additemdialog.h \
 		ui_mainwindow.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/QVariant \
@@ -1078,7 +1095,6 @@ release/mainwindow.o: ../ContentManagementSystem/mainwindow.cpp ../ContentManage
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qcoreapplication.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qeventloop.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qcoreapplication_platform.h \
-		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qjnitypes.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qfuture.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qfutureinterface.h \
 		S:/Programs/Qt/6.4.0/mingw_64/include/QtCore/qmutex.h \

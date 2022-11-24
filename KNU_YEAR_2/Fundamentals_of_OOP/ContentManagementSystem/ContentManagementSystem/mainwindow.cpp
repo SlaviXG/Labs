@@ -1,8 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "auxiliary.cpp"
-#include <filesystem>
-#include <bits/fs_path.h>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     treeRoot->setWhatsThis(0, "Dir");
     ui->treeWidget->addTopLevelItem(treeRoot);
 
-    //Setting a new directory
+    //Setting a new content directory
     QString path = "contexts/" + contextName;
     QDir dir;
     dir.mkpath(path);
@@ -77,19 +76,38 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    QString filePath = QFileDialog::getOpenFileName(this, "Open the file");
-    QFile file(filePath);
-    currentTextFile = filePath;
-    if(!file.open(QIODevice::ReadOnly | QFile::Text))
+    //Getting path
+    QString contentPath = QFileDialog::getExistingDirectory(this, "Choose the directory");
+
+    //Returning if unsuccessful
+    if(contentPath == QString()) return;
+
+    //Clearing text widget
+    ui->textEdit->clear();
+
+    //Setting new context name
+    this->setNewContextName(getFileNameFromPath(contentPath));
+
+    //Copy directory to program contexts
+    QDir dstDir("contexts");
+    dstDir.mkdir(contextName);
+    dstDir.cd(contextName);
+    QDir srcDir(contentPath);
+
+    //If failed to open
+    if(!copyDir(srcDir, dstDir))
     {
-        QMessageBox::warning(this, "Warning", "Cannot open the file: " + file.errorString());
+        dstDir.removeRecursively();
+        QMessageBox::warning(this, "Warning", "The result folder contains ancestor's folder. Choose another one.");
         return;
     }
-    setWindowTitle(filePath);
-    QTextStream in(&file);
-    QString text = in.readAll();
-    ui->textEdit->setText(text);
-    file.close();
+
+    //Loading tree widget
+    this->loadTreeWidget(dstDir.absolutePath());
+
+    //Clearing current paths
+    this->currentTextFile = "";
+    this->currentItemPath = "";
 }
 
 
@@ -108,7 +126,7 @@ void MainWindow::on_actionSave_as_triggered()
     QDir saveDir (savePath);
     QDir contextPath("contexts/");
 
-    //if to copy to the same directory
+    //If the same directory
     if(saveDir.absolutePath() == contextPath.absolutePath())
     {
         QMessageBox::information(this, "Info", contextName + " is saved!");
@@ -124,51 +142,22 @@ void MainWindow::on_actionSave_as_triggered()
     }
 
     //Creating a new content folder
-    bool dirIsMade = saveDir.mkdir(contextName);
-
-    //Returning if created unsuccessfully
-    if(!dirIsMade)
-    {
-        QMessageBox::warning(this, "Error", "Cannot save the file.");
-        return;
-    }   
+    saveDir.mkdir(contextName);
 
     //Entering the context name folders
     contextPath.cd(contextName);
     saveDir.cd(contextName);
 
-    #include <QDebug>
-    qDebug() << folderNamesAreUniqueInPath(savePath) << "\n";
-    if(!folderNamesAreUniqueInPath(savePath))
+    //Making a copy of the folder
+    if(copyDir(contextPath, saveDir))
     {
-        QMessageBox::warning(this, "Warning", "Folder names in the path are not unique. Choose another Folder.");
-        saveDir.removeRecursively();
-        return;
+        //Ok-saved message
+        QMessageBox::information(this, "Info", contextName + " is saved!");
     }
-//
-//    //Making a copy of the folder
-//    std::filesystem::path cntPath = contextPath.absolutePath().toUtf8().constData();
-//    std::filesystem::path svdPath = saveDir.absolutePath().toUtf8().constData();
-//
-//    QMessageBox::information(this, "Info", contextPath.absolutePath() + "\n\n"
-//                             + saveDir.absolutePath());
-//
-//
-//    std::filesystem::copy(cntPath, svdPath,
-//                          std::filesystem::copy_options::recursive |
-//                          std::filesystem::copy_options::overwrite_existing);
-
-    if(saveDir.absolutePath().contains(contextPath.absolutePath()))
+    else
     {
-        QMessageBox::warning(this, "Warning", "The result folder contains ancestor's folder. Choose another one.");
         saveDir.removeRecursively();
-        return;
     }
-
-    copyAndReplaceFolderContents(contextPath.absolutePath(), saveDir.absolutePath());
-
-    //Ok-saved message
-    QMessageBox::information(this, "Info", contextName + " is saved!");
 }
 
 
@@ -538,9 +527,11 @@ void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
 
 void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
+    //Getting item parameters
     QString itemType = item->whatsThis(column);
     QString itemPath = "contexts" + getTreeItemPath(item);
 
+    //Checking real item existense
     if(!QFileInfo::exists(itemPath))
     {
         QMessageBox::critical(this, "Error", "Error: The item doesn't exist.");
@@ -554,6 +545,7 @@ void MainWindow::on_treeWidget_itemDoubleClicked(QTreeWidgetItem *item, int colu
 
     if(itemType == "File")
     {
+       //Executing file
        bool executed = QDesktopServices::openUrl(QUrl::fromLocalFile(itemPath));
        if(!executed)
        {
@@ -645,6 +637,12 @@ void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
     QDir dir(getParentPath(itemPath));
     dir.rename(getFileNameFromPath(itemPath),item->text(column));
 
+    if(currentTextFile != "" and item == this->ui->treeWidget->topLevelItem(0))
+    {
+        QString restPath = getSubstrAfterSlash(currentTextFile, 2);
+        currentTextFile = "contexts/" + item->text(column) + '/' + restPath;
+    }
+
     if(currentItemPath == currentTextFile)
     {
         currentTextFile = getParentPath(itemPath) + '/' + item->text(column);
@@ -672,8 +670,10 @@ QString MainWindow::getTreeItemPath(QTreeWidgetItem *item)
 
 void MainWindow::saveCurWidgetText()
 {
+    //Returning if empty
     if(currentTextFile == QString()) return;
 
+    //Saving the text
     QFile file(this->currentTextFile);
     if(!file.open(QFile::WriteOnly | QFile::Text))
     {
@@ -693,4 +693,89 @@ void MainWindow::setNewContextName(QString name)
     setWindowTitle(name);
     currentItemPath = "";
     this->ui->treeWidget->setCurrentItem(nullptr);
+}
+
+bool MainWindow::copyDir(QDir &source, QDir &destination)
+{
+    //If trying to reach the same directory
+    if(destination.absolutePath() == source.absolutePath()) return true;
+
+    //If destination contains source
+    if(destination.absolutePath().contains(source.absolutePath()))
+    {
+        return false;
+    }
+
+    //Overwriting with std::filesystem
+    std::filesystem::path src = source.absolutePath().toUtf8().constData();
+    std::filesystem::path dst = destination.absolutePath().toUtf8().constData();
+
+    std::filesystem::remove_all(dst);
+
+    std::filesystem::copy(src, dst,
+                          std::filesystem::copy_options::recursive |
+                          std::filesystem::copy_options::overwrite_existing);
+
+    return true;
+}
+
+void MainWindow::loadTreeWidget(QString absFolderPath)
+{
+    QDir dir(absFolderPath);
+
+    if (!dir.exists()) return;
+
+    QDirIterator it(dir.absolutePath(), QDirIterator::Subdirectories);
+
+////    #include <QDebug>
+//    while(it.hasNext())
+//    {
+//        QString path = it.next();
+
+//        if(pathIsDot(path) or pathIsDotDot(path)) continue;
+
+////        qDebug() << path;
+
+
+//      }
+    loadTreeSubdirectories(treeRoot, absFolderPath);
+}
+
+void MainWindow::loadTreeSubdirectories(QTreeWidgetItem *root, QString path)
+{
+    QDirIterator fileIt(path, QDir::Files);
+
+    while(fileIt.hasNext())
+    {
+        QString filePath = fileIt.next();
+
+        QString fileName = getFileNameFromPath(filePath);
+
+        QTreeWidgetItem *item = new QTreeWidgetItem();
+        item->setText(0, fileName);
+        item->setWhatsThis(0, ((getFileExtension(fileName) == "txt") ? "Txt" : "File"));
+        item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsEnabled| Qt::ItemIsSelectable);
+
+        root->addChild(item);
+    }
+
+    QDirIterator dirIt(path, QDir::Dirs | QDir::NoSymLinks);
+
+    while(dirIt.hasNext())
+    {
+        QString dirPath = dirIt.next();
+
+        if(pathIsDot(dirPath) or pathIsDotDot(dirPath)) continue;
+
+        QString dirName = getFileNameFromPath(dirPath);
+
+        QTreeWidgetItem *item = new QTreeWidgetItem();
+        item->setText(0, dirName);
+        item->setWhatsThis(0, ("Dir"));
+        item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsEnabled| Qt::ItemIsSelectable);
+
+        root->addChild(item);
+
+        loadTreeSubdirectories(item, dirPath);
+    }
 }

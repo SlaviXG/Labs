@@ -2,7 +2,6 @@
 #include <QDir>
 #include <QDirIterator>
 
-
 bool isCorrectName(const QString name)
 {
     if(name.size() == 0) return false;
@@ -144,4 +143,43 @@ bool folderNamesAreUniqueInPath(QString path)
     for(int i = 0; i < dirsSz; i++)
         dirSet.insert(dirs[i]);
     return (dirSet.size() == dirsSz);
+}
+
+QString getSubstrAfterSlash(QString const text, int slashNum)
+{
+    QString res = "";
+    size_t txtLen = text.length();
+    int slashCnt = 0;
+
+    for(size_t i = 0; i < txtLen; i++)
+    {
+        if(slashCnt >= slashNum)
+        {
+            res += text[i];
+        }
+
+        if(text[i] == '/') slashCnt++;
+    }
+
+    return res;
+}
+
+bool pathIsDot(QString const &path)
+{
+    size_t pLen = path.length();
+    if(pLen < 2) return false;
+
+    if(path[pLen-1] == '.' and path[pLen-2] == '/') return true;
+
+    return false;
+}
+
+bool pathIsDotDot(QString const &path)
+{
+    size_t pLen = path.length();
+    if(pLen < 3) return false;
+
+    if(path[pLen-1] == '.' and path[pLen-2] == '.' and path[pLen-3] == '/') return true;
+
+    return false;
 }
