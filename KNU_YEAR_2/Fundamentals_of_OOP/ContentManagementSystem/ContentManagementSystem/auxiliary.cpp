@@ -184,8 +184,6 @@ bool pathIsDotDot(QString const &path)
     return false;
 }
 
-#include <QMessageBox>
-#include <QDebug>
 QVector <int> getSubstrEntries(const QString& text, const QString& subString)
 {
 
@@ -195,7 +193,6 @@ QVector <int> getSubstrEntries(const QString& text, const QString& subString)
 
     while(pos!=-1)
     {
-        qDebug() << pos;
         v.push_back(static_cast<int>(pos));
         pos = text.indexOf(subString, pos + 1);
     }

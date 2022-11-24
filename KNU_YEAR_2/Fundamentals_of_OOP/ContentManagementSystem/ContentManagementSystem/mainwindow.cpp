@@ -39,6 +39,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    QDir dir("contexts");
+    dir.removeRecursively();
+
     delete ui;
 }
 
