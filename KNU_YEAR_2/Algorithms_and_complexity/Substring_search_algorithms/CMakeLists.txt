@@ -3,4 +3,4 @@ project(Substring_search_algorithms VERSION 0.0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(tests test.cpp)
+add_executable(tests test.cpp Naive.h Horspool.h Rabin_Karp.h)
