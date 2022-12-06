@@ -1,5 +1,5 @@
 <div align="center">
-<h2><b>𝓒𝓸𝓷𝓽𝓮𝓷𝓽 𝓜𝓪𝓷𝓪𝓰𝓮𝓶𝓮𝓷𝓽 𝓢𝔂𝓼𝓽𝓮𝓶</b></h2>
+<h2><b>𝓒𝓸𝓷𝓽𝓮𝓷𝓽 𝓜𝓪𝓷𝓪𝓰𝓮𝓶𝓮𝓷𝓽 𝓢𝔂𝓼𝓽𝓮𝓶<br></b></h2>
 </div>
 <div align="right"><em>
 by SlaviXG
