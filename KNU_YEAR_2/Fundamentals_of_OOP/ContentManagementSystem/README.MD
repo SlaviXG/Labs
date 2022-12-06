@@ -37,7 +37,7 @@ a great UI-designing potential.
     <li>QDir</li>
 </ul>
 
-<a href = "https://doc.qt.io/">The documentation</a> of the Qt framework is very clear and incredibly detailed 
+<br><a href = "https://doc.qt.io/">The documentation</a> of the Qt framework is very clear and incredibly detailed 
 when it comes to class implementation, which is truly useful if the person 
 figures it out for the first time. Since classes and their methods have quite 
 predictable behaviour, they are really convenient to utilize.
