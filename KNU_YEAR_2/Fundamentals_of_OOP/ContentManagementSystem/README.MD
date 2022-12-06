@@ -11,4 +11,8 @@ of files and making appropriate descriptions in specific contexts.
 It can be used for collecting books, web-resources, audio and video materials etc.
 <br>
 <br>The purpose of this work as a project is to explore the variety of features 
-of the Qt framework and implement the knowledge, using C++.
+of the Qt framework and implement the knowledge, using C++. This framework 
+was chosen as a very powerful tool for system interaction, which obtains 
+a great UI-designing potential.
+<br>
+<br>
