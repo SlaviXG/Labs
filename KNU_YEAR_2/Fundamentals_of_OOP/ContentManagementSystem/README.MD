@@ -3,7 +3,7 @@
 </div>
 
 <div align="right"><em>
-by <a href="https://github.com/SlaviXG">SlaviXG</a>
+<a href="https://github.com/SlaviXG">by SlaviXG</a>
 </em></div>
 
 <br>This application is designed for organising the storage 
