@@ -14,7 +14,7 @@ It can be used for collecting books, web-resources, audio and video materials et
 of the Qt framework and implement the knowledge, using C++. This framework 
 was chosen as a very powerful tool for system interaction, which obtains 
 a great UI-designing potential.
-<br>
+![download](https://user-images.githubusercontent.com/78792148/206024521-b9daf83c-6e2f-4375-a0bd-a9faad592a4a.png)
 <br>
 <br>Therefore, there were used such components:
 <ul>
