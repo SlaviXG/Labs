@@ -31,6 +31,7 @@ a great UI-designing potential.
     <li>QMessageBox</li>
     <li>QTextCursor</li>
     <li>QTextStream</li>
+    <li>QDirIterator</li>
     <li>QDialog</li>
     <li>QFile</li>
     <li>QDir</li>
