@@ -16,3 +16,22 @@ was chosen as a very powerful tool for system interaction, which obtains
 a great UI-designing potential.
 <br>
 <br>
+<br>Therefore, there were used such components:
+<ul>
+    <li>C++17</li>
+    <li>std::filesystem</li>
+    <li>QDesktopServices</li>
+    <li>QTextCharFormat</li>
+    <li>QSignalBlocker</li>
+    <li>QMainWindow</li>
+    <li>QPrintDialog</li>
+    <li>QInputDialog</li>
+    <li>QFileDialog</li>
+    <li>QTreeWidget</li>
+    <li>QMessageBox</li>
+    <li>QTextCursor</li>
+    <li>QTextStream</li>
+    <li>QDialog</li>
+    <li>QFile</li>
+    <li>QDir</li>
+</ul>
