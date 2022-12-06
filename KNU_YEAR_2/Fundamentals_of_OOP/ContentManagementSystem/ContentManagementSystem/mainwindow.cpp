@@ -106,6 +106,9 @@ void MainWindow::on_actionOpen_triggered()
     }
 
     //Loading tree widget
+    QTreeWidgetItem* root = this->ui->treeWidget->topLevelItem(0);
+    int childCount = root->childCount();
+    for(int i = childCount - 1; i >= 0; i--) root->removeChild(root->child(i));
     this->loadTreeWidget(dstDir.absolutePath());
 
     //Clearing current paths
@@ -770,11 +773,11 @@ bool MainWindow::copyDir(QDir &source, QDir &destination)
 
 void MainWindow::loadTreeWidget(QString absFolderPath)
 {
-    //Chacking if the directory exists and calling the recursive function
+    //Checking if the directory exists and calling the recursive function
     QDir dir(absFolderPath);
-
     if (!dir.exists()) return;
 
+    //Loading tree subdirectories
     QDirIterator it(dir.absolutePath(), QDirIterator::Subdirectories);
 
     loadTreeSubdirectories(treeRoot, absFolderPath);
