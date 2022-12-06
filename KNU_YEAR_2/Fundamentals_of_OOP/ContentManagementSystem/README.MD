@@ -2,17 +2,17 @@
 <h2><b>𝓒𝓸𝓷𝓽𝓮𝓷𝓽 𝓜𝓪𝓷𝓪𝓰𝓮𝓶𝓮𝓷𝓽 𝓢𝔂𝓼𝓽𝓮𝓶</b></h2>
 </div>
 
-<div align="right">
-<em> by SlaviXG </em>
-</div>
+<div align="right"><em>
+by <a href="https://github.com/SlaviXG">SlaviXG</a>
+</em></div>
 
 <br>This application is designed for organising the storage 
 of files and making appropriate descriptions in specific contexts. 
 It can be used for collecting books, web-resources, audio and video materials etc.
 <br>
 <br>The purpose of this work as a project is to explore the variety of features 
-of the Qt framework and implement the knowledge, using C++. This framework 
-was chosen as a very powerful tool for system interaction, which obtains 
+of the <a href="https://www.qt.io/product/framework">Qt framework</a> and implement the knowledge, using C++. 
+This framework was chosen as a very powerful tool for system interaction, which obtains 
 a great UI-designing potential.
 ![download](https://user-images.githubusercontent.com/78792148/206024521-b9daf83c-6e2f-4375-a0bd-a9faad592a4a.png)
 <br>
