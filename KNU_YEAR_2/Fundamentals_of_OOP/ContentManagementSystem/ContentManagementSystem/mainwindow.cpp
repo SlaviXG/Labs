@@ -423,6 +423,9 @@ void MainWindow::addDirItem()
     //Setting the real directory
     QDir dir;
     dir.mkpath(path);
+
+    //Setting current tree widget item
+    this->ui->treeWidget->setCurrentItem(item);
 }
 
 void MainWindow::addFileItem()
@@ -462,11 +465,14 @@ void MainWindow::addFileItem()
         delete item;
         return;
     }
+
+    //Setting current tree widget item
+    this->ui->treeWidget->setCurrentItem(item);
 }
 
 void MainWindow::addTextItem()
 {
-    //Hiding the dialog wondow
+    //Hiding the dialog window
     addItemDialog->hide();
 
     //Entering item name
@@ -496,7 +502,14 @@ void MainWindow::addTextItem()
 
     //Adding this item to the treeWidget
     if(this->ui->treeWidget->currentItem() != nullptr)
-        this->ui->treeWidget->currentItem()->addChild(item);
+    {
+        QTreeWidgetItem *itm = this->ui->treeWidget->currentItem();
+        if (itm->whatsThis(0) != "Dir")
+        {
+            itm=itm->parent();
+        }
+        itm->addChild(item);
+    }
     else
         this->ui->treeWidget->topLevelItem(0)->addChild(item);
 
@@ -524,6 +537,9 @@ void MainWindow::addTextItem()
     QTextStream out(&txtFile);
     out << "";
     txtFile.close();
+
+    //Setting current tree widget item
+    this->ui->treeWidget->setCurrentItem(item);
 }
 
 void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
@@ -722,8 +738,12 @@ QString MainWindow::getTreeItemPath(QTreeWidgetItem *item)
 
 void MainWindow::saveCurWidgetText()
 {
-    //Returning if empty
-    if(currentTextFile == QString()) return;
+    //Creating new if empty
+    if(currentTextFile == QString())
+    {
+        addTextItem();
+        currentTextFile = "contexts" + getTreeItemPath(this->ui->treeWidget->currentItem());
+    }
 
     //Saving the text
     QFile file(this->currentTextFile);
