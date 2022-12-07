@@ -43,7 +43,8 @@ figures it out for the first time. Since classes and their methods have quite
 predictable behaviour, they are really convenient to utilize.
 An implementation of library perfectly harmonizes with written code, 
 thats why the problems which came up were feasible to solve.
-The positive point of using this library is the provision of key functions, 
+<br>
+<br>The positive point of using this library is the provision of key functions, 
 while the disadvantage is the difficulty of connecting the required components for some build systems, such as CMake.
 <br>
 <br>
