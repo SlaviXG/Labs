@@ -47,4 +47,9 @@ The positive point of using this library is the provision of key functions,
 while the disadvantage is the difficulty of connecting the required components for some build systems, such as CMake.
 <br>
 <br>
+<br>
+<br>
 <div align="center"><h4><em>Thank you for your time and consideration!</em></h4></div>
+<p align="center">
+  <img width="220" height="220" src="https://user-images.githubusercontent.com/78792148/206066104-fe832518-a4c7-401f-98f8-539e3c90b0a3.gif">
+</p>
