@@ -18,23 +18,23 @@ a great UI-designing potential.
 <br>
 <br>Therefore, there were used such components:
 <ul>
-    <li>C++17</li>
-    <li>std::filesystem</li>
-    <li>QDesktopServices</li>
-    <li>QTextCharFormat</li>
-    <li>QSignalBlocker</li>
-    <li>QMainWindow</li>
-    <li>QPrintDialog</li>
-    <li>QInputDialog</li>
-    <li>QFileDialog</li>
-    <li>QTreeWidget</li>
-    <li>QMessageBox</li>
-    <li>QTextCursor</li>
-    <li>QTextStream</li>
-    <li>QDirIterator</li>
-    <li>QDialog</li>
-    <li>QFile</li>
-    <li>QDir</li>
+    <li><a href="https://en.cppreference.com/w/cpp/17">C++17</a></li>
+    <li><a href="https://en.cppreference.com/w/cpp/filesystem">std::filesystem</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qdesktopservices.html">QDesktopServices</a></li>
+    <li><a href="https://doc.qt.io/qt-5/qtextcharformat.html">QTextCharFormat</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qsignalblocker.html">QSignalBlocker</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qmainwindow.html">QMainWindow</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qprintdialog.html">QPrintDialog</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qinputdialog.html">QInputDialog</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qfiledialog.html">QFileDialog</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qtreewidget.html">QTreeWidget</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qmessagebox.html">QMessageBox</a></li>
+    <li><a href="https://doc.qt.io/qt-5/qtextcursor.html">QTextCursor</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qtextstream.html">QTextStream</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qdiriterator.html">QDirIterator</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qdialog.html">QDialog</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qfile.html">QFile</a></li>
+    <li><a href="https://doc.qt.io/qt-6/qdir.html">QDir</a></li>
 </ul>
 
 <br><a href = "https://doc.qt.io/">The documentation</a> of the Qt framework is very clear and incredibly detailed 
@@ -47,4 +47,4 @@ The positive point of using this library is the provision of key functions,
 while the disadvantage is the difficulty of connecting the required components for some build systems, such as CMake.
 <br>
 <br>
-<h4><em>Thank you for your time and consideration!</em></h4>
+<div align="center"><h4><em>Thank you for your time and consideration!</em></h4></div>
