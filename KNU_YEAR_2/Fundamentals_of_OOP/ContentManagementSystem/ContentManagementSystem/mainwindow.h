@@ -70,9 +70,9 @@ private:
     Ui::MainWindow* ui;
     QTreeWidgetItem* treeRoot;
     AddItemDialog* addItemDialog;
-    QString contextName = "";
-    QString currentTextFile = "";
-    QString currentItemPath = "";
+    QString contextName = QString();
+    QString currentTextFile = QString();
+    QString currentItemPath = QString();
 
     QString getTreeItemPath(QTreeWidgetItem *item);
     void saveCurWidgetText();

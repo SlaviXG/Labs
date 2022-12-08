@@ -243,6 +243,11 @@ void MainWindow::on_buttonDeleteItem_clicked()
 
         //Removing from real directory
         path = "contexts" + getTreeItemPath(item);
+
+        if(item->whatsThis(0) == "Txt" and path == currentTextFile)
+        {
+            currentTextFile = "";
+        }
         if(item->whatsThis(0) != "Dir")
         {
             bool deleted = QFile::remove(path);
@@ -679,7 +684,7 @@ void MainWindow::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
         currentTextFile = "contexts/" + item->text(column) + '/' + restPath;
     }
 
-    if(currentItemPath == currentTextFile)
+    if(currentItemPath == currentTextFile and currentTextFile != QString())
     {
         currentTextFile = getParentPath(itemPath) + '/' + item->text(column);
     }
