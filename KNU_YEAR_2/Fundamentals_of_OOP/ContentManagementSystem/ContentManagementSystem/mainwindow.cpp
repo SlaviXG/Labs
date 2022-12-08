@@ -356,7 +356,12 @@ void MainWindow::on_buttonSave_clicked()
 
 void MainWindow::on_buttonDiscard_clicked()
 {
-    if(currentTextFile == "") return;
+    //Clearing if not handling current text file
+    if(currentTextFile == "")
+    {
+        this->ui->textEdit->clear();
+        return;
+    }
     //Loading previous version of the file
     QFile file(currentTextFile);
     if(!file.open(QIODevice::ReadOnly | QFile::Text))
@@ -741,15 +746,17 @@ void MainWindow::saveCurWidgetText()
     //Creating new if empty
     if(currentTextFile == QString())
     {
+        QTreeWidgetItem* prevItem = this->ui->treeWidget->currentItem();
         addTextItem();
-        currentTextFile = "contexts" + getTreeItemPath(this->ui->treeWidget->currentItem());
+        if(this->ui->treeWidget->currentItem() != prevItem)
+            currentTextFile = "contexts" + getTreeItemPath(this->ui->treeWidget->currentItem());
     }
 
     //Saving the text
     QFile file(this->currentTextFile);
     if(!file.open(QFile::WriteOnly | QFile::Text))
     {
-        QMessageBox::warning(this, "Warning", "Cannot save the file: " + file.errorString());
+        QMessageBox::warning(this, "Warning", "Cannot save the text widget file: " + file.errorString());
         return;
     }
     QTextStream out(&file);
