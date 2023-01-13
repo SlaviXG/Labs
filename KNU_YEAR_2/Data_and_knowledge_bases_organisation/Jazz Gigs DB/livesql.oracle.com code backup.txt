@@ -1,0 +1,413 @@
+-- creating the tables, adding constraints
+CREATE TABLE Hor_Place
+(place_id number not null,
+place_address varchar2 (256) not null,
+place_type varchar2 (32),
+place_description varchar2 (256),
+CONSTRAINT Hor_pl_pk PRIMARY KEY (place_id),
+CONSTRAINT Hor_pl_un UNIQUE (place_address));
+CREATE TABLE Hor_Concert
+(concert_id number not null,
+concert_date date not null,
+place_id number not null,
+CONSTRAINT Hor_cnt_pk PRIMARY KEY (concert_id),
+CONSTRAINT Hor_cnt_fk FOREIGN KEY (place_id) REFERENCES Hor_Place (place_id));
+CREATE TABLE Hor_Instrument
+(instrument_id number not null,
+instrument_name varchar2 (32) not null,
+CONSTRAINT Hor_Ins_pk PRIMARY KEY(instrument_id),
+CONSTRAINT Hor_Ins_un UNIQUE (instrument_name));
+CREATE TABLE Hor_Musician
+(passport varchar2 (32) not null,
+musician_name varchar2 (32) not null,
+musician_surname varchar2 (32),
+phone_number number (16),
+main_instrument_id number not null,
+CONSTRAINT Hor_Mus_pk PRIMARY KEY(passport),
+CONSTRAINT Hor_Mus_un UNIQUE (phone_number),
+CONSTRAINT Hor_Mus_fk FOREIGN KEY (main_instrument_id)
+REFERENCES Hor_Instrument (instrument_id));
+CREATE TABLE Hor_Band
+(band_name varchar2 (32) not null,
+year_of_creation number(5) not null,
+leader_passport varchar2 (32) not null,
+CONSTRAINT Hor_Bnd_pk PRIMARY KEY (band_name),
+CONSTRAINT Hor_Bnd_fk FOREIGN KEY (leader_passport)
+REFERENCES Hor_Musician (passport));
+CREATE TABLE Hor_Performance
+(performance_id number not null,
+performance_time timestamp not null,
+band_name varchar2 (32) not null,
+concert_id number not null,
+CONSTRAINT Hor_Prf_pk PRIMARY KEY (performance_id),
+CONSTRAINT Hor_Prf_fk_bnd FOREIGN KEY (band_name)
+REFERENCES Hor_Band (band_name),
+CONSTRAINT Hor_Prf_fk_cnt FOREIGN KEY (concert_id)
+REFERENCES Hor_Concert (concert_id));
+CREATE TABLE Hor_Participation
+(participation_id number not null,
+start_date date not null,
+finish_date date,
+musician_passport varchar2 (32) not null,
+band_name varchar2 (32) not null,
+CONSTRAINT Hor_Prt_pk PRIMARY KEY (participation_id),
+CONSTRAINT Hor_Prt_fk_mus FOREIGN KEY (musician_passport)
+REFERENCES Hor_Musician (passport),
+CONSTRAINT Hor_Prt_fk_bnd FOREIGN KEY (band_name)
+REFERENCES Hor_Band (band_name));
+-- filling the tables
+INSERT INTO Hor_Place (place_id, place_address, place_type) VALUES (0, '6, Marcus Av', 'Concert Hall');
+INSERT INTO Hor_Place (place_id, place_address, place_type) VALUES (1, '67, Mecho St.', 'Restaurant');
+INSERT INTO Hor_Place (place_id, place_address, place_type) VALUES (2, '8, Leinbergs St.', 'Theater');
+INSERT INTO Hor_Place (place_id, place_address, place_type) VALUES (3, '25, Dibble Av.', 'café');
+INSERT INTO Hor_Place (place_id, place_address, place_type) VALUES (4, '3, Nefrite Av.', 'Studio');
+INSERT INTO Hor_Place (place_id, place_address, place_type) VALUES (5, '9, Alfredo Polonski St.', 'Music school');
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) VALUES (0, 'Classical guitar');
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) VALUES (1, 'Electric guitar');
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) VALUES (2, 'Saxophone');
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) VALUES (3, 'Piano');
+
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) VALUES (4, 'Drums');
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) VALUES (5, 'Bass');
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) VALUES (6, 'Contrabass');
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) VALUES (7, 'Trombone');
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('FHK2381239', 'Alfredo', 'Filin', '1123871283', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('1231312',
+'Alley', 'Gormlat', '13231231230', 1);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('PLN470983K', 'Alleys', 'Mircle', '1248275920', 3);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('GHB1249574', 'Barry', 'Nicols', '85920258', 1);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('BASDL1321', 'Dalberg', 'Ables', '1252351261', 1);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('FK110024',
+'Dooglas', 'Robertson', '124984744', 4);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('NDJ23564',
+'Eric', 'Burney', '356213863', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('GJJ240914',
+'Ertul', 'Poire', '239023580', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('GL1241441', 'Flint', 'Kreemey', '1124124', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('F78748712',
+'Frinee', 'Miolle', '8752638598', 4);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('GKJ41241',
+'Immer', 'Jeanser', '232342323', 1);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('GHE123124', 'Jane', 'Roberts', '124980093', 3);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('J323P234J',
+'Kraig', 'Messoiree', '4124234', 5);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('BA12123AS', 'Louis', 'Armstrong', '94048484880', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('PF120491CRNG', 'Malley', 'Rode', '192489735', 4);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('GH1247471G', 'Margen', 'Frintles', '67841491200', 6);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('FRNK23498', 'Martha', 'Mayers', '92837492374', 1);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('AC1123912', 'Miles', 'Davis', '90124804', 4);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('FLEI3988',
+'Obben', 'Roedbed', '941091724', 4);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('3PCJA9874', 'Parie', 'Redber', '9235792359', 5);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('AP1234125', 'Princkle', 'Framer', '248768489', 1);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('13FSDFSDF', 'Quant', 'Louis', '678498434', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('FPDS129461', 'Rainee', 'Dranker', '9872355298', 4);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('A214KJH',
+'Ralley', 'Roberts', '253239857329', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('EFPGS311C', 'Roodie', 'Walker', '7012840980', 3);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('43214554',
+'Traney', 'Kraigslib', '25987823597', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES ('FK124141',
+'Wollie', 'Dolka', '12411241', 2);
+INSERT INTO Hor_Musician (passport, musician_name, musician_surname, phone_number, main_instrument_id) VALUES
+('4ATPJ12414', 'Yallo', 'Roaner', '238568870', 5);
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Alfredo', 1999, 'FHK2381239');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Attorney', 2013, 'GKJ41241');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Brink291', 1988, 'GJJ240914');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Calgarai', 1998, 'FRNK23498');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Crally', 1994, 'FK110024');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Crispy Roses', 2000, 'GHB1249574');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Geonesis', 2005, '1231312');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Limbo', 2019, 'GL1241441');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Ram', 2011, 'GHE123124');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Rickroll', 2014, 'NDJ23564');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Alpha', 2015, '13FSDFSDF');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Betta', 2015, '3PCJA9874');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Gamma', 2015, '4ATPJ12414');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (1,
+to_date('10/02/1999', 'dd/mm/yyyy'), NULL, 'FHK2381239', 'Alfredo');
+
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (2,
+to_date('29/03/2013', 'dd/mm/yyyy'), NULL, 'GKJ41241', 'Attorney');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (3,
+to_date('2/11/1988', 'dd/mm/yyyy'), NULL, 'GJJ240914', 'Brink291');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (4,
+to_date('1/08/1988', 'dd/mm/yyyy'), to_date('18/07/2017', 'dd/mm/yyyy'), 'FK124141', 'Calgarai');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (5,
+to_date('18/07/2017', 'dd/mm/yyyy'), NULL, 'FRNK23498', 'Calgarai');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (6,
+to_date('7/06/1994', 'dd/mm/yyyy'), NULL, 'FK110024', 'Crally');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (7,
+to_date('1/01/2000', 'dd/mm/yyyy'), NULL, 'GHB1249574', 'Crispy Roses');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (8,
+to_date('9/07/2005', 'dd/mm/yyyy'), NULL, '1231312', 'Geonesis');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (9,
+to_date('13/07/2019', 'dd/mm/yyyy'), NULL, 'GL1241441', 'Limbo');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (10,
+to_date('7/12/2011', 'dd/mm/yyyy'), NULL, 'GHE123124', 'Ram');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (11,
+to_date('20/09/2014', 'dd/mm/yyyy'), NULL, 'NDJ23564', 'Rickroll');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (12,
+to_date('11/02/1999', 'dd/mm/yyyy'), NULL, 'GH1247471G', 'Alfredo');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (13,
+to_date('11/02/1999', 'dd/mm/yyyy'), NULL, 'J323P234J', 'Alfredo');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (14,
+to_date('29/03/2013', 'dd/mm/yyyy'), NULL, '13FSDFSDF', 'Attorney');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (15,
+to_date('30/03/2013', 'dd/mm/yyyy'), NULL, 'PLN470983K', 'Attorney');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (16,
+to_date('31/03/2013', 'dd/mm/yyyy'), NULL, 'AC1123912', 'Attorney');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (17,
+to_date('30/03/2013', 'dd/mm/yyyy'), NULL, '4ATPJ12414', 'Attorney');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (18,
+to_date('2/11/1988', 'dd/mm/yyyy'), NULL, '1231312', 'Brink291');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (19,
+to_date('3/11/1988', 'dd/mm/yyyy'), NULL, 'GHE123124', 'Brink291');
+INSERT INTO Hor_Participation (participation_id, start_date, finish_date, musician_passport, band_name) VALUES (20,
+to_date('1/08/1988', 'dd/mm/yyyy'), NULL, 'A214KJH', 'Calgarai');
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (0, to_date('1/01/2020', 'dd/mm/yyyy'), 0);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (1, to_date('13/08/2019', 'dd/mm/yyyy'), 1);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (2, to_date('17/12/2020', 'dd/mm/yyyy'), 2);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (3, to_date('18/12/2020', 'dd/mm/yyyy'), 2);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (4, to_date('19/06/2021', 'dd/mm/yyyy'), 3);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (5, to_date('21/09/2020', 'dd/mm/yyyy'), 4);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (6, to_date('17/06/2021', 'dd/mm/yyyy'), 3);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (7, to_date('19/08/2020', 'dd/mm/yyyy'), 3);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (8, to_date('1/02/2020', 'dd/mm/yyyy'), 2);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (9, to_date('14/08/2019', 'dd/mm/yyyy'), 1);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (10, to_date('12/05/2020', 'dd/mm/yyyy'), 5);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (0, TO_TIMESTAMP('18:00',
+'hh24:mi'), 'Alfredo', 0);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (1, TO_TIMESTAMP('19:20',
+'hh24:mi'), 'Attorney', 1);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (2, TO_TIMESTAMP('20:00',
+'hh24:mi'), 'Brink291', 3);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (3, TO_TIMESTAMP('19:00',
+'hh24:mi'), 'Attorney', 3);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (4, TO_TIMESTAMP('21:00',
+'hh24:mi'), 'Calgarai', 2);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (5, TO_TIMESTAMP('22:00',
+'hh24:mi'), 'Crally', 4);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (6, TO_TIMESTAMP('21:00',
+'hh24:mi'), 'Crispy Roses', 5);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (7, TO_TIMESTAMP('20:00',
+'hh24:mi'), 'Geonesis', 6);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (8, TO_TIMESTAMP('22:00',
+'hh24:mi'), 'Limbo', 7);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (9, TO_TIMESTAMP('19:00',
+'hh24:mi'), 'Ram', 8);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (10, TO_TIMESTAMP('21:00',
+'hh24:mi'), 'Rickroll', 9);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (11, TO_TIMESTAMP('19:00',
+'hh24:mi'), 'Ram', 9);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (12, TO_TIMESTAMP('22:00',
+'hh24:mi'), 'Limbo', 10);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (13, TO_TIMESTAMP('17:00',
+'hh24:mi'), 'Crispy Roses', 1);
+
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (14, TO_TIMESTAMP('18:00',
+'hh24:mi'), 'Crispy Roses', 2);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (15, TO_TIMESTAMP('22:00',
+'hh24:mi'), 'Crispy Roses', 3);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (16, TO_TIMESTAMP('17:00',
+'hh24:mi'), 'Crispy Roses', 4);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (17, TO_TIMESTAMP('22:00',
+'hh24:mi'), 'Crispy Roses', 6);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (18, TO_TIMESTAMP('14:00',
+'hh24:mi'), 'Crispy Roses', 7);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (19, TO_TIMESTAMP('23:00',
+'hh24:mi'), 'Crispy Roses', 8);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (20, TO_TIMESTAMP('16:00',
+'hh24:mi'), 'Crispy Roses', 9);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (21, TO_TIMESTAMP('18:00',
+'hh24:mi'), 'Crispy Roses', 10);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (22, TO_TIMESTAMP('22:00',
+'hh24:mi'), 'Crispy Roses', 0);
+-- updating the tables
+UPDATE Hor_Place SET place_type = 'Restaurant' WHERE place_id = 3;
+UPDATE Hor_Instrument SET instrument_name = 'Traingle' WHERE instrument_id = 7;
+UPDATE Hor_Musician SET phone_number = Null WHERE length (phone_number) > 10;
+-- creating sequences
+CREATE SEQUENCE Hor_sequence_id_place START WITH 6 INCREMENT BY 1 NOCYCLE;
+CREATE SEQUENCE Hor_sequence_id_inst START WITH 8 INCREMENT BY 1 NOCYCLE;
+-- updating the tables with sequences
+INSERT INTO Hor_Place (place_id, place_address, place_type) SELECT Hor_sequence_id_place.NEXTVAL, '6, Proco St.', 'Theater'
+FROM dual;
+INSERT INTO Hor_Place (place_id, place_address, place_type) SELECT Hor_sequence_id_place.NEXTVAL, '18, Maximilian Av.', 'café'
+FROM dual;
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) SELECT Hor_sequence_id_inst.NEXTVAL, 'Trumpet' FROM dual;
+INSERT INTO Hor_Instrument (instrument_id, instrument_name) SELECT Hor_sequence_id_inst.NEXTVAL, 'Clarinet' FROM dual;
+-- deleting the rows
+DELETE FROM Hor_Band WHERE year_of_creation = 2015;
+DELETE FROM Hor_Place WHERE place_address = '18, Maximilian Av.';
+DELETE FROM Hor_Place WHERE place_address = '6, Proco St.';
+-- 3-table test view query
+CREATE OR REPLACE VIEW band_leaders_instr
+AS SELECT Hor_Musician.passport, Hor_Musician.musician_name, Hor_Musician.musician_surname, phone_number, band_name,
+instrument_name
+FROM
+(Hor_Musician INNER JOIN Hor_Band ON Hor_Musician.passport = Hor_Band.leader_passport)
+INNER JOIN Hor_Instrument ON (Hor_Musician.main_instrument_id = Hor_Instrument.instrument_id);
+SELECT * FROM band_leaders_instr WHERE phone_number IS NOT NULL;
+--Query 5 simple queries
+-- 1)Band names which start from A or a:
+SELECT band_name from Hor_Band
+WHERE UPPER(band_name) LIKE 'A%';
+-- 2)Musicians, whose main instrument is guitar:
+SELECT musician_name||' '||musician_surname "Musician"
+FROM Hor_Musician, Hor_Instrument
+WHERE Hor_Musician.main_instrument_id = Hor_Instrument.instrument_id
+AND LOWER(Hor_Instrument.instrument_name) LIKE '%guitar%';
+-- 3)Places, where the concert year is declared after 2011:
+SELECT UNIQUE place_type, place_address, concert_date
+FROM Hor_Place INNER JOIN Hor_Concert ON Hor_Place.place_id = Hor_Concert.place_id
+WHERE Hor_Concert.concert_date >= to_date('1/01/2012', 'dd/mm/yyyy');
+-- 4)Places, where the concert is at 19:00:
+SELECT UNIQUE place_type, place_address
+FROM (Hor_Place INNER JOIN Hor_Concert ON Hor_Place.place_id = Hor_Concert.place_id)
+INNER JOIN Hor_Performance ON Hor_Concert.concert_id = Hor_Performance.concert_id
+WHERE Hor_Performance.performance_time = TO_TIMESTAMP('19:00', 'hh24:mi');
+-- 5) To rank the musicians by date of joining their current bands:
+SELECT musician_name||' '||musician_surname "Musician", band_name, start_date,
+DENSE_RANK() OVER (PARTITION BY band_name ORDER BY start_date) AS "Rank"
+FROM Hor_Musician INNER JOIN Hor_Participation ON Hor_Musician.passport = Hor_Participation.musician_passport
+WHERE finish_date IS NULL;
+--3 Set-comparison queries
+-- 1) concerts which are performed at the same places as concert with id 4
+SELECT *
+FROM Hor_Concert cntsY
+WHERE place_id =
+(SELECT cntsX.place_id
+FROM Hor_Concert cntsX
+WHERE cntsX.concert_id = 4);
+-- 2) bands which are considered to perform in all the places in the city
+SELECT band_name
+FROM Hor_Band Bnd
+WHERE
+(SELECT COUNT (DISTINCT place_id)
+FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id
+WHERE Hor_Performance.band_name = Bnd.band_name)
+=
+(SELECT COUNT(place_id) FROM Hor_Place);
+-- 3) concerts which have performances at the same time as concert with id 5
+SELECT PC1.concert_id, PC1.concert_date, to_char(PC1.performance_time, 'hh24:mi') "Performance time"
+FROM
+(SELECT Hor_Concert.concert_id, concert_date, performance_time
+FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) PC1
+WHERE PC1.performance_time IN
+(SELECT PC2.performance_time
+FROM(
+SELECT Hor_Concert.concert_id, concert_date, performance_time
+FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id
+) PC2
+WHERE PC2.concert_id = 5);
+
+
+-- 
+--
+--
+-- 1 гр: 1 2
+-- 2 гр: 1 2
+-- 3 гр: 1 2 3
+
+SELECT* 
+FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id;
+
+
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Band1', 2015, '13FSDFSDF');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Band2', 2015, '3PCJA9874');
+INSERT INTO Hor_Band (band_name, year_of_creation, leader_passport) VALUES ('Band3', 2015, '4ATPJ12414');
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (100, to_date('12/05/2020', 'dd/mm/yyyy'), 1);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (100, TO_TIMESTAMP('20:00','hh24:mi'), 'Band1', 100);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (101, to_date('12/05/2020', 'dd/mm/yyyy'), 2);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (101, TO_TIMESTAMP('20:00','hh24:mi'), 'Band1', 101);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (102, to_date('12/05/2020', 'dd/mm/yyyy'), 1);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (102, TO_TIMESTAMP('20:00','hh24:mi'), 'Band2', 102);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (103, to_date('12/05/2020', 'dd/mm/yyyy'), 2);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (103, TO_TIMESTAMP('20:00','hh24:mi'), 'Band2', 103);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (104, to_date('12/05/2020', 'dd/mm/yyyy'), 1);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (104, TO_TIMESTAMP('20:00','hh24:mi'), 'Band3', 104);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (105, to_date('12/05/2020', 'dd/mm/yyyy'), 2);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (105, TO_TIMESTAMP('20:00','hh24:mi'), 'Band3', 105);
+INSERT INTO Hor_Concert (concert_id, concert_date, place_id) VALUES (106, to_date('12/05/2020', 'dd/mm/yyyy'), 3);
+INSERT INTO Hor_Performance (performance_id, performance_time, band_name, concert_id) VALUES (106, TO_TIMESTAMP('20:00','hh24:mi'), 'Band3', 106);
+
+--- знайти групи, які виступають в усіх тих і можливо інших місцях, в яких виступає група Band1
+SELECT *
+FROM Hor_Band
+WHERE Hor_Band.band_name != 'Band1' AND Hor_Band.band_name IN
+(
+    SELECT Y.band_name 
+    FROM (SELECT * FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) Y
+    WHERE NOT EXISTS
+                    (
+                        SELECT O.place_id
+                        FROM (SELECT * FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) O
+                        WHERE O.band_name = 'Band1' AND O.place_id NOT IN
+                        (
+                            SELECT P.place_id
+                            FROM (SELECT * FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) P
+                            WHERE P.band_name = Y.band_name
+                        )
+                    )
+);
+
+--- знайти групи, які виступають в усіх тих і тільки тих місцях, в яких виступає група Band1
+SELECT *
+FROM Hor_Band
+WHERE Hor_Band.band_name != 'Band1' AND Hor_Band.band_name IN
+(
+    SELECT Y.band_name 
+    FROM (SELECT * FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) Y
+    WHERE NOT EXISTS
+                    (
+                        SELECT O.place_id
+                        FROM (SELECT * FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) O
+                        WHERE O.band_name = 'Band1' AND O.place_id NOT IN
+                        (
+                            SELECT P.place_id
+                            FROM (SELECT * FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) P
+                            WHERE P.band_name = Y.band_name
+                        ))
+
+        AND NOT EXISTS
+        (
+            SELECT O.place_id
+            FROM (SELECT * FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) O
+            WHERE O.band_name = Y.band_name AND O.place_id NOT IN
+            (
+                SELECT P.place_id
+                FROM (SELECT * FROM Hor_Performance INNER JOIN Hor_Concert ON Hor_Performance.concert_id = Hor_Concert.concert_id) P
+                WHERE P.band_name = 'Band1'
+            )
+           )
+);
+
+-- clearing the data (C/C++ routine))
+
+drop VIEW band_leaders_instr;
+drop SEQUENCE Hor_sequence_id_place;
+drop SEQUENCE Hor_sequence_id_inst;
+drop TABLE Hor_Participation;
+drop TABLE Hor_Performance;
+drop TABLE Hor_Band;
+drop TABLE Hor_Musician;
+drop TABLE Hor_Instrument;
+drop TABLE Hor_Concert;
+drop TABLE Hor_Place;
