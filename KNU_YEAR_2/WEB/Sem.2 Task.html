@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Zoo Vacancy Form</title>
+
+    <style>
+        body{
+            margin-left: 20px;
+            width: 550px;
+        }
+
+        rs{
+            color: red;
+        }
+
+        subtitle{
+            color: gray;
+            font-size: 85%;
+            font-weight: 550;
+            font-style: oblique;
+        }
+
+        legend{
+            font-variant: small-caps;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        legend::first-letter{
+            font-size: 1.1em;
+        }
+
+        inputfield{
+            width: 300px;
+        }
+
+        table{
+            margin-left: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 style="margin-bottom: 10px"> Форма заявки на роботу в зоопарку</h1>
+    <subtitle>Будь ласка, заповніть форму. Обов'язкові поля відмічені<rs>*</rs></subtitle>
+    <form style="margin-top: 25px; margin-bottom: 8px">
+        <fieldset>
+            <legend>Контактна інформація</legend>
+            <table>
+                <tr><td>Ім'я <rs>*</rs></td><td><input style="width: 250px; margin-left: 60px" type="text"></td></tr>
+                <tr><td>Телефон</td><td><input style="width: 250px; margin-left: 60px" type="text"></td></tr>
+                <tr><td>E-mail <rs>*</rs></td><td><input style="width: 250px; margin-left: 60px" type="text"></td></tr>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Персональна інформація</legend>
+            <table>
+                <tr><td>Вік <rs>*</rs></td><td><input style="width: 250px" type="text"></td></tr>
+                <tr><td>Стать</td><td><select style="width: 258px">
+                    <option value="male">Чоловік</option>
+                    <option value="female">Жінка</option>
+                    <option value="other">Інше</option>
+                    <option value="prefer not to say">Утримаюсь від відповіді</option>
+                </select></td></tr>
+                <tr><td style="width: 120px">Перерахуйте особисті якості</td><td><textarea style="width: 252px; height: 100px"></textarea></td></tr>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Оберіть улюблені тварини:</legend>
+            <table width="470">
+                <tr><td><input type="checkbox">Зебра</td><td><input type="checkbox">Слон</td>
+                    <td><input type="checkbox">Тигр</td><td><input type="checkbox">Людина</td></tr>
+                <tr><td><input type="checkbox">Скунс</td><td><input type="checkbox">Лев</td>
+                    <td><input type="checkbox">Носоріг</td><td><input type="checkbox">Черепаха</td></tr>
+            </table>
+        </fieldset>
+    </form>
+    <button style="margin-left: 2px" type="submit" value="ok">Відправити</button>
+</body>
+</html>
