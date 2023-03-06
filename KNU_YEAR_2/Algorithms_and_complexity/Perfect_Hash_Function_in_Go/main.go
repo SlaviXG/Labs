@@ -2,27 +2,8 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
+	//"math/rand"
 )
-
-func generateRandomWords(number int, length int) []string {
-
-	const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	var words []string
-
-	for i := 0; i < number; i++ {
-
-		word := ""
-
-		for j := 0; j < length; j++ {
-			word += string(letters[rand.Intn(len(letters)-1)])
-		}
-
-		words = append(words, word)
-	}
-
-	return words
-}
 
 func main() {
 
