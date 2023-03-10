@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sem.4 Task</title>
+
+    <style>
+        .blank{
+          position: absolute;
+          width: 400px;
+          height: 500px;
+        }
+
+        #blank1{
+            top:  10px;
+            left: 10px;
+            z-index: 1;
+            background-image: url("https://images.pexels.com/photos/949587/pexels-photo-949587.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+        }
+
+        #blank2{
+          top:  180px;
+          left: 350px;
+          z-index: 2;
+          background-image: url("https://images.pexels.com/photos/255464/pexels-photo-255464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
+        }
+
+        #blank3{
+          top:  10px;
+          left: 600px;
+          z-index: 1;
+          background-image: url("https://images.pexels.com/photos/567985/pexels-photo-567985.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
+        }
+
+        img{
+          outline-color: #d38031;
+          outline-style: solid;
+        }
+
+        .main_picture{
+          width: 60%;
+          height: 35%;
+          position: relative;
+          top: 20px;
+          left: 10px;
+        }
+
+        .menu{
+          width: 60%;
+          height: 35%;
+          position: relative;
+          top: 75px;
+          left: 10px;
+          outline-color: #d38031;
+          outline-style: solid;
+          background-color: #ffba8f;
+        }
+
+        .menubar{
+          width: 100%;
+          height: 13%;
+          background-color: #ffa16f;
+        }
+
+        .menu_button{
+          position: relative;
+          height: 90%;
+          width: 30%;
+          text-align: center;
+          font-weight: bold;
+        }
+
+        .menu_button1{
+          top: 10%;
+          background-color: #ffba8f;
+          color: #0001ed;
+        }
+
+        .menu_button1:hover{
+          color: #b934b9;
+        }
+
+        .menu_button2{
+          top: -80%;
+          left: 33%;
+          background-color: #fc8b47;
+        }
+
+        .menu_button2:hover{
+          color: #ffffff;
+        }
+
+        .menu_button3{
+          top: -170%;
+          left: 66%;
+          background-color: #fc8b47;
+        }
+
+        .menu_button3:hover{
+          color: #ffffff;
+        }
+
+        .menu_picture{
+          position: relative;
+          width: 45%;
+          height: 35%;
+          left: 3%;
+          top: 8%;
+        }
+
+        .menu_text1{
+          float: right;
+          font-size: 10px;
+          position: relative;
+          margin-left: 122px;
+          margin-right: 3px;
+          margin-top: -53px;
+        }
+
+        .menu_text2{
+          float: right;
+          font-size: 10px;
+          position: relative;
+          margin-left: 3px;
+          margin-right: 3px;
+
+        }
+
+        a{
+          font-weight: bold;
+          margin-left: 6px;
+          position: relative;
+          top: 5%;
+          font-size: 95%;
+        }
+
+        #menubar_central{
+          background-color: #ffe7da;
+        }
+
+        #menu_button1_central{
+          background-color: #916f57;
+          color: #ffe7da;
+        }
+
+        #menu_button1_central:hover{
+          background-color: darkred;
+        }
+
+        #menu_button2_central{
+          background-color: #797979;
+          color: #ffe7da;
+        }
+
+        #menu_button2_central:hover{
+          background-color: #ada4a4;
+        }
+
+        #menu_button3_central{
+          background-color: #797979;
+          color: #ffe7da;
+        }
+
+        #menu_button3_central:hover{
+          background-color: #ada4a4;
+        }
+
+        .main_figcaption{
+          position: relative;
+          left: -17%;
+          top: 5%;
+          color: #ffe7da;
+          font-size: 9px;
+          padding: 2px;
+          text-align: center;
+        }
+
+        .side_figcaption{
+          position: absolute;
+          font-size: 7px;
+          color: #ffe7da;
+        }
+
+        .blank1_pic{
+          position: absolute;
+          width: 60px;
+          height: 60px;
+        }
+
+        .blank3_pic{
+          position: absolute;
+          width: 100px;
+          height: 60px;
+        }
+    </style>
+</head>
+<body>
+  <div class="blank" id="blank1">
+    <img class="main_picture" src="https://images.unsplash.com/photo-1474511320723-9a56873867b5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YW5pbWFsfGVufDB8fDB8fA%3D%3D&w=1000&q=80">
+    <figcaption class="main_figcaption">Lorem ipsum dolor sit amet!</figcaption>
+    <div class="menu">
+      <div class="menubar">
+        <div class="menu_button menu_button1">First</div>
+        <div class="menu_button menu_button2">Second</div>
+        <div class="menu_button menu_button3">Third</div>
+      </div>
+      <img class="menu_picture" src="https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80">
+      <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis</span><span class="menu_text2">nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></article>
+      <a href="Sem.4%20Task.html">Visit The Best Website Ever</a>
+    </div>
+    <img class="blank1_pic" src="https://images.ctfassets.net/hrltx12pl8hq/5qusjAtcAaetdPsing4jR6/2db2f75abd2840caa09d21312b4fc6c8/animals-wildlife-shutterstock_1066200380.jpg?fit=fill&w=480&h=320" style="top: 20px; left: 263px"></img>
+    <img class="blank1_pic" src="https://cdn.britannica.com/01/206301-050-AE5BE1A7/white-goat.jpg" style="top: 105px; left: 263px"></img>
+    <img class="blank1_pic" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Wildlife_at_Maasai_Mara_%28Lion%29.jpg/1200px-Wildlife_at_Maasai_Mara_%28Lion%29.jpg" style="top: 190px; left: 263px"></img>
+    <img class="blank1_pic" src="https://i.natgeofe.com/k/fafc489d-721b-4668-91f0-9e65976ed9d6/emperor-penguin-colony_3x4.jpg" style="top: 275px; left: 263px"></img>
+    <img class="blank1_pic" src="https://nationaltoday.com/wp-content/uploads/2020/10/World-Animal.jpg" style="top: 360px; left: 263px"></img>
+    <img class="blank1_pic" src="https://cms.bbcearth.com//sites/default/files/2021-07/Chonky-Animals-2-Quiz.jpg" style="top: 20px; left: 333px"></img>
+    <img class="blank1_pic" src="https://cdn.britannica.com/34/180334-138-4235A017/subordinate-meerkat-pack.jpg?w=800&h=450&c=crop" style="top: 105px; left: 333px"></img>
+    <img class="blank1_pic" src="https://a-z-animals.com/media/2021/01/Wild-Chameleon-Reptile-With-Beautiful-Colors-400x300.jpg" style="top: 190px; left: 333px"></img>
+    <img class="blank1_pic" src="https://cdn.pixabay.com/photo/2016/12/05/11/39/fox-1883658__340.jpg" style="top: 275px; left: 333px"></img>
+    <img class="blank1_pic" src="https://animalhumanenm.org/wp-content/uploads/2017/08/cta-cat-1.jpg" style="top: 360px; left: 333px"></img>
+    <figcaption class="side_figcaption" style="top: 85px; left: 280px">Example 1</figcaption>
+    <figcaption class="side_figcaption" style="top: 170px; left: 280px">Example 3</figcaption>
+    <figcaption class="side_figcaption" style="top: 255px; left: 280px">Example 5</figcaption>
+    <figcaption class="side_figcaption" style="top: 340px; left: 280px">Example 7</figcaption>
+    <figcaption class="side_figcaption" style="top: 425px; left: 280px">Example 9</figcaption>
+    <figcaption class="side_figcaption" style="top: 85px; left: 350px">Example 2</figcaption>
+    <figcaption class="side_figcaption" style="top: 170px; left: 350px">Example 4</figcaption>
+    <figcaption class="side_figcaption" style="top: 255px; left: 350px">Example 6</figcaption>
+    <figcaption class="side_figcaption" style="top: 340px; left: 350px">Example 8</figcaption>
+    <figcaption class="side_figcaption" style="top: 425px; left: 350px">Example 10</figcaption>
+  </div>
+  <div class="blank" id="blank2">
+    <img class="main_picture" src="https://images.ctfassets.net/hrltx12pl8hq/5qusjAtcAaetdPsing4jR6/2db2f75abd2840caa09d21312b4fc6c8/animals-wildlife-shutterstock_1066200380.jpg?fit=fill&w=480&h=320">
+    <div class="menu" style="top: 50px">
+      <div class="menubar" id = "menubar_central">
+        <div class="menu_button menu_button1" id="menu_button1_central">First</div>
+        <div class="menu_button menu_button2" id="menu_button2_central">Second</div>
+        <div class="menu_button menu_button3" id="menu_button3_central">Third</div>
+      </div>
+      <img class="menu_picture" src="https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" style="outline-color: #916f57">
+      <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis</span><span class="menu_text2">nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></article>
+      <a href="Sem.4%20Task.html">Visit The Best Website Ever</a>
+    </div>
+  </div>
+  <div class="blank" id="blank3">
+    <img class="main_picture" src="https://cdn.pixabay.com/photo/2016/03/27/22/22/fox-1284512__340.jpg">
+    <figcaption class="main_figcaption">Lorem ipsum dolor sit amet!</figcaption>
+    <div class="menu">
+      <div class="menubar">
+        <div class="menu_button menu_button1">First</div>
+        <div class="menu_button menu_button2">Second</div>
+        <div class="menu_button menu_button3">Third</div>
+      </div>
+      <img class="menu_picture" src="https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80">
+      <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis</span><span class="menu_text2">nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></article>
+      <a href="Sem.4%20Task.html">Visit The Best Website Ever</a>
+    </div>
+    <img class="blank3_pic" src="https://images.ctfassets.net/hrltx12pl8hq/5qusjAtcAaetdPsing4jR6/2db2f75abd2840caa09d21312b4fc6c8/animals-wildlife-shutterstock_1066200380.jpg?fit=fill&w=480&h=320" style="top: 20px; left: 275px"></img>
+    <img class="blank3_pic" src="https://images.unsplash.com/photo-1474511320723-9a56873867b5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YW5pbWFsfGVufDB8fDB8fA%3D%3D&w=1000&q=80" style="top: 120px; left: 275px"></img>
+    <img class="blank3_pic" src="https://cdn.pixabay.com/photo/2016/03/27/22/22/fox-1284512__340.jpg" style="top: 220px; left: 275px"></img>
+    <img class="blank3_pic" src="https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" style="top: 320px; left: 275px"></img>
+    <figcaption class="side_figcaption" style="top: 85px; left: 315px">(Example 1)</figcaption>
+    <figcaption class="side_figcaption" style="top: 185px; left: 315px">(Example 2)</figcaption>
+    <figcaption class="side_figcaption" style="top: 285px; left: 315px">(Example 3)</figcaption>
+    <figcaption class="side_figcaption" style="top: 385px; left: 315px">(Example 4)</figcaption>
+    <figcaption class="side_figcaption" style="top: 93px; left: 325px">pic1</figcaption>
+    <figcaption class="side_figcaption" style="top: 193px; left: 325px">pic2</figcaption>
+    <figcaption class="side_figcaption" style="top: 293px; left: 325px">pic3</figcaption>
+    <figcaption class="side_figcaption" style="top: 393px; left: 325px">pic4</figcaption>
+  </div>
+</body>
+</html>

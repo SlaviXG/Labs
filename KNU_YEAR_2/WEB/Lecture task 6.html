@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture task 6</title>
+
+    <style>
+
+        .panel {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            border: solid red 3px;
+        }
+
+        #panel1 {
+            margin-top: 50px;
+            height: 150px;
+            width: 400px;
+            justify-content: center;
+        }
+
+        #panel2 {
+            height: 400px;
+            width: 400px;
+            align-items: flex-end;
+            flex-direction: column-reverse;
+
+        }
+
+        .block {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            margin: 5px;
+            font-weight: bold;
+        }
+
+        .block1 {
+            background-color: #ff8a00;
+            height: 100px;
+            width: 50px;
+        }
+        .block2{
+            background-color: #1a11ff;
+            height: 80px;
+            width: 40px;
+        }
+        .block3{
+            background-color: red;
+            height: 60px;
+            width: 30px;
+        }
+        .block4{
+            background-color: #ffd900;
+            height: 40px;
+            width: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="panel1" class="panel">
+        <div class="block block1">1</div>
+        <div class="block block2">2</div>
+        <div class="block block3">3</div>
+        <div class="block block4">4</div>
+    </div>
+    <br>
+    <div id="panel2" class="panel">
+        <div class="block block1">1</div>
+        <div class="block block2">2</div>
+        <div class="block block3">3</div>
+        <div class="block block4">4</div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lecture task 6</title>
+</head>
+<style>
+	body{
+		display: flex;
+		width: 100vw;
+		height: 100vh;
+		margin: 0;
+		justify-content: center;
+   		align-items: center;
+   		
+	}
+	.panel{
+		height: 100%;
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		border-radius: 5px;
+		background: white;
+		box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
+	}
+	.block{
+		display: flex;
+		justify-content: center;
+		margin: 10px;
+		flex-basis: 220px;
+		min-width: 120px;
+		min-height: 50px;
+	}
+	.blue{
+		flex-grow: 1;
+		background-color: deepskyblue;
+	}
+	.yellow{
+		flex-grow: 1;
+		background-color: yellow;
+	}
+	.violet{
+		flex-grow: 2;
+		background-color: violet;
+	}
+</style>
+<body>
+	<div class = "panel">
+		<div class="blue block"></div>
+		<div class="blue block"></div>
+		<div class="blue block"></div>
+		<div class="yellow block"></div>
+		<div class="yellow block"></div>
+		<div class="yellow block"></div>
+		<div class="violet block"></div>
+		<div class="violet block"></div>
+	</div>
+</body>
