@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecture task 10</title>
+
+    <style>
+
+       .container > div{
+            background-color: orange;
+       }
+
+      .container{
+        display: grid;
+        background-color: inherit;
+        grid-row-gap: 6vh;
+        grid-column-gap: 8vw;
+      }
+
+      .space{
+          width: 100vw;
+          height: 20vh;
+      }
+
+      #item1_1{
+          grid-column-start: 6;
+          grid-column-end: 6;
+          grid-row-start: 2;
+      }
+
+      #item1_2{
+          grid-column-start: 1;
+          grid-column-end: 3;
+      }
+
+      #item1_3{
+          grid-column-start: 1;
+          grid-column-end: 5;
+      }
+
+      #item1_4{
+          grid-column-start: 2;
+          grid-column-end: 7;
+          grid-row-start: 1;
+      }
+
+      #item1_5{
+          grid-column-start: 6;
+          grid-column-end: 6;
+      }
+
+       #item2_1{
+           grid-column-start: 4;
+           grid-row-start: 1;
+           grid-row-end: 4;
+       }
+
+       #item2_2{
+           grid-row-start: 1;
+           grid-row-end: 6;
+       }
+
+       #item2_3{
+           grid-column-start: 2;
+           grid-row-start: 3;
+           grid-row-end: 6;
+       }
+
+       #item2_4{
+           grid-column-start: 2;
+           grid-column-end: 4;
+           grid-row-start: 1;
+       }
+
+       #item2_5{
+           grid-column-start: 4;
+           grid-row-start: 5;
+       }
+
+    </style>
+</head>
+<body>
+  <div class = "container">
+    <div id = "item1_1">1</div>
+    <div id = "item1_2">2</div>
+    <div id = "item1_3">3</div>
+    <div id = "item1_4">4</div>
+    <div id = "item1_5">5</div>
+  </div>
+
+  <div class="space"></div>
+
+  <div class = "container">
+      <div id = "item2_1">1</div>
+      <div id = "item2_2">2</div>
+      <div id = "item2_3">3</div>
+      <div id = "item2_4">4</div>
+      <div id = "item2_5">5</div>
+  </div>
+</body>
+</html>
