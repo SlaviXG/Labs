@@ -11,6 +11,13 @@ func main() {
 	tree.InsertValue(3)
 	tree.InsertValue(2)
 	tree.InsertValue(1)
-
+	tree.Print()
+	tree.DeleteValue(5)
+	tree.Print()
+	tree.DeleteValue(1)
+	tree.Print()
+	tree.DeleteValue(7)
+	tree.Print()
+	tree.DeleteValue(3)
 	tree.Print()
 }

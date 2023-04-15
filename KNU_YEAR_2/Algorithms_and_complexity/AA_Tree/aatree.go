@@ -44,8 +44,9 @@ func NewAATree() *AATree {
 type AATreeInterface interface {
 	Find(value int) *TreeNode
 	InsertValue(value int)
-	InsertNode(curRoot **TreeNode, parentRoot *TreeNode, node *TreeNode)
-	Delete(node *TreeNode)
+	InsertNode(curRoot **TreeNode, parentNode *TreeNode, node *TreeNode)
+	DeleteValue(value int)
+	DeleteNode(node **TreeNode)
 	Split(node **TreeNode)
 	Skew(node **TreeNode)
 	ReplaceNode(node_old **TreeNode, node_new **TreeNode)
@@ -75,10 +76,10 @@ func (tree *AATree) InsertValue(value int) {
 	tree.InsertNode(&tree.root, nil, node)
 }
 
-func (tree *AATree) InsertNode(curRoot **TreeNode, parentRoot *TreeNode, node *TreeNode) {
+func (tree *AATree) InsertNode(curRoot **TreeNode, parentNode *TreeNode, node *TreeNode) {
 	if *curRoot == nil {
 		*curRoot = node
-		(*curRoot).parent = parentRoot
+		(*curRoot).parent = parentNode
 	} else if node.value < (*curRoot).value {
 		tree.InsertNode(&((*curRoot).left), *curRoot, node)
 	} else if node.value > (*curRoot).value {
@@ -88,8 +89,62 @@ func (tree *AATree) InsertNode(curRoot **TreeNode, parentRoot *TreeNode, node *T
 	tree.Split(curRoot)
 }
 
-func (tree *AATree) Delete(node *TreeNode) {
+func (tree *AATree) DeleteValue(value int) {
+	node := tree.Find(value)
+	tree.DeleteNode(node)
+}
 
+func (tree *AATree) DeleteNode(node *TreeNode) {
+	if node == nil {
+		return
+	}
+
+	if node.left != nil && node.right != nil {
+		successor := node.right
+		for successor.left != nil {
+			successor = successor.left
+		}
+		node.value = successor.value
+		node = successor
+	}
+
+	var child *TreeNode
+	if node.left != nil {
+		child = node.left
+	} else {
+		child = node.right
+	}
+
+	if child != nil {
+		child.parent = node.parent
+		if node.parent == nil {
+			tree.root = child
+		} else if node == node.parent.left {
+			node.parent.left = child
+		} else {
+			node.parent.right = child
+		}
+
+		if node.level == 1 {
+			tree.DecreaseLevel(&child.parent)
+		}
+	} else {
+		if node.parent == nil {
+			tree.root = nil
+		} else {
+			if node == node.parent.left {
+				node.parent.left = nil
+			} else {
+				node.parent.right = nil
+			}
+			tree.DecreaseLevel(&node.parent)
+		}
+	}
+
+	node.parent = nil
+	node.left = nil
+	node.right = nil
+	node.level = 0
 }
 
 func (tree *AATree) Split(node **TreeNode) {
