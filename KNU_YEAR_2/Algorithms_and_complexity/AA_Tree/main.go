@@ -7,7 +7,6 @@ func main() {
 	tree.InsertValue(7)
 	tree.InsertValue(8)
 	tree.InsertValue(5)
-
 	tree.InsertValue(4)
 	tree.InsertValue(3)
 	tree.InsertValue(2)

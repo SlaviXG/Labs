@@ -44,14 +44,14 @@ func NewAATree() *AATree {
 type AATreeInterface interface {
 	Find(value int) *TreeNode
 	InsertValue(value int)
-	InsertNode(root *TreeNode, node *TreeNode)
+	InsertNode(curRoot **TreeNode, parentRoot *TreeNode, node *TreeNode)
 	Delete(node *TreeNode)
-	Split(node *TreeNode)
-	Skew(node *TreeNode)
-	ReplaceNode(node_old TreeNode, node_new TreeNode)
-	RotateLeft(node *TreeNode)
-	RotateRight(node *TreeNode)
-	DecreaseLevel(node *TreeNode)
+	Split(node **TreeNode)
+	Skew(node **TreeNode)
+	ReplaceNode(node_old **TreeNode, node_new **TreeNode)
+	RotateLeft(node **TreeNode)
+	RotateRight(node **TreeNode)
+	DecreaseLevel(node **TreeNode)
 	Print()
 }
 
@@ -73,21 +73,17 @@ func (tree *AATree) Find(value int) *TreeNode {
 func (tree *AATree) InsertValue(value int) {
 	node := NewTreeNode(value)
 	tree.InsertNode(&tree.root, nil, node)
-	println("Insert: ", value)
-	tree.Print()
 }
 
 func (tree *AATree) InsertNode(curRoot **TreeNode, parentRoot *TreeNode, node *TreeNode) {
 	if *curRoot == nil {
 		*curRoot = node
 		(*curRoot).parent = parentRoot
-		fmt.Println(&tree.root, " ", curRoot)
 	} else if node.value < (*curRoot).value {
 		tree.InsertNode(&((*curRoot).left), *curRoot, node)
 	} else if node.value > (*curRoot).value {
 		tree.InsertNode(&((*curRoot).right), *curRoot, node)
 	}
-	fmt.Println("curRoot: ", (*curRoot).value)
 	tree.Skew(curRoot)
 	tree.Split(curRoot)
 }
@@ -102,8 +98,6 @@ func (tree *AATree) Split(node **TreeNode) {
 			if (*node).right.right.level == (*node).level {
 				tree.RotateLeft(node)
 				(*node).level++
-				fmt.Println("Split:")
-				tree.Print()
 			}
 		}
 	}
@@ -113,8 +107,6 @@ func (tree *AATree) Skew(node **TreeNode) {
 	if (*node).left != nil {
 		if (*node).left.level == (*node).level {
 			tree.RotateRight(node)
-			fmt.Println("Skew:")
-			tree.Print()
 		}
 	}
 }
@@ -180,7 +172,7 @@ func (tree *AATree) DecreaseLevel(node **TreeNode) {
 
 func (tree *AATree) Print() {
 	_printTree(tree.root, 0)
-	println("\n")
+	fmt.Println("")
 }
 
 func _min(x int, y int) int {
