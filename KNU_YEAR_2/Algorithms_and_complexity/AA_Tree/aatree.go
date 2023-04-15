@@ -54,6 +54,7 @@ type AATreeInterface interface {
 	RotateRight(node **TreeNode)
 	DecreaseLevel(node **TreeNode)
 	Print()
+	Size()
 }
 
 func (tree *AATree) Find(value int) *TreeNode {
@@ -80,6 +81,7 @@ func (tree *AATree) InsertNode(curRoot **TreeNode, parentNode *TreeNode, node *T
 	if *curRoot == nil {
 		*curRoot = node
 		(*curRoot).parent = parentNode
+		tree.size++
 	} else if node.value < (*curRoot).value {
 		tree.InsertNode(&((*curRoot).left), *curRoot, node)
 	} else if node.value > (*curRoot).value {
@@ -145,6 +147,7 @@ func (tree *AATree) DeleteNode(node *TreeNode) {
 	node.left = nil
 	node.right = nil
 	node.level = 0
+	tree.size--
 }
 
 func (tree *AATree) Split(node **TreeNode) {
@@ -228,6 +231,10 @@ func (tree *AATree) DecreaseLevel(node **TreeNode) {
 func (tree *AATree) Print() {
 	_printTree(tree.root, 0)
 	fmt.Println("")
+}
+
+func (tree *AATree) Size() int {
+	return tree.size
 }
 
 func _min(x int, y int) int {
