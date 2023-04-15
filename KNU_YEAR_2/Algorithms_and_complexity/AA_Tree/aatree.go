@@ -48,6 +48,7 @@ type AATreeInterface interface {
 	Delete(node *TreeNode)
 	Split(node *TreeNode)
 	Skew(node *TreeNode)
+	ReplaceNode(node_old TreeNode, node_new TreeNode)
 	RotateLeft(node *TreeNode)
 	RotateRight(node *TreeNode)
 	DecreaseLevel(node *TreeNode)
@@ -71,17 +72,22 @@ func (tree *AATree) Find(value int) *TreeNode {
 
 func (tree *AATree) InsertValue(value int) {
 	node := NewTreeNode(value)
-	tree.InsertNode(tree.root, node)
+	tree.InsertNode(&tree.root, nil, node)
+	println("Insert: ", value)
+	tree.Print()
 }
 
-func (tree *AATree) InsertNode(curRoot *TreeNode, node *TreeNode) {
-	if curRoot == nil {
-		curRoot = node
-	} else if node.value < curRoot.value {
-		tree.InsertNode(curRoot.left, node)
-	} else if node.value > curRoot.value {
-		tree.InsertNode(curRoot.right, node)
+func (tree *AATree) InsertNode(curRoot **TreeNode, parentRoot *TreeNode, node *TreeNode) {
+	if *curRoot == nil {
+		*curRoot = node
+		(*curRoot).parent = parentRoot
+		fmt.Println(&tree.root, " ", curRoot)
+	} else if node.value < (*curRoot).value {
+		tree.InsertNode(&((*curRoot).left), *curRoot, node)
+	} else if node.value > (*curRoot).value {
+		tree.InsertNode(&((*curRoot).right), *curRoot, node)
 	}
+	fmt.Println("curRoot: ", (*curRoot).value)
 	tree.Skew(curRoot)
 	tree.Split(curRoot)
 }
@@ -90,72 +96,84 @@ func (tree *AATree) Delete(node *TreeNode) {
 
 }
 
-func (tree *AATree) Split(node *TreeNode) {
-	if node.right != nil {
-		if node.right.right != nil {
-			if node.right.right.level == node.level {
+func (tree *AATree) Split(node **TreeNode) {
+	if (*node).right != nil {
+		if (*node).right.right != nil {
+			if (*node).right.right.level == (*node).level {
 				tree.RotateLeft(node)
+				fmt.Println("Split:")
+				tree.Print()
 			}
 		}
 	}
 }
 
-func (tree *AATree) Skew(node *TreeNode) {
-	if node.left != nil {
-		if node.left.level == node.level {
+func (tree *AATree) Skew(node **TreeNode) {
+	if (*node).left != nil {
+		if (*node).left.level == (*node).level {
 			tree.RotateRight(node)
+			fmt.Println("Skew:")
+			tree.Print()
 		}
 	}
 }
 
-func (tree *AATree) RotateLeft(node *TreeNode) {
+func (tree *AATree) ReplaceNode(node_old **TreeNode, node_new **TreeNode) {
 
-	y := node.right
-	node.right = y.left
-	if y.left != nil {
-		y.left.parent = node
-	}
-	y.parent = node.parent
-	if node.parent == nil {
-		tree.root = y
-	} else if node == node.parent.left {
-		node.parent.left = y
+	old_parent := (*node_old).parent
+
+	if (*node_old).parent == nil {
+		tree.root = *node_new
 	} else {
-		node.parent.right = y
+		if *node_old == (*node_old).parent.left {
+			(*node_old).parent.left = *node_new
+		} else {
+			(*node_old).parent.right = *node_new
+		}
 	}
-	y.left = node
-	node.parent = y
+	if node_new != nil {
+		(*node_new).parent = old_parent
+	}
+}
+
+func (tree *AATree) RotateLeft(node **TreeNode) {
+
+	y := (*node).right
+	n := (*node)
+	tree.ReplaceNode(node, &y)
+	s := (*node).left
+	(*node).left = n
+	if s != nil {
+		s.parent = n
+	}
+	n.right = s
+	n.parent = (*node)
 	y.level++
 }
 
-func (tree *AATree) RotateRight(node *TreeNode) {
-	y := node.left
-	node.left = y.right
-	if y.right != nil {
-		y.right.parent = node
+func (tree *AATree) RotateRight(node **TreeNode) {
+	y := (*node).left
+	n := (*node)
+	tree.ReplaceNode(node, &y)
+	s := (*node).right
+	(*node).right = n
+	if s != nil {
+		s.parent = n
 	}
-	y.parent = node.parent
-	if node.parent == nil {
-		tree.root = y
-	} else if node == node.parent.right {
-		node.parent.right = y
-	} else {
-		node.parent.left = y
-	}
-	y.right = node
-	node.parent = y
+	n.left = s
+	n.parent = (*node)
 	y.level++
 }
 
-func (tree *AATree) DecreaseLevel(node *TreeNode) {
+func (tree *AATree) DecreaseLevel(node **TreeNode) {
 
 	var w int
-	if node.left != nil && node.right != nil {
-		w = _min(node.left.level, node.right.level) + 1
-		if w < node.level {
-			node.level = w
-			if node.right != nil && w < node.right.level {
-				node.right.level = w
+	if (*node).left != nil && (*node).right != nil {
+		w = _min((*node).left.level, (*node).right.level) + 1
+		if w < (*node).level {
+			(*node).level = w
+			if (*node).right != nil && w < (*node).right.level {
+				(*node).right.level = w
 			}
 		}
 	}
@@ -163,6 +181,7 @@ func (tree *AATree) DecreaseLevel(node *TreeNode) {
 
 func (tree *AATree) Print() {
 	_printTree(tree.root, 0)
+	println("\n")
 }
 
 func _min(x int, y int) int {
