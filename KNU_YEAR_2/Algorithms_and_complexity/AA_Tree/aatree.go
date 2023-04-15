@@ -101,6 +101,7 @@ func (tree *AATree) Split(node **TreeNode) {
 		if (*node).right.right != nil {
 			if (*node).right.right.level == (*node).level {
 				tree.RotateLeft(node)
+				(*node).level++
 				fmt.Println("Split:")
 				tree.Print()
 			}
@@ -148,7 +149,6 @@ func (tree *AATree) RotateLeft(node **TreeNode) {
 	}
 	n.right = s
 	n.parent = (*node)
-	y.level++
 }
 
 func (tree *AATree) RotateRight(node **TreeNode) {
@@ -162,7 +162,6 @@ func (tree *AATree) RotateRight(node **TreeNode) {
 	}
 	n.left = s
 	n.parent = (*node)
-	y.level++
 }
 
 func (tree *AATree) DecreaseLevel(node **TreeNode) {
