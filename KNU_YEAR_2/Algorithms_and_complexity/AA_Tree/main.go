@@ -28,6 +28,7 @@ func demonstrate_tree() {
 	fmt.Println("Size: ", tree.Size())
 	tree.Print()
 	tree.DeleteValue(3)
+	fmt.Println("Find 3: ", tree.Find(3))
 	fmt.Println("Size: ", tree.Size())
 	tree.Print()
 	tree.InsertValue(3)
@@ -36,4 +37,5 @@ func demonstrate_tree() {
 	tree.DeleteValue(4)
 	fmt.Println("Size: ", tree.Size())
 	tree.Print()
+	fmt.Println("Find 3: ", tree.Find(3))
 }
