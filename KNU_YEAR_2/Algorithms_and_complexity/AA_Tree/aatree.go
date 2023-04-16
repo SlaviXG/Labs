@@ -11,7 +11,6 @@ type TreeNode struct {
 	parent *TreeNode
 	left   *TreeNode
 	right  *TreeNode
-	isRed  bool
 	level  int
 	value  complex128
 }
@@ -27,7 +26,6 @@ func NewTreeNode(value complex128) *TreeNode {
 		parent: nil,
 		left:   nil,
 		right:  nil,
-		isRed:  false,
 		level:  1,
 		value:  value,
 	}
