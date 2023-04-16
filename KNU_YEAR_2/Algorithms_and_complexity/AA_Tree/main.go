@@ -3,7 +3,10 @@ package main
 import "fmt"
 
 func main() {
+	demonstrate_tree()
+}
 
+func demonstrate_tree() {
 	tree := NewAATree()
 	tree.InsertValue(6)
 	tree.InsertValue(7)
@@ -25,6 +28,12 @@ func main() {
 	fmt.Println("Size: ", tree.Size())
 	tree.Print()
 	tree.DeleteValue(3)
+	fmt.Println("Size: ", tree.Size())
+	tree.Print()
+	tree.InsertValue(3)
+	fmt.Println("Size: ", tree.Size())
+	tree.Print()
+	tree.DeleteValue(4)
 	fmt.Println("Size: ", tree.Size())
 	tree.Print()
 }
