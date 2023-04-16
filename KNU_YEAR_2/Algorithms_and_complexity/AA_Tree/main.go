@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	demonstrate_tree()
@@ -8,7 +10,7 @@ func main() {
 
 func demonstrate_tree() {
 	tree := NewAATree()
-	tree.InsertValue(6)
+	tree.InsertValue(6 + 10i)
 	tree.InsertValue(7)
 	tree.InsertValue(8)
 	tree.InsertValue(5)

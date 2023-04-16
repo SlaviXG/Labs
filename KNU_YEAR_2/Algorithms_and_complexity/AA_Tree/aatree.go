@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/cmplx"
 )
 
 //A level of a node is the number of left links to a NULL reference.
@@ -12,7 +13,7 @@ type TreeNode struct {
 	right  *TreeNode
 	isRed  bool
 	level  int
-	value  int
+	value  complex128
 }
 
 type AATree struct {
@@ -21,7 +22,7 @@ type AATree struct {
 }
 
 // Node constructor:
-func NewTreeNode(value int) *TreeNode {
+func NewTreeNode(value complex128) *TreeNode {
 	return &TreeNode{
 		parent: nil,
 		left:   nil,
@@ -42,10 +43,10 @@ func NewAATree() *AATree {
 
 // Interface for interaction with AA-Tree
 type AATreeInterface interface {
-	Find(value int) *TreeNode
-	InsertValue(value int)
+	Find(value complex128) *TreeNode
+	InsertValue(value complex128)
 	InsertNode(curRoot **TreeNode, parentNode *TreeNode, node *TreeNode)
-	DeleteValue(value int)
+	DeleteValue(value complex128)
 	DeleteNode(node **TreeNode)
 	Split(node **TreeNode)
 	Skew(node **TreeNode)
@@ -57,14 +58,14 @@ type AATreeInterface interface {
 	Size()
 }
 
-func (tree *AATree) Find(value int) *TreeNode {
+func (tree *AATree) Find(value complex128) *TreeNode {
 
 	curNode := tree.root
 
 	for curNode != nil && curNode.value != value {
-		if value < curNode.value {
+		if cmplx.Abs(value) < cmplx.Abs(curNode.value) {
 			curNode = curNode.left
-		} else if value > curNode.value {
+		} else if cmplx.Abs(value) > cmplx.Abs(curNode.value) {
 			curNode = curNode.right
 		}
 	}
@@ -72,7 +73,7 @@ func (tree *AATree) Find(value int) *TreeNode {
 	return curNode
 }
 
-func (tree *AATree) InsertValue(value int) {
+func (tree *AATree) InsertValue(value complex128) {
 	node := NewTreeNode(value)
 	tree.InsertNode(&tree.root, nil, node)
 }
@@ -82,16 +83,16 @@ func (tree *AATree) InsertNode(curRoot **TreeNode, parentNode *TreeNode, node *T
 		*curRoot = node
 		(*curRoot).parent = parentNode
 		tree.size++
-	} else if node.value < (*curRoot).value {
+	} else if cmplx.Abs(node.value) < cmplx.Abs((*curRoot).value) {
 		tree.InsertNode(&((*curRoot).left), *curRoot, node)
-	} else if node.value > (*curRoot).value {
+	} else if cmplx.Abs(node.value) > cmplx.Abs((*curRoot).value) {
 		tree.InsertNode(&((*curRoot).right), *curRoot, node)
 	}
 	tree.Skew(curRoot)
 	tree.Split(curRoot)
 }
 
-func (tree *AATree) DeleteValue(value int) {
+func (tree *AATree) DeleteValue(value complex128) {
 	node := tree.Find(value)
 	tree.DeleteNode(node)
 }
