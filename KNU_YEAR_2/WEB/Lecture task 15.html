@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecture task 15</title>
+</head>
+<body>
+
+  <div class = 'task1'>
+    <div id="date"></div>
+    <div id="time"></div>
+    <div id="day"></div>
+    <script>
+      const dateElem = document.getElementById("date");
+      const timeElem = document.getElementById("time");
+      const dayElem = document.getElementById("day");
+
+      const now = new Date();
+      dateElem.textContent = now.toLocaleDateString();
+      timeElem.textContent = now.toLocaleTimeString();
+
+      const daysOfWeek = ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"];
+      const dayOfWeek = daysOfWeek[now.getDay()];
+      dayElem.textContent = dayOfWeek;
+    </script>
+  </div>
+
+  <div class = 'task2'>
+    <script>
+      function addNewProperty(obj, key, value) {
+        if (!(key in obj)) {
+          obj[key] = value;
+        }
+        return obj;
+      }
+    </script>
+  </div>
+
+  <div class = 'task3'>
+    <script>
+      const obj = { name: 'Web Developer', age: 30, city: 'Kyiv'};
+
+      console.log("Method 1 :")
+      for (let key of Object.keys(obj)) {
+        console.log(`${key}: ${obj[key]}`);
+      }
+
+      console.log("Method 2 :")
+      for (let key in obj) {
+        console.log(`${key}: ${obj[key]}`);
+      }
+    </script>
+  </div>
+</body>
+</html>
