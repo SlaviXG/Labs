@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Sem.8 Task</title>
+    <style>
+      body, #total_price{
+          margin: 20px 20px 20px 20px;
+      }
+      #flag{
+        max-width: 300px;
+        max-height: 200px;
+        min-width: 200px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      #get_price{
+          margin-top: 20px;
+      }
+      .price, #total_price{
+          font-weight: bolder
+      }
+    </style>
+</head>
+<body>
+  <form id = "form">
+    <h2>Choose the country:</h2>
+    <select id = "country_choice">
+        <option value="NoneCountry" id = "NoneCountry">None</option>
+        <option value="Austria" id = "Austria">Austria</option>
+        <option value="Germany" id = "Germany">Germany</option>
+        <option value="France" id = "France">France</option>
+        <option value="Switzerland" id = "Switzerland">Switzerland</option>
+        <option value="Luxembourg" id = "Luxembourg">Luxembourg</option>
+    </select>
+  </form>
+  <div id = "content" style="display: none">
+    <img id="flag" src=" ">
+    <form id="places">
+        <h3>Choose the places to go:</h3>
+        <div class="container-fluid" id="place_choice">
+            <div class="row">
+                <div class="col-sm-4 place-container">
+                    <input type="checkbox" id="place_1" name="countryChoice" value = "place_1">
+                    <h2 id="title_1"></h2>
+                    <img class="place-img img-fluid" id="img_1" src="">
+                    <p id="desc_1"></p>
+                    <div class="price"><span>Price </span><span id="price_1"></span><span> €</span></div>
+                </div>
+                <div class="col-sm-4 place-container">
+                    <input type="checkbox" id="place_2" name="countryChoice" value = "place_2">
+                    <h2 id="title_2"></h2>
+                    <img class="place-img img-fluid" id="img_2" src="">
+                    <p id="desc_2"></p>
+                    <div class="price"><span>Price </span><span id="price_2"></span><span> €</span></div>
+                </div>
+                <div class="col-sm-4 place-container">
+                    <input type="checkbox" id="place_3" name="countryChoice" value = "place_3">
+                    <h2 id="title_3"></h2>
+                    <img class="place-img img-fluid" id="img_3" src="">
+                    <p id="desc_3"></p>
+                    <div class="price"><span>Price </span><span id="price_3"></span><span> €</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="total_price" id="get_price" >
+            <button type="button" id = "get_price_button" class="btn btn-primary btn-m">Count total price</button>
+            <span id="total_price"></span>
+        </div>
+    </form>
+
+      <script>
+          let countrySelection = document.getElementById('country_choice');
+          countrySelection.addEventListener('change', function (){
+              const selectedValue = countrySelection.value;
+              console.log('Selected option:', selectedValue);
+
+              if(selectedValue === "NoneCountry"){
+                  document.getElementById('content').style.display = "none";
+              }
+              else{
+                  document.getElementById('place_1').checked = false;
+                  document.getElementById('place_2').checked = false;
+                  document.getElementById('place_3').checked = false;
+                  document.getElementById("total_price").innerHTML = "";
+
+                  document.getElementById('content').style.display = "block";
+
+                  switch (selectedValue) {
+                      case "Austria":{
+                          showAustria();
+                          break;
+                      }
+                      case "Germany":{
+                          showGermany();
+                          break;
+                      }
+                      case "France":{
+                          showFrance();
+                          break;
+                      }
+                      case "Switzerland":{
+                          showSwitzerland();
+                          break;
+                      }
+                      case "Luxembourg":{
+                          showLuxembourg();
+                          break;
+                      }
+                  }
+              }
+          });
+
+          function showAustria(){
+              document.getElementById("flag").src = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/383px-Flag_of_Austria.svg.png";
+
+              document.getElementById("title_1").innerHTML = "Schönbrunn Palace";
+              document.getElementById("img_1").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/2d/28/e4/wwwschoenbrunnat.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_1").innerHTML = "The Cultural World Heritage Site of Schönbrunn Palace is Austria's most frequently visited tourist attraction. In the palace the residential and state rooms with their original furnishings and decorations convey an authentic impression of the imperial lifestyle. The park and gardens surrounding the palace make Schönbrunn in a unique synthesis of Baroque art as well as providing a convenient and highly popular recreational area for Vienna's population.";
+              document.getElementById("price_1").innerHTML = "100";
+
+              document.getElementById("title_2").innerHTML = "Historic Center of Vienna";
+              document.getElementById("img_2").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/6b/48/6d/photo0jpg.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_2").innerHTML = "The historic centre of Vienna is rich in beautiful architecture, including Baroque castles and gardens, as well as the late-19th-century Ringstrasse lined with grand buildings, monuments and parks.";
+              document.getElementById("price_2").innerHTML = "50";
+
+              document.getElementById("title_3").innerHTML = "St. Stephen's Cathedral";
+              document.getElementById("img_3").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/70/f4/d5/photo4jpg.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_3").innerHTML = "Austria's most prominent national symbol, this magnificent cathedral is known for its intricately tiled roof and its nearly 500-foot-tall South Tower, which provides amazing views of the entire city.";
+              document.getElementById("price_3").innerHTML = "60";
+          }
+
+          function showGermany(){
+              document.getElementById("flag").src = "https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg";
+
+              document.getElementById("title_1").innerHTML = "Miniatur Wunderland";
+              document.getElementById("img_1").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/72/63/9e/photo8jpg.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_1").innerHTML = "Miniatur Wunderland is the world’s largest model train exhibit, and still growing. See trains running through recreations of Hamburg and the coast, Austria, the Grand Canyon and Scandinavia.";
+              document.getElementById("price_1").innerHTML = "50";
+
+              document.getElementById("title_2").innerHTML = "Brandenburg Gate";
+              document.getElementById("img_2").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/cd/1e/2e/caption.jpg?w=1200&h=-1&s=1&cx=1070&cy=448&chk=v1_b58b92a890cf42edea5b";
+              document.getElementById("desc_2").innerHTML = "Located in no-man's land between East and West Germany during the Cold War, this famous monument, built during the 18th-century reign of Friedrich Wilhelm II, has long been a defining symbol of Berlin and both the city's division and unification.";
+              document.getElementById("price_2").innerHTML = "40";
+
+              document.getElementById("title_3").innerHTML = "Marienplatz";
+              document.getElementById("img_3").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/82/c5/ab/the-neues-rathaus-building.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_3").innerHTML = "This prominent public square, the largest in Munich, still stands as the center of social activity in the city, much as it has throughout history.";
+              document.getElementById("price_3").innerHTML = "100";
+          }
+
+          function showFrance(){
+              document.getElementById("flag").src = "https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/375px-Flag_of_France.svg.png";
+
+              document.getElementById("title_1").innerHTML = "Eiffel Tower";
+              document.getElementById("img_1").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/9e/7f/9d/eiffeltoren.jpg?w=1100&h=-1&s=1";
+              document.getElementById("desc_1").innerHTML = "Completed in 1889, this colossal landmark, although initially hated by many Parisians, is now a famous symbol of French civic pride.";
+              document.getElementById("price_1").innerHTML = "30";
+
+              document.getElementById("title_2").innerHTML = "Louvre Museum";
+              document.getElementById("img_2").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/4f/70/dc/cour-napoleon-et-pyramide.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_2").innerHTML = "As one of the largest, oldest, and grandest museums in the world, the Louvre hosts a treasure trove of artworks spanning diverse cultures and periods of history. Marvel at the museum’s greatest hits: the Mona Lisa, the Venus de Milo, Winged Victory, and stunning collections of prized paintings and Greek and Roman statues. It’s not possible to see all of the museum in one visit, so be inspired to return for your next trip to Paris. ";
+              document.getElementById("price_2").innerHTML = "35";
+
+              document.getElementById("title_3").innerHTML = "Cathedrale Notre Dame de Strasbourg";
+              document.getElementById("img_3").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/06/52/4e/e4/cathedrale-notre-dame.jpg?w=1000&h=-1&s=1";
+              document.getElementById("desc_3").innerHTML = "This huge cathedral, Strasbourg's most famous landmark, is an intimidating example of 13th-century Gothic architecture.";
+              document.getElementById("price_3").innerHTML = "50";
+          }
+
+          function showSwitzerland(){
+              document.getElementById("flag").src = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Flag_of_Switzerland_%28Pantone%29.svg/255px-Flag_of_Switzerland_%28Pantone%29.svg.png";
+
+              document.getElementById("title_1").innerHTML = "Schilthorn Piz Gloria";
+              document.getElementById("img_1").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/28/c9/70/c9/piz-gloria.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_1").innerHTML = "It takes you just 32 minutes by Cable car to reach the summit of the 2970 m high Schilthorn. Enjoy the beautiful view of Eiger, Monch and Jungfrau (UNESCO World Heritage) and on more than 200 other summits.";
+              document.getElementById("price_1").innerHTML = "70";
+
+              document.getElementById("title_2").innerHTML = "Bahnhofstrasse";
+              document.getElementById("img_2").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/87/5d/b5/bahnhofstrasse.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_2").innerHTML = "This famous pedestrian street offers the best in world-class shopping opportunities and is also home to some of the world's most important banks.";
+              document.getElementById("price_2").innerHTML = "25";
+
+              document.getElementById("title_3").innerHTML = "Stiftsbibliothek";
+              document.getElementById("img_3").src = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/2e/32/6f/interior-da-biblioteca.jpg?w=1200&h=-1&s=1";
+              document.getElementById("desc_3").innerHTML = "The Abbey Library St. Gallen, famous for its beautiful baroque hall, is one of the oldest libraries in the world. And it holds one of the most important manuscript collections in Europe, especially for the Carolingian and Ottonian period from the 8th to the 11th century. The collection is presented to the visitors in changing and thematised expositions. The library forms the central part of the UNESCO World Heritage Site Convent of St. Gallen.";
+              document.getElementById("price_3").innerHTML = "60";
+          }
+
+          function showLuxembourg(){
+              document.getElementById("flag").src = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Luxembourg.svg/383px-Flag_of_Luxembourg.svg.png";
+
+              document.getElementById("title_1").innerHTML = "Mudam Luxembourg Museum";
+              document.getElementById("img_1").src = "https://media.tacdn.com/media/attractions-splice-spp-674x446/09/a2/0c/12.jpg";
+              document.getElementById("desc_1").innerHTML = "Discover the artistic treasures at the Modern Art Museum Luxembourg with this entrance ticket. Learn about current artistic trends and the emergence of novel artistic practices through works representing both national and international talent. Marvel at the museum's building, designed by Sino-American architect Ieoh Ming Pei to represent the dialogue between Luxembourg's natural and historical identity. Sit down for some contemplation and a snack a the MUDAM Café or take a souvenir home from the MUDAM boutique.";
+              document.getElementById("price_1").innerHTML = "10";
+
+              document.getElementById("title_2").innerHTML = "Grand Ducal Palace";
+              document.getElementById("img_2").src = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Palacio_Gran_Ducal_de_Luxemburgo.jpg/1280px-Palacio_Gran_Ducal_de_Luxemburgo.jpg";
+              document.getElementById("desc_2").innerHTML = "The Palace of the Grand Dukes is a palace in Luxembourg City. It is the official residence of the Grand Duke of Luxembourg, where he carries out most of his duties as Head of State and Grand Duke.";
+              document.getElementById("price_2").innerHTML = "60";
+
+              document.getElementById("title_3").innerHTML = "Bock Casemates";
+              document.getElementById("img_3").src = "https://lh3.googleusercontent.com/p/AF1QipNVMqO67So5hFR7hBl-69-jp9PS7xv7II3H9lht=s1360-w1360-h1020";
+              document.getElementById("desc_3").innerHTML = "In 963, Count Sigrid built a castle on the Bock Promontory, the foundation stone of the later city of Luxembourg. In the middle of the 18th century, the Austrians began to build the Bock Casemates. These impressive defences give a better understanding of the great fortress machinery that was the \"Gibraltar of the North\". The archaeological crypt, didactic antechamber of the casemates, is an additional highlight of the visit. No wonder that the fortress bulwarks and the old town, no less steeped in history, enjoy worldwide renown. In 1994, they were inscribed on the UNESCO World Heritage List.";
+              document.getElementById("price_3").innerHTML = "50";
+          }
+
+          let countPriceButton = document.getElementById('get_price_button');
+          countPriceButton.addEventListener('click', countPrice);
+          function countPrice(){
+              let cnt = 0;
+              console.log(cnt);
+              if(document.getElementById('place_1').checked){cnt += parseInt(document.getElementById("price_1").textContent);}
+              if(document.getElementById('place_2').checked){cnt += parseInt(document.getElementById("price_2").textContent);}
+              if(document.getElementById('place_3').checked){cnt += parseInt(document.getElementById("price_3").textContent);}
+              document.getElementById("total_price").innerHTML = cnt.toString() + " 	€";
+          }
+      </script>
+  </div>
+</body>
+</html>
