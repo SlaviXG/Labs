@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecture task 16</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      body{
+        margin: 20px 20px 20px 20px;
+      }
+      td {
+        width: 40px;
+        height: 40px;
+        padding: 5px;
+        border: 1px solid #000000;
+      }
+    </style>
+</head>
+<body>
+  <label for="rows">Rows:</label>
+  <input type="text" id="rows" name="rows" required minlength="1" maxlength="10" size="10">
+  <label for="cols">Columns:</label>
+  <input type="text" id="cols" name="cols" required minlength="1" maxlength="10" size="10">
+  <br><br>
+  <button type="button" class="btn btn-secondary" onclick="createTable()">Create Table</button>
+  <br><br>
+  <div id="container"></div>
+
+  <script>
+    function createTable() {
+      var width = document.getElementById("cols").value;
+      var height = document.getElementById("rows").value;
+      var tableContainer = document.getElementById("container");
+      var table = document.createElement("table");
+
+      for (var i = 0; i < height; i++) {
+        var row = document.createElement("tr");
+        for (var j = 0; j < width; j++) {
+          var cell = document.createElement("td");
+          if ((i + j) % 2 == 0) {
+            cell.style.backgroundColor = "#000000";
+          } else {
+            cell.style.backgroundColor = "#ffffff";
+          }
+          row.appendChild(cell);
+        }
+        table.appendChild(row);
+      }
+      tableContainer.innerHTML = "";
+      tableContainer.appendChild(table);
+    }
+    </script>
+</body>
+</html>

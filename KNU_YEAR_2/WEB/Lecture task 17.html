@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecture task 17</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+      body{
+        margin: 20px 20px 20px 20px;
+      }
+      .bar{
+          display: inline-block;
+          width: 30px;
+          height: 100px;
+          margin-right: 10px;
+      }
+    </style>
+</head>
+<body>
+  <label for="cols">Number:</label>
+  <input type="text" id="cols" name="cols" required minlength="1" maxlength="10" size="10">
+  <br><br>
+  <button type="button" class="btn btn-secondary" onclick="generate()">Generate</button>
+  <br><br>
+  <div id="container"></div>
+
+  <script>
+    function generate() {
+      var width = document.getElementById("cols").value;
+      var container = document.getElementById("container");
+      container.innerHTML = "";
+
+        var container = document.getElementById("container");
+        container.innerHTML = "";
+
+        for (var i = 1; i <= width; i++) {
+            var height = Math.floor(Math.random() * 15 * i) + 1;
+            var bar = document.createElement("div");
+            bar.className = "bar";
+            bar.style.height = height + "px";
+            var x = Math.floor(Math.random() * 256);
+            var y = Math.floor(Math.random() * 256);
+            var z = Math.floor(Math.random() * 256);
+            var bgColor = "rgb(" + x + "," + y + "," + z + ")";
+            bar.style.background = bgColor;
+            container.appendChild(bar);
+        }
+    }
+    </script>
+</body>
+</html>
