@@ -1,0 +1,98 @@
+.site-header {
+  height: 230px;
+  background: var(--foreground);
+  color: var(--text);
+}
+
+.site-header > .center-block {
+  display: flex;
+}
+
+.header-left {
+  flex-grow: 1;
+  padding-top: 65px;
+}
+
+.header-right {
+  padding-top: 45px;
+  text-align: end;
+}
+
+.company-img {
+  float: left;
+  margin-right: 14px;
+}
+
+.center-company-data {
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.company-name {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.phone-number {
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: 300;
+  font-size: 3.5rem;
+  line-height: 40px;
+}
+
+.feedback {
+  font-size: 2rem;
+  font-weight: bold;
+  text-decoration: underline dashed;
+  color: var(--text);
+}
+
+.feedback:hover {
+  color: black;
+  text-decoration-style: solid;
+}
+
+/* top-nav */
+
+.top-nav {
+  background: var(--foreground-bold);
+}
+
+.top-nav ul {
+  margin: 0;
+  text-align: center;
+  padding: 18px 0;
+}
+
+.top-nav li a {
+  margin: 0 3px;
+  color: var(--text-bold);
+  font-size: 2.1rem;
+}
+
+.top-nav li + li::before {
+  content: "|";
+  color: var(--text-bold);
+  margin-right: 8px;
+  font-size: 2.1rem;
+  transform: translate(0, 15px);
+}
+
+/* breadcrumb */
+
+.breadcrumb {
+  margin-top: 16px;
+}
+
+.breadcrumb li a {
+  margin: 0 3px;
+  color: var(--text);
+}
+
+.breadcrumb li + li::before {
+  content: "/";
+  margin-right: 8px;
+}

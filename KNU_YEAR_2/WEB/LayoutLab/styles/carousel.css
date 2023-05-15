@@ -1,0 +1,53 @@
+.carousel {
+  position: relative;
+}
+
+.carousel-slides {
+  height: 400px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-slides > * {
+  min-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s linear;
+}
+
+.carousel-slides > *:not(.active) {
+  opacity: 0;
+}
+
+.carousel-slides > .active {
+  opacity: 1;
+}
+
+.carousel-back,
+.carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  background-color: var(--foreground);
+  padding: 16px 8px;
+  cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 16px;
+  height: 24px;
+}
+
+.carousel-back {
+  background-image: url(../images/back.png);
+  left: 16px;
+}
+
+.carousel-next {
+  background-image: url(../images/next.png);
+  right: 16px;
+}

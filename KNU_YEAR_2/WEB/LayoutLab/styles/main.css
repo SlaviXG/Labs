@@ -1,0 +1,116 @@
+@import url(./colors.css);
+@import url(./fonts.css);
+@import url(./header.css);
+@import url(./carousel.css);
+@import url(./footer.css);
+@import url(./modal.css);
+
+html {
+  font-size: 10px;
+}
+
+body {
+  margin: 0;
+  font-family: "PT Sans", sans-serif;
+  font-size: 1.4rem;
+  line-height: 22px;
+  min-width: 550px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--body-clr);
+}
+
+.center-block {
+  margin: 0 auto;
+  max-width: 1000px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.site-content {
+  flex-grow: 1;
+  margin-top: 16px;
+}
+
+.site-content > .center-block {
+  display: flex;
+  gap: 16px;
+}
+
+.site-content .sidebar {
+  flex-basis: 200px;
+  flex-shrink: 0;
+  font-size: 2rem;
+}
+
+.site-content .sidebar li > a {
+  color: var(--text);
+}
+
+.site-content .sidebar > ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.site-content .sidebar > ul > li > ul {
+  list-style: disc;
+  padding-left: 30px;
+}
+
+.site-content .mainblock {
+  flex-grow: 1;
+}
+
+.site-footer {
+  margin-top: 36px;
+  height: 220px;
+  background: var(--foreground-bold);
+}
+
+/* menu */
+
+.menu li {
+  display: inline;
+}
+
+.menu,
+.block-menu {
+  margin: 0;
+  padding-left: 0;
+}
+
+.menu li,
+.block-menu li {
+  list-style: none;
+}
+
+.menu li > a,
+.block-menu li > a {
+  text-decoration: none;
+}
+
+.menu li > a:hover,
+.block-menu li > a:hover {
+  text-decoration: underline solid;
+}
+
+/* pagination */
+
+.pagination {
+  margin-top: 24px;
+  font-size: 1.8rem;
+}
+
+.pagination ul {
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pagination ul > li > a {
+  color: var(--text);
+}

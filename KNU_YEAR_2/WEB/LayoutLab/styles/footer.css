@@ -1,0 +1,19 @@
+.site-footer {
+  padding: 50px 0;
+  color: var(--text-bold);
+}
+
+.site-footer > .center-block {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.site-footer li > a {
+  color: var(--text-bold) !important;
+}
+
+.site-footer img {
+  float: left;
+  margin: 8px;
+}

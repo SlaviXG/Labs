@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Based NFT Marketplace</title>
+    <link rel="icon" type="image/png" href="images/nft.png" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/products.css" />
+    <script src="scripts/modal.js" type="module"></script>
+    <script src="scripts/carousel.js" type="module"></script>
+  </head>
+
+  <body>
+    <div class="modal" id="ctc-modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h1>Call order</h1>
+        <form>
+          <label>Name *</label>
+          <input type="text" placeholder="Albert Rachel" required />
+          <label>Phone number *</label>
+          <input type="tel" placeholder="+380551223334" required />
+          <label>Email *</label>
+          <input type="email" placeholder="albert-rachel@gmail.com" required />
+          <input value="Submit" type="submit" />
+        </form>
+      </div>
+    </div>
+
+    <header class="site-header">
+      <div class="center-block">
+        <div class="header-left">
+          <img
+            class="company-img"
+            src="images/nft.png"
+            height="100"
+            width="100"
+            alt="logo"
+          />
+          <div class="center-company-data">
+            <div class="company-name">Based NFT Marketplace</div>
+            <div>for based Blockchain explorers</div>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="phone-number">+380 (95) 139-35-46</div>
+          <div class="phone-number">+380 (67) 948-35-46</div>
+          <a class="feedback" id="ctc-btn">Click-To-Call</a>
+        </div>
+      </div>
+    </header>
+
+    <nav class="top-nav">
+      <div class="center-block">
+        <ul class="menu">
+          <li><a href="#1">Main</a></li>
+          <li><a href="#2">Catalog</a></li>
+          <li><a href="#3">Stats</a></li>
+          <li><a href="#4">Pricing</a></li>
+          <li><a href="#5">Contacts</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="carousel">
+      <div class="carousel-slides">
+        <img
+          class="active"
+          src="./images/carousel/c1.png"
+          alt="carousel image"
+        />
+        <img src="./images/carousel/c2.png" alt="carousel image" />
+        <img src="./images/carousel/c3.png" alt="carousel image" />
+      </div>
+      <div class="carousel-back"></div>
+      <div class="carousel-next"></div>
+    </div>
+
+    <div class="breadcrumb">
+      <div class="center-block">
+        <ul class="menu">
+          <li><a href="#1">Main</a></li>
+          <li><a href="#2">NFTs</a></li>
+          <li><a href="#3">Catalog</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-content">
+      <div class="center-block">
+        <div class="sidebar">
+          <ul class="block-menu">
+            <li>
+              <a href="#1">Blockchains</a>
+              <ul>
+                <li><a href="#1">Ethereum</a></li>
+                <li><a href="#2">Polygon</a></li>
+                <li><a href="#3">Solana</a></li>
+                <li><a href="#4">Cardano</a></li>
+                <li><a href="#5">Arbitrum</a></li>
+                <li><a href="#6">WAX</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#2">Tags</a>
+              <ul>
+                <li><a href="#1">#2D</a></li>
+                <li><a href="#2">#3D</a></li>
+                <li><a href="#3">#charity</a></li>
+                <li><a href="#4">#auction</a></li>
+                <li><a href="#5">#dao</a></li>
+                <li><a href="#6">#defi</a></li>
+              </ul>
+            </li>
+            <li><a href="#3">Charity</a></li>
+          </ul>
+        </div>
+        <div class="mainblock">
+          <main>
+            <div class="products">
+              <div class="product">
+                <img
+                  src="images/products/1.png"
+                  height="200"
+                  width="200"
+                  alt="product"
+                />
+                <div class="description">
+                  Incredibly delicious. Definitely worth your attention!
+                </div>
+                <div class="bottom">
+                  <div class="price">1.64 $</div>
+                  <img
+                    src="images/cart.png"
+                    height="24"
+                    width="24"
+                    alt="add to cart"
+                  />
+                </div>
+              </div>
+              <div class="product">
+                <img
+                  src="images/products/2.png"
+                  height="200"
+                  width="200"
+                  alt="product"
+                />
+                <div class="description">
+                  Incredibly delicious. Definitely worth your attention!
+                </div>
+                <div class="bottom">
+                  <div class="price">1.64 $</div>
+                  <img
+                    src="images/cart.png"
+                    height="24"
+                    width="24"
+                    alt="add to cart"
+                  />
+                </div>
+              </div>
+              <div class="product">
+                <img
+                  src="images/products/3.png"
+                  height="200"
+                  width="200"
+                  alt="product"
+                />
+                <div class="description">
+                  Incredibly delicious. Definitely worth your attention!
+                </div>
+                <div class="bottom">
+                  <div class="price">1.64 $</div>
+                  <img
+                    src="images/cart.png"
+                    height="24"
+                    width="24"
+                    alt="add to cart"
+                  />
+                </div>
+              </div>
+              <div class="product">
+                <img
+                  src="images/products/4.png"
+                  height="200"
+                  width="200"
+                  alt="product"
+                />
+                <div class="description">
+                  Incredibly delicious. Definitely worth your attention!
+                </div>
+                <div class="bottom">
+                  <div class="price">1.64 $</div>
+                  <img
+                    src="images/cart.png"
+                    height="24"
+                    width="24"
+                    alt="add to cart"
+                  />
+                </div>
+              </div>
+              <div class="product">
+                <img
+                  src="images/products/5.png"
+                  height="200"
+                  width="200"
+                  alt="product"
+                />
+                <div class="description">
+                  Incredibly delicious. Definitely worth your attention!
+                </div>
+                <div class="bottom">
+                  <div class="price">1.64 $</div>
+                  <img
+                    src="images/cart.png"
+                    height="24"
+                    width="24"
+                    alt="add to cart"
+                  />
+                </div>
+              </div>
+              <div class="product">
+                <img
+                  src="images/products/6.png"
+                  height="200"
+                  width="200"
+                  alt="product"
+                />
+                <div class="description">
+                  Incredibly delicious. Definitely worth your attention!
+                </div>
+                <div class="bottom">
+                  <div class="price">1.64 $</div>
+                  <img
+                    src="images/cart.png"
+                    height="24"
+                    width="24"
+                    alt="add to cart"
+                  />
+                </div>
+              </div>
+            </div>
+          </main>
+          <div class="pagination">
+            <ul class="menu">
+              <li><a href="#1">1</a></li>
+              <li><a href="#2">2</a></li>
+              <li><a href="#3">3</a></li>
+              <li><a href="#4">4</a></li>
+              <li><a href="#5">5</a></li>
+              <li><a href="#6">6</a></li>
+              <li><a href="#7">7</a></li>
+            </ul>
+          </div>
+          <hr class="company-description-hr" />
+          <div class="company-description">
+            <div>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              Molestias nesciunt tempora cumque dicta quia dolor debitis
+              necessitatibus dolorem aliquam! Voluptatum ducimus et molestias
+              officiis delectus quia tempore accusantium odio velit, harum
+              sequi! Dolores eos doloremque magnam, ipsum provident expedita
+              sed.
+            </div>
+            <div>
+              Consequuntur doloribus qui ipsa, ratione rerum nemo quas placeat
+              corporis cum omnis modi quis in voluptates dolore delectus magni.
+              Magni, molestias in. Inventore enim aliquam exercitationem
+              excepturi. Repudiandae adipisci molestiae hic nihil necessitatibus
+              aut doloribus minus obcaecati eveniet? Asperiores adipisci sit
+              atque placeat vero!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="center-block">
+        <div>© Based NFT Marketplace 2023-2024<br />based-nfts@gmail.com</div>
+        <div>
+          <ul class="block-menu">
+            <li><a href="#1">Main</a></li>
+            <li><a href="#2">Catalog</a></li>
+            <li><a href="#3">Stats</a></li>
+            <li><a href="#4">Pricing</a></li>
+            <li><a href="#5">Contacts</a></li>
+          </ul>
+        </div>
+        <div>
+          <img
+            src="images/bird.png"
+            width="65"
+            height="65"
+            alt="devs' logo"
+          />BrilliantBird Technologies
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

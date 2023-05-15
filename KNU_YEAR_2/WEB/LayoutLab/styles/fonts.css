@@ -1,0 +1,24 @@
+/* PT Sans */
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+/* Open Sans Condensed */
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url(../fonts/Open_Sans_Condensed/OpenSansCondensed-Bold.ttf);
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url(../fonts/Open_Sans_Condensed/OpenSansCondensed-Light.ttf);
+  font-weight: 300; /* light */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Open Sans Condensed";
+  src: url(../fonts/Open_Sans_Condensed/OpenSansCondensed-LightItalic.ttf);
+  font-weight: 300; /* light */
+  font-style: italic;
+}
