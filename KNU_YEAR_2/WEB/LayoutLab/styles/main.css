@@ -122,4 +122,10 @@ body {
 
 .tags ul > li > a{
   color: var(--text);
+  text-decoration: none;
+}
+
+.tags ul > li > a:hover,
+.block-menu li > a:hover {
+  text-decoration: underline solid;
 }
