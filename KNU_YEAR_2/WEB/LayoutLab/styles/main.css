@@ -114,3 +114,12 @@ body {
 .pagination ul > li > a {
   color: var(--text);
 }
+
+.tags ul > li{
+  font-size: 1.5em;
+  margin: 10px;
+}
+
+.tags ul > li > a{
+  color: var(--text);
+}
