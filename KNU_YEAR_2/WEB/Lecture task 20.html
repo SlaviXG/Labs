@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecture task 20</title>
+</head>
+<body>
+  <script>
+    var gallery = {
+      images: [
+        { name: "image1", path: "/path/image1.jpg", date: new Date() },
+        { name: "image2", path: "/path/image2.jpg", date: new Date() },
+        { name: "image3", path: "/path/image3.jpg", date: new Date() },
+        { name: "image4", path: "/path/image4.jpg", date: new Date() }
+      ]
+    };
+
+    var galleryJSON = JSON.stringify(gallery);
+    console.log("Серіалізація зі збереженням всієї інформації:");
+    console.log(galleryJSON);
+
+    var galleryNamesJSON = JSON.stringify(gallery.images.map(function(image) {
+      return image.name;
+    }));
+    console.log("Серіалізація зі збереженням лише імен картинок:");
+    console.log(galleryNamesJSON);
+
+    var filteredGallery = {
+      images: gallery.images.filter(function(image) {
+        return image.name !== "";
+      })
+    };
+    var filteredGalleryJSON = JSON.stringify(filteredGallery);
+    console.log("Серіалізація без картинок без імені:");
+    console.log(filteredGalleryJSON);
+
+    var parsedGallery = JSON.parse(galleryJSON, function(key, value) {
+      if (key === "date") {
+        return new Date(value);
+      }
+      return value;
+    });
+    console.log("Розпарсування з датою як об'єктом Date:");
+    console.log(parsedGallery);
+  </script>
+</body>
+</html>
