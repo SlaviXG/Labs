@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <title>Проєкт "Кошик"</title>
+</head>
+<body>
+<div class="container">
+  <h1>Проєкт "Кошик"</h1>
+
+  <form id="orderForm">
+    <div class="form-group">
+      <label for="productName">Назва товару</label>
+      <select class="form-control" id="productName">
+        <option disabled selected value="None">Оберіть книгу</option>
+        <option value = "book1">Книга 1 (Автор 1) - 100</option>
+        <option value = "book2">Книга 2 (Автор 2) - 200</option>
+        <option value = "book3">Книга 3 (Автор 3) - 120</option>
+        <option value = "book4">Книга 4 (Автор 3) - 290</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="quantity">Кількість</label>
+      <input type="number" class="form-control" id="quantity" placeholder="Введіть кількість">
+    </div>
+
+    <div class="form-group">
+      <label for="totalCost">Вартість замовлених книг</label>
+      <input type="text" class="form-control" id="totalCost" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="deliveryMethod">Спосіб доставки</label>
+      <select class="form-control" id="deliveryMethod">
+        <option disabled selected>Оберіть спосіб доставки</option>
+        <option value="mail">Поштою</option>
+        <option value="courier">Доставка кур'єром</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="packaging">
+        <label class="form-check-label" for="packaging">У святковій упаковці</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="promoCode">Промокод</label>
+      <input type="text" class="form-control" id="promoCode" placeholder="Введіть промокод">
+      <small id="promoCodeHelp" class="form-text text-muted">Знижка від 5% до 20% відповідно до промокоду</small>
+      <button type="button" class="btn btn-primary" onclick="applyPromoCode()">Застосувати промокод</button>
+    </div>
+
+    <div class="form-group">
+      <label for="totalCostWithDiscount">Загальна вартість замовлення</label>
+      <input type="text" class="form-control" id="totalCostWithDiscount" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="name">Ім'я</label>
+      <input type="text" class="form-control" id="name" placeholder="Введіть ім'я">
+    </div>
+
+    <div class="form-group">
+      <label for="surname">Прізвище</label>
+      <input type="text" class="form-control" id="surname" placeholder="Введіть прізвище">
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Номер телефону</label>
+      <input type="tel" class="form-control" id="phone" placeholder="+38 (XXX) XXX XX XX">
+      <small id="phoneHelp" class="form-text text-muted">Формат номеру: +38 (XXX) XXX XX XX</small>
+    </div>
+
+    <div class="form-group">
+      <label for="address">Адреса доставки</label>
+      <input type="text" class="form-control" id="address" placeholder="Введіть адресу" disabled>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="updateTotalCostWithDiscount()">Підрахувати</button>
+    <button type="button" class="btn btn-secondary" onclick="resetForm()">Відновити початкові значення полів</button>
+    <button type="submit" class="btn btn-success">Відіслати дані</button>
+  </form>
+
+  <div id="orderSummary" class="mt-4"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<script>
+  var books = {
+    book1: { name: "Книга 1", author: "Автор 1", price: 100 },
+    book2: { name: "Книга 2", author: "Автор 2", price: 200 },
+    book3: { name: "Книга 3", author: "Автор 3", price: 120 },
+    book4: { name: "Книга 4", author: "Автор 4", price: 290 },
+  };
+
+  var deliveryOptions = {
+    mail: { name: "Поштою", costPercentage: 0.05 },
+    courier: { name: "Доставка кур'єром", costPercentage: 0.15 },
+  };
+
+  var promoCodes = {
+    code1: { discountPercentage: 0.1 },
+    code2: { discountPercentage: 0.15 },
+    code3: { discountPercentage: 0.2 },
+    code4: { discountPercentage: 0.125 },
+  };
+
+  function calculateTotalCost() {
+    var productName = document.getElementById("productName").value;
+    var quantity = parseInt(document.getElementById("quantity").value);
+
+    var basePrice = books[productName].price;
+    var totalCost = quantity * basePrice;
+
+    document.getElementById("totalCost").value = totalCost.toFixed(2);
+    return totalCost;
+  }
+
+  function updateTotalCostWithDiscount(discountPercentage) {
+    var totalCost = calculateTotalCost();
+    var deliveryMethod = document.getElementById("deliveryMethod").value;
+    var packaging = document.getElementById("packaging").checked;
+    var deliveryCostPercentage = deliveryOptions[deliveryMethod].costPercentage;
+    var totalCostWithDiscount = totalCost;
+
+    if (deliveryMethod === "mail") {
+      totalCostWithDiscount *= 1.05;
+    } else if (deliveryMethod === "courier") {
+      totalCostWithDiscount *= 1.15;
+      document.getElementById("addressContainer").style.display = "block";
+    }
+
+    if (packaging) {
+      totalCostWithDiscount *= 1.1;
+    }
+
+    if (discountPercentage) {
+      totalCostWithDiscount -= totalCostWithDiscount * discountPercentage;
+    }
+
+    document.getElementById("totalCostWithDiscount").value = totalCostWithDiscount.toFixed(2);
+  }
+
+  function applyPromoCode() {
+    var promoCode = document.getElementById("promoCode").value;
+    var discountPercentage = promoCodes[promoCode] ? promoCodes[promoCode].discountPercentage : null;
+    if (discountPercentage) {
+      alert("Промокод успішно застосований!");
+    } else {
+      alert("Неправильний промокод!");
+    }
+    updateTotalCostWithDiscount(discountPercentage);
+  }
+
+  function validatePhone() {
+    var phone = document.getElementById("phone").value;
+    var phonePattern = /^\+38 \(\d{3}\) \d{2} \d{2} \d{2}$/;
+    var isValid = phonePattern.test(phone);
+    document.getElementById("phoneError").textContent = isValid ? "" : "Неправильний формат номера телефону";
+    return isValid;
+  }
+
+  function resetForm() {
+    document.getElementById("orderForm").reset();
+    document.getElementById("address").disabled = true;
+    document.getElementById("phoneError").textContent = "";
+    document.getElementById("orderSummary").innerHTML = "";
+  }
+
+  function submitOrder() {
+    var isValidPhone = validatePhone();
+
+    if (!isValidPhone) {
+      return;
+    }
+
+    var orderSummary = document.getElementById("orderSummary");
+    orderSummary.innerHTML = "";
+
+    var productName = document.getElementById("productName").value;
+    var product = books[productName];
+    var quantity = parseInt(document.getElementById("quantity").value);
+    var totalCost = parseFloat(document.getElementById("totalCost").value);
+    var deliveryMethod = deliveryOptions[document.getElementById("deliveryMethod").value].name;
+    var address = document.getElementById("address").value;
+    var packaging = document.getElementById("packaging").checked;
+    var promoCode = document.getElementById("promoCode").value;
+    var totalCostWithDiscount = parseFloat(document.getElementById("totalCostWithDiscount").value);
+
+    if (!productName || !quantity || !totalCost || !deliveryMethod) {
+      orderSummary.textContent = "Заповніть всі необхідні поля!";
+      return;
+    }
+
+    var table = document.createElement("table");
+    var thead = document.createElement("thead");
+    var tbody = document.createElement("tbody");
+
+    var headers = ["Назва", "Кількість", "Вартість", "Доставка", "Упаковка", "Промокод", "Загальна вартість"];
+    var headerRow = document.createElement("tr");
+
+    headers.forEach(function (header) {
+      var th = document.createElement("th");
+      th.textContent = header;
+      headerRow.appendChild(th);
+    });
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    var row = document.createElement("tr");
+    var nameCell = document.createElement("td");
+    nameCell.textContent = product.name + " (" + product.author + ")";
+    var quantityCell = document.createElement("td");
+    quantityCell.textContent = quantity;
+    var costCell = document.createElement("td");
+    costCell.textContent = totalCost.toFixed(2);
+    var deliveryCell = document.createElement("td");
+    deliveryCell.textContent = deliveryMethod;
+    var packagingCell = document.createElement("td");
+    packagingCell.textContent = packaging ? "Так" : "Ні";
+    var promoCodeCell = document.createElement("td");
+    promoCodeCell.textContent = promoCode;
+    var totalCostWithDiscountCell = document.createElement("td");
+    totalCostWithDiscountCell.textContent = totalCostWithDiscount.toFixed(2);
+
+    row.appendChild(nameCell);
+    row.appendChild(quantityCell);
+    row.appendChild(costCell);
+    row.appendChild(deliveryCell);
+    row.appendChild(packagingCell);
+    row.appendChild(promoCodeCell);
+    row.appendChild(totalCostWithDiscountCell);
+
+    tbody.appendChild(row);
+    table.appendChild(tbody);
+    orderSummary.appendChild(table);
+  }
+</script>
+</body>
+</html>
