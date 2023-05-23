@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Редактор Cookie-змінних</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+  <h1>Редактор Cookie-змінних</h1>
+  <form id="cookieForm">
+    <div class="form-group">
+      <label for="cookieName">Назва</label>
+      <input type="text" class="form-control" id="cookieName" placeholder="Введіть назву cookie">
+    </div>
+    <div class="form-group">
+      <label for="cookieValue">Значення</label>
+      <input type="text" class="form-control" id="cookieValue" placeholder="Введіть значення cookie">
+    </div>
+    <div class="form-group">
+      <label for="cookieExpiration">Час застарівання</label>
+      <input type="text" class="form-control" id="cookieExpiration" placeholder="Введіть час застарівання (у днях)">
+    </div>
+    <div class="form-group">
+      <label for="cookieDomain">Піддомен</label>
+      <input type="text" class="form-control" id="cookieDomain" placeholder="Введіть піддомен">
+    </div>
+    <div class="form-group">
+      <label for="cookiePath">Підкаталог</label>
+      <input type="text" class="form-control" id="cookiePath" placeholder="Введіть підкаталог">
+    </div>
+    <button type="submit" class="btn btn-primary">Зберегти Cookie</button>
+  </form>
+</div>
+
+<script>
+  // Функція для збереження cookie
+  function saveCookie(event) {
+    event.preventDefault();
+
+    var cookieName = document.getElementById('cookieName').value;
+    var cookieValue = document.getElementById('cookieValue').value;
+    var cookieExpiration = document.getElementById('cookieExpiration').value;
+    var cookieDomain = document.getElementById('cookieDomain').value;
+    var cookiePath = document.getElementById('cookiePath').value;
+
+    var expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + parseInt(cookieExpiration));
+
+    var cookieString = cookieName + "=" + cookieValue +
+            "; expires=" + expirationDate.toUTCString() +
+            "; domain=" + cookieDomain +
+            "; path=" + cookiePath;
+
+    document.cookie = cookieString;
+
+    alert("Cookie було збережено!");
+
+    // Оновити таблицю з поточними cookie
+    displayCurrentCookies();
+  }
+
+  // Функція для відображення поточних cookie у таблиці
+  function displayCurrentCookies() {
+    var cookieTableBody = document.getElementById('cookieTableBody');
+    cookieTableBody.innerHTML = '';
+
+    if (document.cookie === '') {
+      var row = cookieTableBody.insertRow();
+      var cell = row.insertCell();
+      cell.colSpan = 6;
+      cell.innerHTML = 'Немає поточних cookie.';
+    } else {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        var cookieName = cookie.split('=')[0];
+        var cookieValue = cookie.split('=')[1];
+        var row = cookieTableBody.insertRow();
+        row.insertCell().textContent = cookieName;
+        row.insertCell().textContent = cookieValue;
+        row.insertCell().textContent = getCookieExpiration(cookieName);
+        row.insertCell().textContent = getCookieDomain(cookieName);
+        row.insertCell().textContent = getCookiePath(cookieName);
+        var editButton = document.createElement('button');
+        editButton.innerHTML = 'Редагувати';
+        editButton.className = 'btn btn-primary btn-sm';
+        editButton.dataset.cookieName = cookieName;
+        editButton.addEventListener('click', editCookie);
+        var cell = row.insertCell();
+        cell.appendChild(editButton);
+      }
+    }
+  }
+
+  // Функція для отримання часу застарівання cookie
+  function getCookieExpiration(cookieName) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.indexOf(cookieName + '=') === 0) {
+        var cookieParts = cookie.split('=');
+        if (cookieParts.length > 1) {
+          var cookieOptions = cookieParts[1].split(';');
+          for (var j = 0; j < cookieOptions.length; j++) {
+            var option = cookieOptions[j].trim();
+            if (option.indexOf('expires=') === 0) {
+              return option.substring(8);
+            }
+          }
+        }
+      }
+    }
+    return '';
+  }
+
+  // Функція для отримання піддомену cookie
+  function getCookieDomain(cookieName) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.indexOf(cookieName + '=') === 0) {
+        var cookieParts = cookie.split('=');
+        if (cookieParts.length > 1) {
+          var cookieOptions = cookieParts[1].split(';');
+          for (var j = 0; j < cookieOptions.length; j++) {
+            var option = cookieOptions[j].trim();
+            if (option.indexOf('domain=') === 0) {
+              return option.substring(7);
+            }
+          }
+        }
+      }
+    }
+    return '';
+  }
+
+  // Функція для отримання підкаталогу cookie
+  function getCookiePath(cookieName) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.indexOf(cookieName + '=') === 0) {
+        var cookieParts = cookie.split('=');
+        if (cookieParts.length > 1) {
+          var cookieOptions = cookieParts[1].split(';');
+          for (var j = 0; j < cookieOptions.length; j++) {
+            var option = cookieOptions[j].trim();
+            if (option.indexOf('path=') === 0) {
+              return option.substring(5);
+            }
+          }
+        }
+      }
+    }
+    return '';
+  }
+
+  // Функція для редагування cookie
+  function editCookie(event) {
+    var cookieName = event.target.dataset.cookieName;
+    var cookieValue = prompt('Введіть нове значення для cookie "' + cookieName + '":');
+    if (cookieValue !== null) {
+      document.cookie = cookieName + "=" + cookieValue;
+      alert('Cookie "' + cookieName + '" було успішно змінено!');
+      displayCurrentCookies();
+    }
+  }
+
+  // Оновити таблицю з поточними cookie при завантаженні сторінки
+  displayCurrentCookies();
+
+  var cookieForm = document.getElementById('cookieForm');
+  cookieForm.addEventListener('submit', saveCookie);
+  cookieForm.addEventListener('reset', displayCurrentCookies);
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Текстовий редактор</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .editor-window {
+      height: 200px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h1>Текстовий редактор</h1>
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="formatText('bold')">Напівжирний</button>
+    <button class="btn btn-primary" onclick="formatText('italic')">Нахил</button>
+    <button class="btn btn-primary" onclick="formatText('underline')">Підкреслення</button>
+    <button class="btn btn-primary" onclick="changeTextColor()">Колір тексту</button>
+    <button class="btn btn-primary" onclick="changeTextCase()">Регістр символів</button>
+  </div>
+  <div class="mt-3">
+    <div contenteditable="true" id="editor" class="editor-window"></div>
+  </div>
+</div>
+
+<script>
+  function formatText(style) {
+    var selectedText = getSelectedText();
+
+    if (selectedText) {
+      document.execCommand(style, false, null);
+    }
+  }
+
+  function changeTextColor() {
+    var selectedText = getSelectedText();
+
+    if (selectedText) {
+      var color = prompt('Введіть колір тексту (наприклад, "red", "#ff0000"):');
+      document.execCommand('foreColor', false, color);
+    }
+  }
+
+  function changeTextCase() {
+    var selectedText = getSelectedText();
+
+    if (selectedText) {
+      var newText = toggleTextCase(selectedText);
+      document.execCommand('insertText', false, newText);
+    }
+  }
+
+  function getSelectedText() {
+    if (window.getSelection) {
+      return window.getSelection().toString();
+    } else if (document.selection && document.selection.type != 'Control') {
+      return document.selection.createRange().text;
+    }
+    return '';
+  }
+
+  function toggleTextCase(text) {
+    var newText = '';
+    for (var i = 0; i < text.length; i++) {
+      var char = text[i];
+      if (char === char.toUpperCase()) {
+        newText += char.toLowerCase();
+      } else {
+        newText += char.toUpperCase();
+      }
+    }
+    return newText;
+  }
+</script>
+</body>
+</html>

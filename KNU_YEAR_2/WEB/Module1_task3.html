@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    #chart {
+      width: 400px;
+      height: 300px;
+    }
+    .bar {
+      background-color: steelblue;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Гістограма</h2>
+  <form id="inputForm">
+    <div class="form-group">
+      <label for="numbers">Числа (через кому):</label>
+      <input type="text" id="numbers" class="form-control" name="numbers">
+    </div>
+    <button type="button" class="btn btn-primary" onclick="drawHistogram()">Побудувати гістограму</button>
+    <br>
+    <br>
+  </form>
+
+  <div id="chart"></div>
+</div>
+
+<script>
+  function drawHistogram() {
+    var numbersInput = document.getElementById("numbers");
+    var numbers = numbersInput.value.split(",").map(function(number) {
+      return parseFloat(number);
+    });
+
+    // Знайти максимальне значення
+    var max = Math.max.apply(null, numbers);
+
+    var chart = document.getElementById("chart");
+    chart.innerHTML = "";
+
+    for (var i = 0; i < numbers.length; i++) {
+      var bar = document.createElement("div");
+      bar.className = "bar";
+      bar.style.width = (numbers[i] / max * 100) + "%";
+      bar.style.height = (100 / numbers.length) + "%";
+      var x = Math.floor(Math.random() * 256);
+      var y = Math.floor(Math.random() * 256);
+      var z = Math.floor(Math.random() * 256);
+      var bgColor = "rgb(" + x + "," + y + "," + z + ")";
+      bar.style.background = bgColor;
+      chart.appendChild(bar);
+    }
+  }
+</script>
+</body>
+</html>
